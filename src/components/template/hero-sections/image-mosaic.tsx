@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 // import { Heart } from "lucide-react";
 
 const images = [
@@ -52,9 +53,11 @@ export function ImageMosaicHero() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="relative"
               >
-                <img
+                <Image
                   src={image}
                   alt="Healthcare facility"
+                  width={500}
+                  height={500}
                   className="aspect-[3/2] w-full rounded-2xl object-cover shadow-lg"
                 />
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />

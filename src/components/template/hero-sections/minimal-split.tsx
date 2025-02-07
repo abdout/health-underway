@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
+import Image from "next/image";
 
 export function MinimalSplitHero() {
   return (
@@ -23,9 +24,11 @@ export function MinimalSplitHero() {
               <Button variant="outline" size="lg">View Services</Button>
             </div>
           </div>
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
             alt="Medical professionals"
+            width={500}
+            height={500}
             className="rounded-xl shadow-xl ring-1 ring-gray-400/10"
           />
         </div>
