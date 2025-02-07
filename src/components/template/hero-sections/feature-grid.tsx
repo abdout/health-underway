@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { 
-  Heart, 
+ 
   Clock, 
   Users, 
   Shield, 
   Stethoscope, 
-  Activity 
+  
 } from "lucide-react";
 
 const features = [

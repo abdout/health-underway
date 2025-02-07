@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Stethoscope } from "lucide-react";
+import Image from "next/image";
+// import { Stethoscope } from "lucide-react";
 
 const stats = [
   { id: 1, name: "Patients Treated", value: "50K+" },
@@ -30,13 +31,13 @@ export function AnimatedStatsHero() {
               </span>
             </div>
           </div>
-          <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Advanced Healthcare Solutions for a Better Life
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Experience world-class healthcare services with our team of expert professionals.
-            We're committed to providing the best medical care for you and your family.
-          </p>
+          <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              Revolutionary Healthcare for the Digital Age
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Combining cutting-edge technology with compassionate care to deliver
+              the future of healthcare today. Experience medical excellence reimagined.
+            </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Button size="lg">Schedule Visit</Button>
             <Button variant="outline" size="lg">Learn More</Button>
@@ -49,7 +50,7 @@ export function AnimatedStatsHero() {
           className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32"
         >
           <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?ixlib=rb-4.0.3&auto=format&fit=crop&w=2091&q=80"
               alt="Medical technology"
               className="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
