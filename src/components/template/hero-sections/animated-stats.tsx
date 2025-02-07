@@ -24,7 +24,7 @@ export function AnimatedStatsHero() {
           <div className="mt-24 sm:mt-32 lg:mt-16">
             <div className="inline-flex space-x-6">
               <span className="rounded-full bg-blue-600/10 px-3 py-1 text-sm font-semibold leading-6 text-blue-600 ring-1 ring-inset ring-blue-600/10">
-                What's new
+                What&apos;s new
               </span>
               <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-600">
                 <span>Just shipped v1.0</span>
@@ -32,12 +32,12 @@ export function AnimatedStatsHero() {
             </div>
           </div>
           <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Revolutionary Healthcare for the Digital Age
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
-              Combining cutting-edge technology with compassionate care to deliver
-              the future of healthcare today. Experience medical excellence reimagined.
-            </p>
+            Revolutionary Healthcare for the Digital Age
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-gray-300">
+            Combining cutting-edge technology with compassionate care to deliver
+            the future of healthcare today. Experience medical excellence reimagined.
+          </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Button size="lg">Schedule Visit</Button>
             <Button variant="outline" size="lg">Learn More</Button>
