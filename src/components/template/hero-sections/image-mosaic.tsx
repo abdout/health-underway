@@ -54,7 +54,7 @@ export function ImageMosaicHero() {
                 className="relative"
               >
                 <Image
-                  src={image}
+                  src='/stanford.jpg'
                   alt="Healthcare facility"
                   width={500}
                   height={500}

@@ -51,8 +51,10 @@ export function AnimatedStatsHero() {
         >
           <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
             <Image
-              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?ixlib=rb-4.0.3&auto=format&fit=crop&w=2091&q=80"
+              src="/stanford.jpg"
               alt="Medical technology"
+              width={500}
+              height={500}
               className="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
             />
           </div>

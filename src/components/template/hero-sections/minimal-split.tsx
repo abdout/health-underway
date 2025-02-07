@@ -25,7 +25,7 @@ export function MinimalSplitHero() {
             </div>
           </div>
           <Image
-            src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            src="/stanford.jpg"
             alt="Medical professionals"
             width={500}
             height={500}
