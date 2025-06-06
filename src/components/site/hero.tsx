@@ -30,8 +30,8 @@ export function Hero() {
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="flex flex-col items-center gap-4 text-center">
                         <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-[80px]">
-                            Healing starts here <br />
-                            Where right answers
+                            Healing begins here <br />
+                            with the right answers
                         </h1>
                         <p className="max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8">
                             Effective treatment depends on getting the right diagnosis. Our experts diagnose and treat the toughest medical challenges.
