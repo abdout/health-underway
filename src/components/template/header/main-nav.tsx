@@ -189,7 +189,7 @@ export function MainNav() {
                   <button
                     ref={buttonRef}
                     className={cn(
-                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground h-auto bg-transparent",
+                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground bg-transparent",
                       pathname?.startsWith(item.href)
                         ? "text-foreground"
                         : "text-foreground/80"
@@ -198,7 +198,7 @@ export function MainNav() {
                     {item.title}
                     <ChevronDownIcon 
                       className={cn(
-                        "h-3 w-3 transition-transform duration-200",
+                        "h-3 w-3 transition-transform duration-200 opacity-60",
                         isPatientMenuOpen && "rotate-180"
                       )} 
                     />
@@ -259,7 +259,7 @@ export function MainNav() {
                   <button
                     ref={servicesButtonRef}
                     className={cn(
-                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground h-auto bg-transparent",
+                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground bg-transparent",
                       pathname?.startsWith(item.href)
                         ? "text-foreground"
                         : "text-foreground/80"
@@ -268,7 +268,7 @@ export function MainNav() {
                     {item.title}
                     <ChevronDownIcon 
                       className={cn(
-                        "h-3 w-3 transition-transform duration-200",
+                        "h-3 w-3 transition-transform duration-200 opacity-60",
                         isServicesMenuOpen && "rotate-180"
                       )} 
                     />
