@@ -1,0 +1,54 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Grain pattern using turbulence filter -->
+    <filter id="grainFilter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence 
+        baseFrequency="0.95" 
+        numOctaves="4" 
+        result="noise" 
+        seed="5"
+        type="fractalNoise" />
+      <feColorMatrix 
+        in="noise" 
+        type="saturate" 
+        values="0" 
+        result="desaturatedNoise"/>
+      <feComponentTransfer in="desaturatedNoise" result="grain">
+        <feFuncA type="discrete" tableValues="0 .5 .5 .7 .7 .8 .8 .9 .9 1"/>
+      </feComponentTransfer>
+      <feComposite 
+        in="grain" 
+        in2="SourceGraphic" 
+        operator="multiply"/>
+    </filter>
+
+    <!-- Pattern for repeated grain -->
+    <pattern id="grainPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="white" opacity="0.02"/>
+      <rect width="100" height="100" fill="white" filter="url(#grainFilter)" opacity="0.8"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100" height="100" fill="url(#grainPattern)"/>
+  
+  <!-- Additional noise dots for more realistic grain -->
+  <g opacity="0.15">
+    <circle cx="15" cy="23" r="0.3" fill="white"/>
+    <circle cx="34" cy="45" r="0.2" fill="white"/>
+    <circle cx="67" cy="12" r="0.4" fill="white"/>
+    <circle cx="89" cy="78" r="0.3" fill="white"/>
+    <circle cx="23" cy="67" r="0.2" fill="white"/>
+    <circle cx="56" cy="89" r="0.3" fill="white"/>
+    <circle cx="78" cy="34" r="0.2" fill="white"/>
+    <circle cx="12" cy="56" r="0.4" fill="white"/>
+    <circle cx="45" cy="23" r="0.2" fill="white"/>
+    <circle cx="67" cy="67" r="0.3" fill="white"/>
+    <circle cx="89" cy="45" r="0.2" fill="white"/>
+    <circle cx="34" cy="12" r="0.3" fill="white"/>
+    <circle cx="23" cy="89" r="0.2" fill="white"/>
+    <circle cx="56" cy="34" r="0.4" fill="white"/>
+    <circle cx="78" cy="78" r="0.3" fill="white"/>
+    <circle cx="12" cy="45" r="0.2" fill="white"/>
+  </g>
+</svg> 

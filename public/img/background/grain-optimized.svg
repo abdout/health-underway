@@ -1,0 +1,58 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Optimized grain filter for better texture -->
+    <filter id="optimizedGrain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence 
+        baseFrequency="0.9" 
+        numOctaves="4" 
+        result="noise" 
+        seed="3"
+        type="fractalNoise" />
+      <feColorMatrix 
+        in="noise" 
+        type="saturate" 
+        values="0" 
+        result="desaturatedNoise"/>
+      <feComponentTransfer in="desaturatedNoise" result="grain">
+        <feFuncA type="discrete" tableValues="0 .3 .6 .9"/>
+      </feComponentTransfer>
+      <feComposite 
+        in="grain" 
+        in2="SourceGraphic" 
+        operator="multiply"/>
+    </filter>
+
+    <!-- Pattern for subtle grain -->
+    <pattern id="subtleGrain" x="0" y="0" width="128" height="128" patternUnits="userSpaceOnUse">
+      <rect width="128" height="128" fill="white" opacity="0.98"/>
+      <rect width="128" height="128" fill="black" filter="url(#optimizedGrain)" opacity="0.15"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background with optimized grain -->
+  <rect width="128" height="128" fill="url(#subtleGrain)"/>
+  
+  <!-- Micro-dots for enhanced texture -->
+  <g opacity="0.12">
+    <circle cx="23" cy="34" r="0.3" fill="black"/>
+    <circle cx="67" cy="89" r="0.2" fill="black"/>
+    <circle cx="98" cy="12" r="0.4" fill="black"/>
+    <circle cx="45" cy="78" r="0.25" fill="black"/>
+    <circle cx="112" cy="56" r="0.3" fill="black"/>
+    <circle cx="34" cy="123" r="0.2" fill="black"/>
+    <circle cx="89" cy="45" r="0.35" fill="black"/>
+    <circle cx="12" cy="91" r="0.25" fill="black"/>
+    <circle cx="78" cy="23" r="0.3" fill="black"/>
+    <circle cx="56" cy="67" r="0.2" fill="black"/>
+    <circle cx="123" cy="34" r="0.4" fill="black"/>
+    <circle cx="91" cy="112" r="0.25" fill="black"/>
+    <circle cx="23" cy="78" r="0.3" fill="black"/>
+    <circle cx="67" cy="45" r="0.2" fill="black"/>
+    <circle cx="34" cy="89" r="0.35" fill="black"/>
+    <circle cx="98" cy="12" r="0.25" fill="black"/>
+    <circle cx="45" cy="56" r="0.3" fill="black"/>
+    <circle cx="112" cy="123" r="0.2" fill="black"/>
+    <circle cx="78" cy="34" r="0.4" fill="black"/>
+    <circle cx="56" cy="91" r="0.25" fill="black"/>
+  </g>
+</svg> 
