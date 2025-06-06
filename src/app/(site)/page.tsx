@@ -5,7 +5,7 @@ import App from '@/components/atom/parallax-text';
 import { SuperchargeSection } from '@/components/site/super';
 import { MeshScaleSection } from '@/components/site/mesh';
 import ImageCSS from '@/components/site/image-css';
-import { TrySection } from '@/components/site/try';
+
 export default function Home() {
     return (
         <>
@@ -15,7 +15,7 @@ export default function Home() {
             <SuperchargeSection />
             <MeshScaleSection />
             <ImageCSS />
-            <TrySection />
+            
         </>
     );
 }
