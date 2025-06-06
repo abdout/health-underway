@@ -1,5 +1,3 @@
-import React from "react"
-
 export interface FooterLink {
   href: string
   label: string

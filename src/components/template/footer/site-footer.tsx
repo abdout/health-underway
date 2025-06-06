@@ -1,7 +1,5 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
-import { ArrowRight, ExternalLink } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { FOOTER_SECTIONS, FOOTER_BOTTOM_LINKS } from "./constant"
 import ExpandButton from "@/components/atom/expand-button"
 

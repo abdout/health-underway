@@ -64,7 +64,7 @@ export function SuperchargeSection() {
         </div>
         <div className="intro-text">
           <p>
-            Essentially a headless open source editor, Tiptap has a wide range of paid features that give developers exactly the kind of experience they're looking for - fully customizable to build their product needs.
+            Essentially a headless open source editor, Tiptap has a wide range of paid features that give developers exactly the kind of experience they&apos;re looking for - fully customizable to build their product needs.
           </p>
         </div>
       </div>

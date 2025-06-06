@@ -3,11 +3,10 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState, useRef, useEffect } from "react"
-import { UserIcon, CalendarIcon, FileTextIcon, CreditCardIcon, HeartIcon, ChevronDownIcon, Activity, Shield, Phone, Stethoscope, Microscope, Brain, Zap, Users, Building } from "lucide-react"
+import { CalendarIcon, FileTextIcon, CreditCardIcon, HeartIcon, ChevronDownIcon, Activity, Phone, Stethoscope, Microscope, Brain, Zap, Users, Building } from "lucide-react"
 
 import { siteConfig } from "@/components/template/header/constant"
 import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
 import { Badge } from "@/components/ui/badge"
 
 const patientMenuSections = [

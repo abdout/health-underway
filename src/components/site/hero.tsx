@@ -1,8 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
-import FeatureCards from './card';
 import ExpandButton from '@/components/atom/expand-button';
 import { LogoCloud } from './logo-cloud';
 
