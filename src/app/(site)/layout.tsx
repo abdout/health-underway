@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 // import {SiteFooter} from "@/components/template/footer/site-footer";
-import { SiteHeader } from "@/components/template/header/site-header";
+
 import { SiteFooter } from "@/components/template/footer/site-footer";
+  import { SiteHeader } from "@/components/template/header/site-header";
 // import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -25,7 +26,13 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
       className="relative flex min-h-screen flex-col bg-background text-foreground antialiased"
       data-slot="site-layout"
     >
-      <SiteHeader />
+      {/* <SiteHeader /> */}
+      {/* Sticky navigation container with horizontal centering */}
+      <div className="sticky top-0 z-50 max-w-7xl mx-auto mt-2 bg-white rounded-2xl">
+        <div className="flex justify-center items-center w-full px-4 py-2 ">
+          <SiteHeader />
+        </div>
+      </div>
       <main 
         className="flex-1 focus-visible:outline-hidden" 
         data-slot="main-content"

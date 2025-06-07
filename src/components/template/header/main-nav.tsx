@@ -13,18 +13,18 @@ const patientMenuSections = [
   {
     title: "Core Services",
     items: [
-      {
-        title: "Book Appointment",
-        href: "/patient/appointment",
+  {
+    title: "Book Appointment",
+    href: "/patient/appointment",
         description: "Schedule consultations with healthcare professionals",
-        icon: CalendarIcon,
+    icon: CalendarIcon,
         badge: null,
-      },
-      {
-        title: "Medical Records",
-        href: "/patient/records", 
+  },
+  {
+    title: "Medical Records",
+    href: "/patient/records",
         description: "Access and manage your medical history",
-        icon: FileTextIcon,
+    icon: FileTextIcon,
         badge: "Secure",
       },
     ]
@@ -51,14 +51,14 @@ const patientMenuSections = [
   {
     title: "Support & Billing",
     items: [
-      {
-        title: "Billing & Insurance",
-        href: "/patient/billing",
+  {
+    title: "Billing & Insurance",
+    href: "/patient/billing",
         description: "View bills, payments, and insurance information",
-        icon: CreditCardIcon,
+    icon: CreditCardIcon,
         badge: null,
-      },
-      {
+  },
+  {
         title: "Emergency Contact",
         href: "/patient/emergency",
         description: "24/7 emergency consultation and support",
@@ -124,7 +124,7 @@ const servicesMenuSections = [
         description: "Comprehensive healthcare solutions for businesses",
         icon: Building,
         badge: null,
-      },
+  },
     ]
   }
 ]
@@ -177,9 +177,9 @@ export function MainNav() {
       </Link>
       <div className="flex items-center gap-0 text-sm xl:gap-1">
         <nav className="flex items-center gap-1">
-          {siteConfig.navigation.map((item) => {
-            if (item.title === "Patient") {
-              return (
+            {siteConfig.navigation.map((item) => {
+              if (item.title === "Patient") {
+                return (
                 <div 
                   key={item.href}
                   className="relative"
@@ -188,17 +188,17 @@ export function MainNav() {
                 >
                   <button
                     ref={buttonRef}
-                    className={cn(
-                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground bg-transparent",
-                      pathname?.startsWith(item.href)
-                        ? "text-foreground"
-                        : "text-foreground/80"
-                    )}
-                  >
-                    {item.title}
+                      className={cn(
+                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground h-auto bg-transparent",
+                        pathname?.startsWith(item.href)
+                          ? "text-foreground"
+                          : "text-foreground/80"
+                      )}
+                    >
+                      {item.title}
                     <ChevronDownIcon 
                       className={cn(
-                        "h-3 w-3 transition-transform duration-200 opacity-60",
+                        "h-3 w-3 transition-transform duration-200",
                         isPatientMenuOpen && "rotate-180"
                       )} 
                     />
@@ -225,17 +225,17 @@ export function MainNav() {
                                 </h3>
                                 <div className="space-y-1">
                                   {section.items.map((menuItem) => (
-                                    <PatientMenuItem
-                                      key={menuItem.title}
-                                      title={menuItem.title}
-                                      href={menuItem.href}
-                                      icon={menuItem.icon}
+                            <PatientMenuItem
+                              key={menuItem.title}
+                              title={menuItem.title}
+                              href={menuItem.href}
+                              icon={menuItem.icon}
                                       badge={menuItem.badge}
                                       onClick={() => setIsPatientMenuOpen(false)}
-                                    >
-                                      {menuItem.description}
-                                    </PatientMenuItem>
-                                  ))}
+                            >
+                              {menuItem.description}
+                            </PatientMenuItem>
+                          ))}
                                 </div>
                               </div>
                             ))}
@@ -259,7 +259,7 @@ export function MainNav() {
                   <button
                     ref={servicesButtonRef}
                     className={cn(
-                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground bg-transparent",
+                      "flex items-center gap-1 transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground h-auto bg-transparent",
                       pathname?.startsWith(item.href)
                         ? "text-foreground"
                         : "text-foreground/80"
@@ -268,7 +268,7 @@ export function MainNav() {
                     {item.title}
                     <ChevronDownIcon 
                       className={cn(
-                        "h-3 w-3 transition-transform duration-200 opacity-60",
+                        "h-3 w-3 transition-transform duration-200",
                         isServicesMenuOpen && "rotate-180"
                       )} 
                     />
@@ -315,24 +315,24 @@ export function MainNav() {
                     </>
                   )}
                 </div>
-              )
-            }
-            
-            return (
-              <Link
+                )
+              }
+              
+                             return (
+                     <Link
                 key={item.href}
-                href={item.href}
-                className={cn(
-                  "transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground",
-                  pathname === item.href
-                    ? "text-foreground"
-                    : "text-foreground/80"
-                )}
-              >
-                {item.title}
-              </Link>
-            )
-          })}
+                       href={item.href}
+                       className={cn(
+                         "transition-all duration-300 ease-out hover:bg-muted rounded-lg px-2 py-1.5 hover:text-foreground",
+                         pathname === item.href
+                           ? "text-foreground"
+                           : "text-foreground/80"
+                       )}
+                     >
+                       {item.title}
+                     </Link>
+               )
+            })}
         </nav>
       </div>
     </div>
@@ -355,11 +355,11 @@ function PatientMenuItem({
 }) {
   return (
     <div {...props}>
-      <Link 
-        href={href}
+        <Link 
+          href={href}
         onClick={onClick}
         className="flex items-start gap-3 rounded-md p-3 hover:bg-accent hover:text-accent-foreground transition-colors group"
-      >
+        >
         <Icon className="h-5 w-5 mt-0.5 text-muted-foreground group-hover:text-accent-foreground" />
         <div className="space-y-1 min-w-0 flex-1">
           <div className="flex items-center gap-2">
@@ -374,10 +374,10 @@ function PatientMenuItem({
             )}
           </div>
           <p className="text-muted-foreground text-sm leading-snug group-hover:text-accent-foreground/80">
-            {children}
-          </p>
-        </div>
-      </Link>
+              {children}
+            </p>
+          </div>
+        </Link>
     </div>
   )
 }
