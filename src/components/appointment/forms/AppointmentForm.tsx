@@ -17,11 +17,10 @@ import {
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment, Status } from "@prisma/client";
 import "react-datepicker/dist/react-datepicker.css";
-import CustomFormField, { FormFieldType } from "../CustomFormField";
-import SubmitButton from "../SubmitButton";
-import { Form } from "../ui/form";
+import CustomFormField, { FormFieldType } from "@/components/appointment/CustomFormField";
+import SubmitButton from "@/components/appointment/SubmitButton";
+import { Form } from "@/components/ui/form";
 import {
-  CreateAppointmentParams,
   UpdateAppointmentParams,
 } from "@/lib/actions/type";
 
@@ -74,20 +73,24 @@ export const AppointmentForm = ({
     }
 
     try {
-      if (type === "create" && patientId) {
-        const appointmentData: CreateAppointmentParams = {
-          userId,
-          patientId,
-          primaryPhysician: values.primaryPhysician,
-          schedule: new Date(values.schedule),
-          reason: values.reason,
-          status: status,
-          note: values.note || "", // Ensure note is always a string
-        };
+      let appointment;
+      const appointmentData = {
+        userId: userId,
+        patientId: patientId,
+        primaryPhysician: values.primaryPhysician,
+        schedule: new Date(values.schedule),
+        reason: values.reason ?? "",
+        status: status,
+        note: values.note ?? "",
+      };
 
+      if (type === "create") {
         const newAppointment = await createAppointment(appointmentData);
 
         if (newAppointment) {
+          if (setOpen) {
+            setOpen(false);
+          }
           form.reset();
           router.push(
             `/patients/${userId}/new-appointment/success?appointmentId=${newAppointment.id}`
@@ -95,8 +98,8 @@ export const AppointmentForm = ({
         }
       } else if (type === "schedule" || type === "cancel") {
         const appointmentToUpdate: UpdateAppointmentParams = {
-          userId,
-          appointmentId: appointment?.id,
+          userId: userId,
+          appointmentId: appointment!.id,
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           appointment: {
             primaryPhysician: values.primaryPhysician,
@@ -107,13 +110,17 @@ export const AppointmentForm = ({
           type,
         };
 
-        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        if (appointment) {
+          const updatedAppointment = await updateAppointment(
+            appointmentToUpdate
+          );
 
-        if (updatedAppointment) {
-          if (setOpen) {
-            setOpen(false);
+          if (updatedAppointment) {
+            if (setOpen) {
+              setOpen(false);
+            }
+            form.reset();
           }
-          form.reset();
         }
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import { E164Number } from "libphonenumber-js/core";
 import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,7 +42,7 @@ interface CustomProps<T extends FieldValues> {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: unknown) => React.ReactNode;
+  renderSkeleton?: (field: ControllerRenderProps<T, Path<T>>) => React.ReactNode;
   fieldType: FormFieldType;
 }
 
@@ -50,7 +50,7 @@ const RenderInput = <T extends FieldValues>({
   field,
   props,
 }: {
-  field: unknown;
+  field: ControllerRenderProps<T, Path<T>>;
   props: CustomProps<T>;
 }) => {
   switch (props.fieldType) {

@@ -2,35 +2,23 @@
 
 "use server";
 
+import { z } from "zod";
 import { db } from "@/lib/db";
-import { RegisterUserParams } from "./patient-type";
-import { saveFile } from "../file";
-import { parseStringify } from "../utils";
+import { PatientFormValidation } from "@/lib/validation";
 
 // REGISTER PATIENT
-export const registerPatient = async ({
-  identificationDocument,
-  userId,
-  ...patientData
-}: RegisterUserParams) => {
+export const registerPatient = async (
+  patientData: z.infer<typeof PatientFormValidation> & { userId: string }
+) => {
   try {
-    let fileUrl: string | null = null;
-
-    if (identificationDocument) {
-      // Save the identification document and get its URL or path
-      fileUrl = await saveFile(identificationDocument);
-    }
-
     // Create new patient record
     const newPatient = await db.patient.create({
       data: {
-        userId,
-        identificationDocument: fileUrl,
         ...patientData,
       },
     });
 
-    return parseStringify(newPatient);
+    return newPatient;
   } catch (error) {
     console.error("An error occurred while creating a new patient:", error);
     throw error;
@@ -52,7 +40,7 @@ export const getPatient = async (userId: string) => {
       where: { userId },
     });
 
-    return parseStringify(patient);
+    return patient;
   } catch (error) {
     console.error(
       `An error occurred while retrieving the patient details for userId "${userId}":`,

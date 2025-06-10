@@ -27,30 +27,6 @@ import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
 import { registerPatient } from "@/lib/actions/patient";
 
-type RegisterUserParams = {
-  userId: string;
-  name: string;
-  email: string;
-  phone: string;
-  birthDate: Date;
-  gender: "Male" | "Female";
-  address: string;
-  occupation: string;
-  emergencyContactName: string;
-  emergencyContactNumber: string;
-  primaryPhysician: string;
-  insuranceProvider: string;
-  insurancePolicyNumber: string;
-  allergies?: string | null;
-  currentMedication?: string | null;
-  familyMedicalHistory?: string | null;
-  pastMedicalHistory?: string | null;
-  identificationType?: string | null;
-  identificationNumber?: string | null;
-  identificationDocument?: File | null;
-  privacyConsent: boolean;
-};
-
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -68,43 +44,22 @@ const RegisterForm = ({ user }: { user: User }) => {
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
 
-    let file: File | null = null;
-    if (
-      values.identificationDocument &&
-      values.identificationDocument.length > 0
-    ) {
-      file = values.identificationDocument[0];
-    }
-
     try {
-      const patient: RegisterUserParams = {
-        userId: user.id, // Changed from user.$id to user.id
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
+      const patientData = {
+        ...values,
+        userId: user.id,
         birthDate: new Date(values.birthDate),
         gender: values.gender as Gender,
-        address: values.address,
-        occupation: values.occupation,
-        emergencyContactName: values.emergencyContactName,
-        emergencyContactNumber: values.emergencyContactNumber,
-        primaryPhysician: values.primaryPhysician,
-        insuranceProvider: values.insuranceProvider,
-        insurancePolicyNumber: values.insurancePolicyNumber,
-        allergies: values.allergies ?? null,
-        currentMedication: values.currentMedication ?? null,
-        familyMedicalHistory: values.familyMedicalHistory ?? null,
-        pastMedicalHistory: values.pastMedicalHistory ?? null,
-        identificationType: values.identificationType ?? null,
-        identificationNumber: values.identificationNumber ?? null,
-        identificationDocument: file,
-        privacyConsent: values.privacyConsent,
+        identificationDocument: values.identificationDocument
+          ? [values.identificationDocument[0]]
+          : undefined,
+        privacyConsent: values.privacyConsent ?? false,
       };
 
-      const newPatient = await registerPatient(patient);
+      const newPatient = await registerPatient(patientData);
 
       if (newPatient) {
-        router.push(`/patients/${user.id}/new-appointment`); 
+        router.push(`/patients/${user.id}/new-appointment`);
       }
     } catch (error) {
       console.log(error);
@@ -130,7 +85,6 @@ const RegisterForm = ({ user }: { user: User }) => {
           </div>
 
           {/* NAME */}
-
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             control={form.control}
@@ -353,10 +307,13 @@ const RegisterForm = ({ user }: { user: User }) => {
             fieldType={FormFieldType.SKELETON}
             control={form.control}
             name="identificationDocument"
-            label="Scanned Copy of Identification Document"
+            label="Identification Document"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
+                <FileUploader
+                  files={field.value as File[] | undefined}
+                  onChange={field.onChange}
+                />
               </FormControl>
             )}
           />

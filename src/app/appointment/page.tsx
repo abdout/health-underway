@@ -4,18 +4,21 @@ import { Calendar, Clock, User, FileText, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { currentUser } from "@/lib/auth";
+import NextAuth from "../../../auth";
 import { getPatient } from "@/lib/actions/patient";
 
+const { auth } = NextAuth;
+
 export default async function PatientAppointmentPage() {
-  const user = await currentUser();
+  const session = await auth();
+  const user = session?.user;
   
   if (!user) {
     redirect("/login?callbackUrl=/patient/appointment");
   }
 
   // Check if user has a patient profile
-  const patient = await getPatient(user.id);
+  const patient = user && user.id ? await getPatient(user.id) : null;
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">

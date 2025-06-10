@@ -12,3 +12,15 @@ declare module "next-auth" {
     user: ExtendedUser;
   }
 }
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: "ADMIN" | "USER";
+  }
+}
+
+declare module "next/server" {
+  interface NextRequest {
+    auth: Session | null;
+  }
+}

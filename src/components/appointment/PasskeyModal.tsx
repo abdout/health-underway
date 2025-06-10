@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -22,8 +22,7 @@ import { decryptKey, encryptKey } from "@/lib/utils";
 
 export const PasskeyModal = () => {
   const router = useRouter();
-  const path = usePathname();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState("");
   const [error, setError] = useState("");
 
@@ -35,19 +34,11 @@ export const PasskeyModal = () => {
   useEffect(() => {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
-    if (path)
-      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
-        setOpen(false);
-        router.push("/admin");
-      } else {
-        setOpen(true);
-      }
-  }, [encryptedKey, path, router]);
-
-  const closeModal = () => {
-    setOpen(false);
-    router.push("/");
-  };
+    if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+      setOpen(false);
+      router.push("/admin");
+    }
+  }, [encryptedKey, router]);
 
   const validatePasskey = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -69,14 +60,14 @@ export const PasskeyModal = () => {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-start justify-between">
+          <AlertDialogTitle className="flex items-center justify-between">
             Admin Access Verification
             <Image
               src="/assets/icons/close.svg"
               alt="close"
               width={20}
               height={20}
-              onClick={() => closeModal()}
+              onClick={() => router.push("/")}
               className="cursor-pointer"
             />
           </AlertDialogTitle>
@@ -84,7 +75,7 @@ export const PasskeyModal = () => {
             To access the admin page, please enter the passkey.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div>
+        <div className="relative mt-8">
           <InputOTP
             maxLength={6}
             value={passkey}
@@ -108,7 +99,9 @@ export const PasskeyModal = () => {
         </div>
         <AlertDialogFooter>
           <AlertDialogAction
-            onClick={(e) => validatePasskey(e)}
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              validatePasskey(e)
+            }
             className="shad-primary-btn w-full"
           >
             Enter Admin Passkey

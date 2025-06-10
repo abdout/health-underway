@@ -7,11 +7,14 @@ import Image from "next/image";
 
 import { Doctors } from "@/constants";
 import { formatDateTime } from "@/lib/utils";
+import { Appointment, Patient } from "@prisma/client";
 
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
-import { AppointmentWithPatient } from "@/lib/actions/patient-type";
 
+export type AppointmentWithPatient = Appointment & {
+  patient: Patient;
+};
 
 export const columns: ColumnDef<AppointmentWithPatient>[] = [
   {

@@ -1,9 +1,12 @@
-import { currentRole } from "@/lib/auth";
+import NextAuth from "../../../../auth";
 import { UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 
+const { auth } = NextAuth;
+
 export async function GET() {
-  const role = await currentRole();
+  const session = await auth();
+  const role = session?.user?.role;
 
   if (role === UserRole.ADMIN) {
     return new NextResponse(null, { status: 200 });
