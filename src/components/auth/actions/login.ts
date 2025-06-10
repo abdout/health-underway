@@ -1,7 +1,6 @@
 "use server";
 
 import * as z from "zod";
-import { AuthError } from "next-auth";
 import { LoginSchema } from "@/components/auth/schemas";
 import { getUserByEmail } from "@/components/auth/data/user";
 import { getTwoFactorTokenByEmail } from "@/components/auth/data/two-factor-token";
@@ -9,8 +8,6 @@ import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
 import { getTwoFactorConfirmationByUserId } from "@/components/auth/data/two-factor-confirmation";
 import { db } from "@/lib/db";
-import { signIn } from "../../../../auth";
-import { DEFAULT_LOGIN_REDIRECT } from "../../../../routes";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
@@ -93,22 +90,5 @@ export const login = async (
     }
   }
 
-  try {
-    await signIn("credentials", {
-      email,
-      password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-    })
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials!" }
-        default:
-          return { error: "Something went wrong!" }
-      }
-    }
-
-    throw error;
-  }
+  return { success: "Login successful!" };
 };

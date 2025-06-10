@@ -6,6 +6,7 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 
 import { Input } from "@/components/ui/input";
@@ -58,8 +59,10 @@ export const LoginForm = () => {
           }
 
           if (data?.success) {
-            form.reset();
-            setSuccess(data.success);
+            signIn("credentials", {
+              ...values,
+              callbackUrl: callbackUrl || undefined,
+            });
           }
 
           if (data?.twoFactor) {
