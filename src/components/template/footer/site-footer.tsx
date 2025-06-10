@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { FOOTER_SECTIONS, FOOTER_BOTTOM_LINKS } from "./constant"
 import ExpandButton from "@/components/atom/expand-button"
@@ -8,10 +9,11 @@ export function SiteFooter() {
     <footer className="relative overflow-hidden bg-slate-900 -mx-6 py-20 rounded-t-2xl">
       {/* Mesh Gradient Background */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <img 
+        <Image 
           src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6679d424b15ec493e1500f69_gradient-noise-purple-azure-dark.jpg" 
           alt="Mesh gradient background" 
           className="w-full h-full object-cover opacity-100"
+          layout="fill"
           loading="lazy"
         />
       </div>

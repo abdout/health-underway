@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 
 export const InfiniteMovingCards = ({
   items,
@@ -69,7 +70,7 @@ export const InfiniteMovingCards = ({
       getSpeed();
       setStart(true);
     }
-  }, [direction, speed]);
+  }, [getDirection, getSpeed]);
 
   useEffect(() => {
     addAnimation();
@@ -102,9 +103,11 @@ export const InfiniteMovingCards = ({
             key={item.name}
           >
             {item.image ? (
-              <img
+              <Image
                 src={item.image}
                 alt={item.name}
+                width={160}
+                height={120}
                 className="h-full w-full object-contain transition-all duration-300 hover:scale-105"
               />
             ) : (

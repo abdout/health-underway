@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ExpandButton from '@/components/atom/expand-button';
 import { LogoCloud } from './logo-cloud';
 
@@ -9,14 +10,14 @@ export function Hero() {
             {/* Gradient Container with Background Image */}
             <div className="tt-gradient-container absolute top-0 right-0 z-0">
                 <div className="tt-gradient-panel">
-                    <img 
+                    <Image 
                         className="tt-gradient-image gradient-accordion-square w-screen h-auto md:w-[744px] block"
                         src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580b17f35510ffc21541053_gradient-noise-green-red.png"
                         alt="decorative background"
+                        width={744}
+                        height={744}
                         draggable={false}
                         sizes="(max-width: 767px) 100vw, 744px"
-                        srcSet="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580b17f35510ffc21541053_gradient-noise-green-red-p-500.png 500w,
-                               https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580b17f35510ffc21541053_gradient-noise-green-red.png 744w"
                         loading="lazy"
                     />
                 </div>

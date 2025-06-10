@@ -80,7 +80,7 @@ export const AppointmentForm = ({
           patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason: values.reason!,
+          reason: values.reason,
           status: status,
           note: values.note || "", // Ensure note is always a string
         };
@@ -96,7 +96,7 @@ export const AppointmentForm = ({
       } else if (type === "schedule" || type === "cancel") {
         const appointmentToUpdate: UpdateAppointmentParams = {
           userId,
-          appointmentId: appointment?.id!,
+          appointmentId: appointment?.id,
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           appointment: {
             primaryPhysician: values.primaryPhysician,
@@ -110,7 +110,9 @@ export const AppointmentForm = ({
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
         if (updatedAppointment) {
-          setOpen && setOpen(false);
+          if (setOpen) {
+            setOpen(false);
+          }
           form.reset();
         }
       }

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export function MeshScaleSection() {
     const features = [
       {
@@ -23,16 +25,12 @@ export function MeshScaleSection() {
         {/* Gradient Background Container */}
         <div className="tt-gradient-container absolute inset-0 overflow-hidden -z-10">
           <div className="tt-gradient-panel opacity-80">
-            <img 
+            <Image 
               className="tt-gradient-image w-full h-full object-cover" 
               src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580a563d237ee85c9237ccb_gradient-noise-purple-azure.png" 
               alt="Mesh gradient background"
+              layout="fill"
               loading="lazy"
-              sizes="(max-width: 991px) 100vw, 804px"
-              srcSet="
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580a563d237ee85c9237ccb_gradient-noise-purple-azure-p-500.png 500w,
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/6580a563d237ee85c9237ccb_gradient-noise-purple-azure.png 804w
-              "
             />
           </div>
         </div>

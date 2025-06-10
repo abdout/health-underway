@@ -10,8 +10,7 @@ import { getTwoFactorConfirmationByUserId } from "@/components/auth/data/two-fac
 import { db } from "@/lib/db";
 
 export const login = async (
-  values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null,
+  values: z.infer<typeof LoginSchema>
 ) => {
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -19,7 +18,7 @@ export const login = async (
     return { error: "Invalid fields!" };
   }
 
-  const { email, password, code } = validatedFields.data;
+  const { email, code } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
 

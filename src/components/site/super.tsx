@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 
 export function SuperchargeSection() {
@@ -72,17 +73,12 @@ export function SuperchargeSection() {
       <div className="tt-product-slider splide splide--slide splide--ltr splide--draggable is-active is-overflow is-initialized">
         <div className="tt-gradient-container">
           <div className="tt-gradient-panel">
-            <img 
+            <Image 
               src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor.png"
               loading="lazy"
               sizes="100vw"
-              srcSet="
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor-p-500.png 500w,
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor-p-800.png 800w,
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor-p-1080.png 1080w,
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor-p-1600.png 1600w,
-                https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/65679a388e1f446dcbfbf0c6_gradient_placeholder-editor.png 2112w"
               alt=""
+              layout="fill"
               className="tt-gradient-image gradient-default"
             />
           </div>
@@ -97,10 +93,12 @@ export function SuperchargeSection() {
               >
                 <Link href={product.href} className="tt-product-card w-inline-block">
                   <div className="tt-product-card-media-wrap">
-                    <img 
+                    <Image 
                       src={product.icon}
                       loading="lazy"
                       alt=""
+                      width={64}
+                      height={64}
                       className="product-card-media"
                     />
                   </div>
