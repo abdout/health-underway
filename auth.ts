@@ -8,14 +8,7 @@ import { getTwoFactorConfirmationByUserId } from "@/components/auth/data/two-fac
 import { getAccountByUserId } from "@/components/auth/data/account";
 import authConfig from "./auth.config";
 
-
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-  update,
-} = NextAuth({
+export default NextAuth({
   pages: {
     signIn: "/login",
     error: "/error",
@@ -95,4 +88,4 @@ export const {
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,
-});
+}); 

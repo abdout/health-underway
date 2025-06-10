@@ -1,13 +1,8 @@
-import NextAuth from "next-auth";
-import authConfig from "./auth.config";
+import { withAuth } from "next-auth/middleware";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, publicRoutes } from "./routes";
 
-
-
-
-const { auth } = NextAuth(authConfig);
-
-export default auth((req) => {
+export default withAuth(
+  function middleware(req) {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
@@ -41,7 +36,13 @@ export default auth((req) => {
   }
 
   return null;
-})
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token
+    },
+  }
+)
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
