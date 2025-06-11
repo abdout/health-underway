@@ -1,3 +1,3 @@
-import NextAuth from "../../../../../auth";
+import { GET, POST } from "@/auth";
 
-export const { handlers: { GET, POST } } = NextAuth;
+export { GET, POST };

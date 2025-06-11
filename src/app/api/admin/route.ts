@@ -1,8 +1,6 @@
-import NextAuth from "../../../../auth";
+import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
-
-const { auth } = NextAuth;
 
 export async function GET() {
   const session = await auth();
