@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/avatar";
 
 import { LogoutButton } from "@/components/auth/logout-button";
-import { useCurrentUser } from "./hooks/use-current-user";
+import { useCurrentUser } from "./use-current-user";
 
 export const UserButton = () => {
   const user = useCurrentUser();
@@ -27,7 +27,7 @@ export const UserButton = () => {
         <Avatar>
           <AvatarImage src={user?.image || ""} />
           <AvatarFallback className="bg-black">
-            <FaUser className="text-[#fcfcfc]" />
+            <FaUser className="text-[#fcfcfc] p-[2px]" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

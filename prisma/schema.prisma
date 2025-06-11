@@ -1,12 +1,12 @@
 // prisma/schema.prisma
-
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_URI")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 enum UserRole {
@@ -14,128 +14,236 @@ enum UserRole {
   USER
 }
 
-enum Gender {
-  Male
-  Female
+enum TaskStatus {
+  pending
+  stuck
+  in_progress
+  done
 }
 
-enum Status {
+enum TaskPriority {
   pending
-  scheduled
-  cancelled
+  high
+  medium
+  low
+}
+
+model Team {  
+  id                    String   @id @default(cuid())
+  fullname              String
+  phone                 String?
+  whatsapp              String?
+  twitter               String?
+  facebook              String?
+  linkedin              String?
+  location              String?
+  image                 String?
+  iqama                 String?
+  sce                   String?
+  passport              String?
+  drivingLicense        String?
+  cdl                   String?
+  license               String?
+  resume                String?
+  eligibility           String[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  users                 User[]   @relation("TeamMembers")
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  phone         String?   // Added phone field
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole @default(USER)
-  accounts      String[]  // Array of Account IDs
-  isTwoFactorEnabled Boolean @default(false)
-  twoFactorConfirmation String? // ID of TwoFactorConfirmation
-  onboarded             Boolean                @default(false)
-  patients              Patient[]
-  appointments          Appointment[]          @relation("UserAppointments")
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
+  id                    String                 @id @default(cuid())
+  username              String?
+  email                 String?                @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  role                  UserRole              @default(USER)
+  accounts              Account[]
+  isTwoFactorEnabled    Boolean               @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  teams                 Team[]                @relation("TeamMembers")
 }
 
-
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                 String   @id @default(cuid())
   userId             String
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?
-  access_token       String?
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?
+  id_token           String?  @db.Text
   session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model VerificationToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model TwoFactorToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id     String @id @default(cuid())
   userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Patient {
-  id                      String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId                  String        @db.ObjectId
-  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                    String
-  email                   String
-  phone                   String
-  birthDate               DateTime
-  gender                  Gender
-  address                 String
-  occupation              String
-  emergencyContactName    String
-  emergencyContactNumber  String
-  primaryPhysician        String
-  insuranceProvider       String
-  insurancePolicyNumber   String
-  allergies               String?
-  currentMedication       String?
-  familyMedicalHistory    String?
-  pastMedicalHistory      String?
-  identificationType      String?
-  identificationNumber    String?
-  identificationDocument  String?       // Store file path or URL
-  privacyConsent          Boolean
-  appointments            Appointment[] @relation("PatientAppointments")
-  createdAt               DateTime       @default(now())
-  updatedAt               DateTime       @updatedAt
+model Task {
+  id              String        @id @default(cuid())
+  project         String
+  task            String
+  club            String?
+  status          TaskStatus    @default(pending)
+  priority        TaskPriority  @default(pending)
+  duration        String?
+  desc            String?
+  label           String?
+  tag             String?
+  remark          String?
+  date            DateTime?
+  hours           Int?
+  overtime        Int?
+  linkedActivity  Json?
+  assignedTo      String[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([project])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
 }
 
-model Appointment {
-  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
-  patientId           String      @db.ObjectId
-  patient             Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade, name: "PatientAppointments")
-  userId              String      @db.ObjectId
-  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserAppointments")
-  schedule            DateTime
-  status              Status
-  primaryPhysician    String
-  reason              String
-  note                String
-  cancellationReason  String?
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+model Kit {
+  id              String    @id @default(cuid())
+  name            String?
+  picture         String?   // Main image for kit card
+  images          String[]  // Set of images showing actual status
+  accessories     String[]  // List of accessories included with the kit
+  calibration     String?
+  calibrationIssue String?
+  calibrationDue  DateTime?
+  software        String?
+  datasheet       String?
+  manual          String?
+  status          String?
+  under           String?
+  location        String?
+  price           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([name])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Car {
+  id              String    @id @default(cuid())
+  name            String?
+  images          String[]  // Additional images of the car
+  sim             String?   // SIM card information
+  petrol          Int?
+  oil             String?
+  history         String?
+  status          String?
+  under           String?
+  km              Int?
+  licence         String?
+  penalty         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([name])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Project {
+  id            String    @id @default(cuid())
+  // Basic Information
+  customer      String
+  description   String
+  location      String
+  client        String
+  consultant    String
+  status        String
+  priority      String
+  phase         String
+  
+  // Team Information
+  team          String[]
+  teamLead      String
+  
+  // Systems and Activities
+  systems       String[]
+  activities    Json      // Will store array of activities
+  
+  // Resources
+  mobilization  String
+  accommodation String
+  kits          String[]
+  cars          String[]
+  
+  // Additional Fields
+  startDate     DateTime
+  endDate       DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([customer])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Daily {
+  id                  String    @id @default(cuid())
+  task                String?
+  description         String?
+  date                String?
+  engineer            String?
+  project             String?
+  status              String?
+  priority            String?
+  hoursSpent          String?
+  completionPercentage String?
+  blockers            String?
+  plannedTomorrow     String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([date])
+  @@index([engineer])
+  @@index([project])
+  @@index([createdAt])
 }

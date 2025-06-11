@@ -75,26 +75,3 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     }
   }
 };
-
-export const sendEmailNotification = async (
-  toEmail: string,
-  subject: string,
-  content: string
-) => {
-  try {
-    // Send the email using Resend
-    const response = await resend.emails.send({
-      from: 'no-reply@databayt.org',  // Replace with your verified sender email
-      to: toEmail,
-      subject: subject,
-      html: `<p>${content}</p>`,  // Use HTML content for better formatting
-    });
-
-    // Log the response for debugging
-    console.log("Notification email sent successfully, response:", response);
-    return response;
-  } catch (error) {
-    console.error("An error occurred while sending email notification:", error);
-    throw error;
-  }
-};
