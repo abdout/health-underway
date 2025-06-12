@@ -50,9 +50,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         userId: user.id,
         birthDate: new Date(values.birthDate),
         gender: values.gender as Gender,
-        identificationDocument: values.identificationDocument
-          ? [values.identificationDocument[0]]
-          : undefined,
+        identificationDocument: values.identificationDocument?.[0],
         privacyConsent: values.privacyConsent ?? false,
       };
 

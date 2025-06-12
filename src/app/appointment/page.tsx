@@ -4,7 +4,7 @@ import { Calendar, Clock, User, FileText, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { getPatient } from "@/lib/actions/patient";
 
 export default async function PatientAppointmentPage() {

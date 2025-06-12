@@ -5,87 +5,76 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider = "prisma-client-js"
 }
+
+// --------------------------------------------------
+// Enums
+// --------------------------------------------------
 
 enum UserRole {
   ADMIN
   USER
 }
 
-enum TaskStatus {
-  pending
-  stuck
-  in_progress
-  done
+enum Gender {
+  Male
+  Female
 }
 
-enum TaskPriority {
+enum Status {
   pending
-  high
-  medium
-  low
+  scheduled
+  cancelled
 }
 
-model Team {  
-  id                    String   @id @default(cuid())
-  fullname              String
-  phone                 String?
-  whatsapp              String?
-  twitter               String?
-  facebook              String?
-  linkedin              String?
-  location              String?
-  image                 String?
-  iqama                 String?
-  sce                   String?
-  passport              String?
-  drivingLicense        String?
-  cdl                   String?
-  license               String?
-  resume                String?
-  eligibility           String[]
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  users                 User[]   @relation("TeamMembers")
-}
+// --------------------------------------------------
+// Models
+// --------------------------------------------------
 
 model User {
-  id                    String                 @id @default(cuid())
-  username              String?
-  email                 String?                @unique
-  emailVerified         DateTime?
-  image                 String?
-  password              String?
-  role                  UserRole              @default(USER)
-  accounts              Account[]
-  isTwoFactorEnabled    Boolean               @default(false)
-  twoFactorConfirmation TwoFactorConfirmation?
-  teams                 Team[]                @relation("TeamMembers")
+  id                     String                   @id @default(uuid())
+  name                   String?
+  email                  String?                  @unique
+  phone                  String?
+  emailVerified          DateTime?
+  image                  String?
+  password               String?
+  role                   UserRole                 @default(USER)
+  isTwoFactorEnabled     Boolean                  @default(false)
+  onboarded              Boolean                  @default(false)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+
+  // Relations
+  accounts               Account[]
+  twoFactorConfirmation  TwoFactorConfirmation?
+  patients               Patient[]
+  appointments           Appointment[]            @relation("UserAppointments")
 }
 
 model Account {
-  id                 String   @id @default(cuid())
+  id                 String   @id @default(uuid())
   userId             String
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
+  refresh_token      String?
+  access_token       String?
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?  @db.Text
+  id_token           String?
   session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model VerificationToken {
-  id      String   @id @default(cuid())
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -94,7 +83,7 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id      String   @id @default(cuid())
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -103,7 +92,7 @@ model PasswordResetToken {
 }
 
 model TwoFactorToken {
-  id      String   @id @default(cuid())
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -112,138 +101,56 @@ model TwoFactorToken {
 }
 
 model TwoFactorConfirmation {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String  @id @default(uuid())
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Task {
-  id              String        @id @default(cuid())
-  project         String
-  task            String
-  club            String?
-  status          TaskStatus    @default(pending)
-  priority        TaskPriority  @default(pending)
-  duration        String?
-  desc            String?
-  label           String?
-  tag             String?
-  remark          String?
-  date            DateTime?
-  hours           Int?
-  overtime        Int?
-  linkedActivity  Json?
-  assignedTo      String[]
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+model Patient {
+  id                      String        @id @default(uuid())
+  userId                  String
+  name                    String
+  email                   String
+  phone                   String
+  birthDate               DateTime
+  gender                  Gender
+  address                 String
+  occupation              String
+  emergencyContactName    String
+  emergencyContactNumber  String
+  primaryPhysician        String
+  insuranceProvider       String
+  insurancePolicyNumber   String
+  allergies               String?
+  currentMedication       String?
+  familyMedicalHistory    String?
+  pastMedicalHistory      String?
+  identificationType      String?
+  identificationNumber    String?
+  identificationDocument  String?
+  privacyConsent          Boolean
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
 
-  @@index([project])
-  @@index([status])
-  @@index([priority])
-  @@index([createdAt])
+  // Relations
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments Appointment[] @relation("PatientAppointments")
 }
 
-model Kit {
-  id              String    @id @default(cuid())
-  name            String?
-  picture         String?   // Main image for kit card
-  images          String[]  // Set of images showing actual status
-  accessories     String[]  // List of accessories included with the kit
-  calibration     String?
-  calibrationIssue String?
-  calibrationDue  DateTime?
-  software        String?
-  datasheet       String?
-  manual          String?
-  status          String?
-  under           String?
-  location        String?
-  price           String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+model Appointment {
+  id                  String      @id @default(uuid())
+  patientId           String
+  userId              String
+  schedule            DateTime
+  status              Status
+  primaryPhysician    String
+  reason              String
+  note                String
+  cancellationReason  String?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
 
-  @@index([name])
-  @@index([status])
-  @@index([createdAt])
-}
-
-model Car {
-  id              String    @id @default(cuid())
-  name            String?
-  images          String[]  // Additional images of the car
-  sim             String?   // SIM card information
-  petrol          Int?
-  oil             String?
-  history         String?
-  status          String?
-  under           String?
-  km              Int?
-  licence         String?
-  penalty         String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-
-  @@index([name])
-  @@index([status])
-  @@index([createdAt])
-}
-
-model Project {
-  id            String    @id @default(cuid())
-  // Basic Information
-  customer      String
-  description   String
-  location      String
-  client        String
-  consultant    String
-  status        String
-  priority      String
-  phase         String
-  
-  // Team Information
-  team          String[]
-  teamLead      String
-  
-  // Systems and Activities
-  systems       String[]
-  activities    Json      // Will store array of activities
-  
-  // Resources
-  mobilization  String
-  accommodation String
-  kits          String[]
-  cars          String[]
-  
-  // Additional Fields
-  startDate     DateTime
-  endDate       DateTime?
-  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  @@index([customer])
-  @@index([status])
-  @@index([createdAt])
-}
-
-model Daily {
-  id                  String    @id @default(cuid())
-  task                String?
-  description         String?
-  date                String?
-  engineer            String?
-  project             String?
-  status              String?
-  priority            String?
-  hoursSpent          String?
-  completionPercentage String?
-  blockers            String?
-  plannedTomorrow     String?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-
-  @@index([date])
-  @@index([engineer])
-  @@index([project])
-  @@index([createdAt])
+  // Relations
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade, name: "PatientAppointments")
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserAppointments")
 }
