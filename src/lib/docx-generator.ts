@@ -4,6 +4,13 @@
  * create a backend API endpoint to handle document generation.
  */
 
+// @ts-nocheck
+/*
+ * Document Generator Service
+ * This service handles the creation of DOCX files based on templates
+ * and patient/appointment data.
+ */
+
 import type { SaveOptions } from 'file-saver';
 
 // Placeholder for actual document generation

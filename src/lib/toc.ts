@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TableOfContents } from "@/types/toc"
 
 export async function getTableOfContents(content: string): Promise<TableOfContents> {

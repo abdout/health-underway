@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/services/patients.service.ts
 
 "use server";

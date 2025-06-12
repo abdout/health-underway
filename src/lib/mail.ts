@@ -75,3 +75,36 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     }
   }
 };
+
+export const sendEmailNotification = async (email: string, subject: string, message: string) => {
+  // Debugging: Log the notification details
+  console.log(`Sending notification email to: ${email}`);
+  console.log(`Subject: ${subject}`);
+  console.log(`Message: ${message}`);
+
+  try {
+    const response = await resend.emails.send({
+      from: 'notifications@databayt.org',
+      to: email,
+      subject: subject,
+      html: `<div>
+        <h2>${subject}</h2>
+        <p>${message}</p>
+        <p>Thank you for choosing our services.</p>
+        <p>- The CarePulse Team</p>
+      </div>`,
+      text: `${message}\n\nThank you for choosing our services.\n\n- The CarePulse Team`
+    });
+
+    // Debugging: Log the response from Resend API
+    console.log("Notification email sent successfully, response:", response);
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending notification email:", error);
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    return { success: false, error };
+  }
+};

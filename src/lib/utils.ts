@@ -25,10 +25,16 @@ export function decryptKey(value: string): string {
   return Buffer.from(value, "base64").toString("utf-8");
 }
 
-export function formatDateTime(date: Date | string, options?: Intl.DateTimeFormatOptions) {
+export function formatDateTime(date: Date | string, timeZoneOrOptions?: string | Intl.DateTimeFormatOptions) {
   const d = typeof date === "string" ? new Date(date) : date;
-  const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", ...(options || {}) });
-  const timeFormatter = new Intl.DateTimeFormat("en-US", { timeStyle: "short", ...(options || {}) });
+  
+  // Handle string timeZone or options object
+  const options = typeof timeZoneOrOptions === 'string' 
+    ? { timeZone: timeZoneOrOptions } 
+    : (timeZoneOrOptions || {});
+    
+  const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", ...options });
+  const timeFormatter = new Intl.DateTimeFormat("en-US", { timeStyle: "short", ...options });
 
   return {
     dateTime: `${dateFormatter.format(d)} ${timeFormatter.format(d)}`.trim(),
