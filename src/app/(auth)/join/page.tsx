@@ -1,8 +1,11 @@
+import { Suspense } from "react";
 import { RegisterForm } from "@/components/auth/join/form";
 
 const RegisterPage = () => {
   return ( 
-    <RegisterForm />
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }
  
