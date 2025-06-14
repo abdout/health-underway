@@ -10,6 +10,11 @@ import { Toaster } from "sonner";
 export const metadata: Metadata = {
   title: "Databayt",
   description: "Business automation",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
 };
 
 export default function RootLayout({
