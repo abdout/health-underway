@@ -12,8 +12,7 @@ export default function Home() {
             <Hero />
             <FeatureCards />
             <App />
-            <SuperchargeSection />
-            <MeshScaleSection />
+            
             <ImageCSS />
             
         </>

@@ -28,7 +28,7 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
     >
       {/* <SiteHeader /> */}
       {/* Sticky navigation container with horizontal centering */}
-      <div className="sticky top-0 z-50 max-w-7xl mx-auto mt-2 bg-white rounded-2xl">
+      <div className=" top-0 z-50 max-w-7xl mx-auto mt-2 bg-white rounded-2xl">
         <div className="flex justify-center items-center w-full px-4 py-2 ">
           <SiteHeader />
         </div>

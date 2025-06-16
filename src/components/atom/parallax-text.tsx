@@ -86,10 +86,10 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
 export default function App() {
   return (
     <section className="parallax-section -mx-6">
-      <ParallaxText baseVelocity={-0.5}>Expandable</ParallaxText>
-      <ParallaxText baseVelocity={0.5}>Fully customizable</ParallaxText>
-      <ParallaxText baseVelocity={-0.5}>Maximally scalable</ParallaxText>
-      <ParallaxText baseVelocity={0.5}>Cloud or On premises</ParallaxText>
+      <ParallaxText baseVelocity={-0.5}>Compassionate</ParallaxText>
+      <ParallaxText baseVelocity={0.5}>Patient</ParallaxText>
+      <ParallaxText baseVelocity={-0.5}>Diagnosis</ParallaxText>
+      <ParallaxText baseVelocity={0.5}>Accessible</ParallaxText>
     </section>
   );
 }
