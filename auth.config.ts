@@ -41,7 +41,7 @@ export default {
         params: {
           fields: "id,name,email,picture"
         },
-        async request({ tokens, provider }) {
+        async request({ tokens, provider }: { tokens: any; provider: any }) {
           console.log("=== Facebook Userinfo Request ===");
           console.log("Access Token:", tokens.access_token ? "present" : "missing");
           
