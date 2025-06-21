@@ -20,17 +20,25 @@ const optionalEnvVars = [
 
 export function checkRequiredEnvVars() {
   const missing: string[] = [];
+  const present: string[] = [];
   
   for (const varName of requiredEnvVars) {
     if (!process.env[varName]) {
       missing.push(varName);
+    } else {
+      present.push(varName);
     }
   }
+  
+  // Always log what we found for debugging
+  console.log('=== Environment Variables Debug ===');
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Present variables:', present);
   
   if (missing.length > 0) {
     console.error('❌ Missing required environment variables:');
     missing.forEach(varName => {
-      console.error(`   - ${varName}`);
+      console.error(`   - ${varName}: ${process.env[varName] ? 'SET' : 'NOT SET'}`);
     });
     console.error('These variables must be set for authentication to work properly.');
     
@@ -39,7 +47,7 @@ export function checkRequiredEnvVars() {
       console.error('💡 Generate AUTH_SECRET with: `npx auth secret`');
     }
     if (missing.includes('NEXTAUTH_URL')) {
-      console.error('💡 Set NEXTAUTH_URL to your production domain (e.g., https://yourdomain.com)');
+      console.error('💡 Set NEXTAUTH_URL to your production domain (e.g., https://hc.databayt.org)');
     }
     
     return false;
@@ -68,25 +76,28 @@ export function checkOptionalEnvVars() {
 }
 
 export function logOAuthConfig() {
-  console.log('=== OAuth Configuration ===');
-  console.log(`AUTH_SECRET: ${process.env.AUTH_SECRET ? '✅ Set' : '❌ Missing'}`);
+  console.log('=== OAuth Configuration Debug ===');
+  console.log(`AUTH_SECRET: ${process.env.AUTH_SECRET ? `✅ Set (${process.env.AUTH_SECRET.substring(0, 10)}...)` : '❌ Missing'}`);
   console.log(`NEXTAUTH_URL: ${process.env.NEXTAUTH_URL || '❌ Missing'}`);
-  console.log(`FACEBOOK_CLIENT_ID: ${process.env.FACEBOOK_CLIENT_ID?.substring(0, 5)}...`);
-  console.log(`FACEBOOK_CLIENT_SECRET: ${process.env.FACEBOOK_CLIENT_SECRET ? '✅ Set' : '❌ Missing'}`);
-  console.log(`GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID?.substring(0, 5)}...`);
-  console.log(`GOOGLE_CLIENT_SECRET: ${process.env.GOOGLE_CLIENT_SECRET ? '✅ Set' : '❌ Missing'}`);
-  console.log(`NEXT_PUBLIC_APP_URL: ${process.env.NEXT_PUBLIC_APP_URL}`);
-  console.log(`DATABASE_URL: ${process.env.DATABASE_URL ? '✅ Set' : '❌ Missing'}`);
-  console.log('=========================');
+  console.log(`FACEBOOK_CLIENT_ID: ${process.env.FACEBOOK_CLIENT_ID ? `✅ Set (${process.env.FACEBOOK_CLIENT_ID.substring(0, 10)}...)` : '❌ Missing'}`);
+  console.log(`FACEBOOK_CLIENT_SECRET: ${process.env.FACEBOOK_CLIENT_SECRET ? `✅ Set (${process.env.FACEBOOK_CLIENT_SECRET.substring(0, 10)}...)` : '❌ Missing'}`);
+  console.log(`GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? `✅ Set (${process.env.GOOGLE_CLIENT_ID.substring(0, 20)}...)` : '❌ Missing'}`);
+  console.log(`GOOGLE_CLIENT_SECRET: ${process.env.GOOGLE_CLIENT_SECRET ? `✅ Set (${process.env.GOOGLE_CLIENT_SECRET.substring(0, 10)}...)` : '❌ Missing'}`);
+  console.log(`NEXT_PUBLIC_APP_URL: ${process.env.NEXT_PUBLIC_APP_URL || '❌ Missing'}`);
+  console.log(`DATABASE_URL: ${process.env.DATABASE_URL ? `✅ Set (${process.env.DATABASE_URL.substring(0, 20)}...)` : '❌ Missing'}`);
+  console.log('=== End OAuth Configuration ===');
 }
 
 // Add this to your app initialization to check env vars
 export function validateEnv() {
+  console.log('🔍 Starting environment validation...');
   const varsValid = checkRequiredEnvVars();
   checkOptionalEnvVars();
   
   if (varsValid) {
     logOAuthConfig();
   }
+  
+  console.log('🔍 Environment validation complete.');
   return varsValid;
 } 
