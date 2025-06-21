@@ -5,9 +5,9 @@ import RegisterForm from "@/components/appointment/forms/RegisterForm";
 import { getUser } from "@/lib/actions/patient.actions";
 import { auth } from "@/lib/auth";
 
-const Register = async ({ params }: { params: { userId: string } }) => {
+const Register = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
-  const { userId } = params;
+  const { userId } = await params;
 
   // Debug logging
   console.log("Register page - Session user ID:", session?.user?.id);

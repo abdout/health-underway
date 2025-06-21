@@ -11,12 +11,12 @@ const AppointmentSuccess = async ({
   params,
   searchParams,
 }: {
-  params: { userId: string };
-  searchParams: { appointmentId?: string };
+  params: Promise<{ userId: string }>;
+  searchParams: Promise<{ appointmentId?: string }>;
 }) => {
   const session = await auth();
-  const { userId } = params;
-  const appointmentId = searchParams.appointmentId;
+  const { userId } = await params;
+  const { appointmentId } = await searchParams;
 
   // Check authentication
   if (!session?.user || session.user.id !== userId) {

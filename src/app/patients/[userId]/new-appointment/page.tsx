@@ -5,9 +5,9 @@ import { AppointmentForm } from "@/components/appointment/forms/AppointmentForm"
 import { getPatient } from "@/lib/actions/patient.actions";
 import { auth } from "@/lib/auth";
 
-const NewAppointment = async ({ params }: { params: { userId: string } }) => {
+const NewAppointment = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
-  const { userId } = params;
+  const { userId } = await params;
 
   // Check authentication
   if (!session?.user || session.user.id !== userId) {

@@ -45,6 +45,11 @@ export const {
       },
     },
   },
+  // Add proper trustHost configuration for production
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
+  // Use environment variable for URL
+  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
   events: {
     async linkAccount({ user }) {
       console.log("OAuth account linked:", user.email);
@@ -131,7 +136,7 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  // Enable debug mode temporarily to get detailed error information
-  debug: true, // Set to true for both dev and production to debug
+  // Only enable debug in development
+  debug: process.env.NODE_ENV === "development",
   ...authConfig,
 })

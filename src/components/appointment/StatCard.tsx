@@ -32,3 +32,6 @@ export const StatCard = ({ count = 0, label, icon, type }: StatCardProps) => {
     </div>
   );
 };
+
+// Default export for compatibility
+export default StatCard;

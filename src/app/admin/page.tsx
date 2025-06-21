@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { columns } from "@/components/appointment/table/columns";
 import { DataTable } from "@/components/appointment/table/DataTable";
-import StatCard from "@/components/appointment/StatCard";
+import { StatCard } from "@/components/appointment/StatCard";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 import { auth } from "@/lib/auth";
 
