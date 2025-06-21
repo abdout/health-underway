@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const getVerificationTokenByToken = async (token: string) => {
   try {
     console.log("Searching for verification token by token:", token); // Log the token being searched
-    const verificationToken = await db.verificationToken.findUnique({
+    const verificationToken = await db.verificationToken.findFirst({
       where: { token }
     });
 
@@ -21,12 +21,12 @@ export const getVerificationTokenByToken = async (token: string) => {
   }
 };
 
-// Get verification token by email
+// Get verification token by email (using identifier field)
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
     console.log("Searching for verification token by email:", email); // Log the email being searched
     const verificationToken = await db.verificationToken.findFirst({
-      where: { email }
+      where: { identifier: email }
     });
 
     if (!verificationToken) {

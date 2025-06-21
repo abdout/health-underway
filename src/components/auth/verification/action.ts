@@ -21,8 +21,8 @@ export const newVerification = async (token: string) => {
     }
   }
 
-  console.log("Token exists in the database. Token ID:", existingToken.id);
-  console.log("Token exists in the database. Token email:", existingToken.email);
+  console.log("Token exists in the database. Token identifier:", existingToken.identifier);
+  console.log("Token exists in the database. Token value:", existingToken.token);
   console.log("Token exists in the database. Token expiration:", existingToken.expires);
 
   const hasExpired = new Date(existingToken.expires) < new Date();
@@ -33,7 +33,7 @@ export const newVerification = async (token: string) => {
     return { error: "Token has expired!" };
   }
 
-  const existingUser = await getUserByEmail(existingToken.email);
+  const existingUser = await getUserByEmail(existingToken.identifier);
   console.log("User associated with the token:", existingUser);
 
   if (!existingUser) {
@@ -49,14 +49,19 @@ export const newVerification = async (token: string) => {
     where: { id: existingUser.id },
     data: { 
       emailVerified: new Date(),
-      email: existingToken.email,
+      email: existingToken.identifier,
     }
   });
   console.log("User email verified and updated successfully.");
 
   setTimeout(async () => {
     await db.verificationToken.delete({
-      where: { id: existingToken.id }
+      where: { 
+        identifier_token: {
+          identifier: existingToken.identifier,
+          token: existingToken.token
+        }
+      }
     });
     console.log("Verification token deleted successfully.");
   }, 9000);

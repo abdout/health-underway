@@ -52,7 +52,7 @@ export const settings = async (
       values.email
     );
     await sendVerificationEmail(
-      verificationToken.email,
+      verificationToken.identifier,
       verificationToken.token,
     );
 

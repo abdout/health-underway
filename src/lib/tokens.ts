@@ -64,14 +64,17 @@ export const generateVerificationToken = async (email: string) => {
   if (existingToken) {
     await db.verificationToken.delete({
       where: {
-        id: existingToken.id,
+        identifier_token: {
+          identifier: email,
+          token: existingToken.token,
+        }
       },
     });
   }
 
   const verficationToken = await db.verificationToken.create({
     data: {
-      email,
+      identifier: email,
       token,
       expires,
     }
