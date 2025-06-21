@@ -25,7 +25,7 @@ import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
-import { registerPatient } from "@/lib/actions/patient";
+import { registerPatient } from "@/lib/actions/patient.actions";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();

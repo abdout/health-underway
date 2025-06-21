@@ -20,6 +20,9 @@ export type UpdateAppointmentParams = {
   type: 'schedule' | 'cancel';
 };
 
+// Add the missing UpdateAppointmentInput type that's used in appointment.actions.ts
+export type UpdateAppointmentInput = UpdateAppointmentParams;
+
 type AppointmentUpdateData = {
   schedule?: Date;
   status?: Status;

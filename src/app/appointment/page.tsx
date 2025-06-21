@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { auth } from "@/lib/auth";
-import { getPatient } from "@/lib/actions/patient";
+import { getPatient } from "@/lib/actions/patient.actions";
 
 export default async function PatientAppointmentPage() {
   const session = await auth();
@@ -15,8 +15,14 @@ export default async function PatientAppointmentPage() {
     redirect("/login?callbackUrl=/patient/appointment");
   }
 
+  // Debug: Log user information
+  console.log("User from session:", { id: user.id, name: user.name, email: user.email });
+
   // Check if user has a patient profile
   const patient = user && user.id ? await getPatient(user.id) : null;
+  
+  // Debug: Log patient result
+  console.log("Patient result:", patient);
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
