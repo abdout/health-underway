@@ -54,8 +54,8 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+    <header className="sticky top-0 z-50 w-full bg-white">
+      <div className="container flex h-10 items-center">
         <div className="flex items-center">
           <Link href="/" className="mr-4 flex items-center gap-2 lg:mr-6">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4 text-foreground">
