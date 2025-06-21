@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     error: null as string | null,
     userTableExists: false,
     accountTableExists: false,
-    sessionTableExists: false,
+    verificationTokenTableExists: false,
   };
 
   try {
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     await db.$connect();
     dbTest.connected = true;
 
-    // Test if required tables exist
+    // Test if required tables exist for NextAuth
     try {
       await db.user.findFirst({ take: 1 });
       dbTest.userTableExists = true;
@@ -39,11 +39,11 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-      await db.session.findFirst({ take: 1 });
-      dbTest.sessionTableExists = true;
+      await db.verificationToken.findFirst({ take: 1 });
+      dbTest.verificationTokenTableExists = true;
     } catch (e) {
       if (!dbTest.error) {
-        dbTest.error = `Session table issue: ${e instanceof Error ? e.message : 'Unknown error'}`;
+        dbTest.error = `VerificationToken table issue: ${e instanceof Error ? e.message : 'Unknown error'}`;
       }
     }
 
