@@ -180,5 +180,24 @@ export const {
   session: { strategy: "jwt" },
   // Enable debug for Facebook issues
   debug: process.env.NODE_ENV === "development" || process.env.DEBUG_NEXTAUTH === "true",
+  
+  // Add error logging
+  logger: {
+    error(code, metadata) {
+      console.error("=== NextAuth Error ===");
+      console.error("Error Code:", code);
+      console.error("Metadata:", metadata);
+      console.error("=== End NextAuth Error ===");
+    },
+    warn(code) {
+      console.warn("NextAuth Warning:", code);
+    },
+    debug(code, metadata) {
+      if (process.env.DEBUG_NEXTAUTH === "true") {
+        console.log("NextAuth Debug:", code, metadata);
+      }
+    }
+  },
+  
   ...authConfig,
 })
