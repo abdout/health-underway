@@ -167,10 +167,10 @@ export function PatientDashboard({
                     <div className="flex items-center gap-4">
                       <div className="text-center">
                         <p className="text-sm font-medium">
-                          {formatDateTime(appointment.schedule).dateOnly}
+                          {formatDateTime(appointment.schedule).date}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {formatDateTime(appointment.schedule).timeOnly}
+                          {formatDateTime(appointment.schedule).time}
                         </p>
                       </div>
                       <div>
