@@ -183,16 +183,16 @@ export const {
   
   // Add error logging
   logger: {
-    error(code, metadata) {
+    error(code: any, metadata?: any) {
       console.error("=== NextAuth Error ===");
       console.error("Error Code:", code);
       console.error("Metadata:", metadata);
       console.error("=== End NextAuth Error ===");
     },
-    warn(code) {
+    warn(code: any) {
       console.warn("NextAuth Warning:", code);
     },
-    debug(code, metadata) {
+    debug(code: any, metadata?: any) {
       if (process.env.DEBUG_NEXTAUTH === "true") {
         console.log("NextAuth Debug:", code, metadata);
       }
