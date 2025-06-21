@@ -51,8 +51,12 @@ export const {
   // Use environment variable for URL
   ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
   events: {
-    async linkAccount({ user }) {
-      console.log("OAuth account linked:", user.email);
+    async linkAccount({ user, account }) {
+      console.log("OAuth account linked:", { 
+        userId: user.id,
+        email: user.email, 
+        provider: account.provider 
+      });
       if (user.id) {
         await db.user.update({
           where: { id: user.id },
@@ -67,36 +71,74 @@ export const {
         provider: account?.provider,
         isNewUser
       });
+      
+      // Facebook-specific logging
+      if (account?.provider === "facebook") {
+        console.log("Facebook sign-in details:", {
+          accessToken: account.access_token ? "present" : "missing",
+          providerAccountId: account.providerAccountId,
+          type: account.type
+        });
+      }
+    },
+    async createUser({ user }) {
+      console.log("User created:", { userId: user.id, email: user.email });
     },
   },
   callbacks: {
-    async signIn({ user, account }) {
-      // Log sign-in attempt for debugging
-      console.log("Sign-in attempt:", { 
-        userId: user.id, 
-        provider: account?.provider,
-        email: user.email
-      });
+    async signIn({ user, account, profile }) {
+      // Enhanced logging for debugging
+      console.log("=== SignIn Callback Debug ===");
+      console.log("Provider:", account?.provider);
+      console.log("User ID:", user.id);
+      console.log("User Email:", user.email);
       
-      if (!user.id) return false
+      if (account?.provider === "facebook") {
+        console.log("Facebook Profile:", {
+          id: profile?.id,
+          name: profile?.name,
+          email: profile?.email,
+          verified: profile?.email_verified
+        });
+        console.log("Facebook Account:", {
+          access_token: account.access_token ? "present" : "missing",
+          token_type: account.token_type,
+          expires_at: account.expires_at
+        });
+      }
       
-      if (account?.provider !== "credentials") return true
+      if (!user.id) {
+        console.error("SignIn failed: No user ID");
+        return false;
+      }
+      
+      if (account?.provider !== "credentials") {
+        console.log("OAuth sign-in successful for provider:", account?.provider);
+        return true;
+      }
 
       const existingUser = await getUserById(user.id)
 
-      if (!existingUser?.emailVerified) return false
+      if (!existingUser?.emailVerified) {
+        console.error("SignIn failed: Email not verified for user:", user.id);
+        return false;
+      }
 
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id)
 
-        if (!twoFactorConfirmation) return false
+        if (!twoFactorConfirmation) {
+          console.error("SignIn failed: 2FA confirmation missing for user:", user.id);
+          return false;
+        }
 
         await db.twoFactorConfirmation.delete({
           where: { id: twoFactorConfirmation.id }
         })
       }
 
-      return true
+      console.log("SignIn successful for user:", user.id);
+      return true;
     },
     async session({ token, session }) {
       if (token.sub && session.user) {
@@ -136,7 +178,7 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  // Only enable debug in development
-  debug: process.env.NODE_ENV === "development",
+  // Enable debug for Facebook issues
+  debug: process.env.NODE_ENV === "development" || process.env.DEBUG_NEXTAUTH === "true",
   ...authConfig,
 })
