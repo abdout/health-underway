@@ -41,22 +41,27 @@ export const createUser = async (
 };
 
 export const getUser = async (userId: string): Promise<User | null> => {
+  console.log("getUser called with userId:", userId);
+  
   if (!userId) {
     console.error("User ID is undefined or invalid");
     return null;
   }
 
-  // UUID validation for PostgreSQL (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  if (!uuidRegex.test(userId)) {
-    console.error("Invalid User ID format:", userId);
-    return null; // Return null instead of throwing to handle gracefully
-  }
+  // Check what type of ID we're dealing with
+  console.log("User ID length:", userId.length);
+  console.log("User ID format check - contains hyphens:", userId.includes('-'));
 
+  // First try without UUID validation to see if the user exists
   try {
     const user = await db.user.findUnique({
       where: { id: userId },
     });
+
+    console.log("getUser - Found user:", !!user);
+    if (user) {
+      console.log("getUser - User ID from DB:", user.id);
+    }
 
     return parseStringify(user);
   } catch (error) {

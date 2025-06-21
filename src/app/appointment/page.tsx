@@ -12,7 +12,7 @@ export default async function PatientAppointmentPage() {
   const user = session?.user;
   
   if (!user) {
-    redirect("/login?callbackUrl=/patient/appointment");
+    redirect("/login?callbackUrl=/appointment");
   }
 
   // Debug: Log user information
@@ -47,7 +47,7 @@ export default async function PatientAppointmentPage() {
           <AlertDescription className="text-amber-800">
             You need to complete your patient registration before booking appointments.
             <Button asChild variant="link" className="h-auto p-0 ml-2 text-amber-700 underline">
-              <Link href={`/appointments/patients/${user.id}/register`}>
+              <Link href={`/patients/${user.id}/register`}>
                 Complete Registration
               </Link>
             </Button>
@@ -68,13 +68,13 @@ export default async function PatientAppointmentPage() {
           <CardContent>
             {patient ? (
               <Button asChild className="w-full">
-                <Link href={`/appointments/patients/${user.id}/new-appointment`}>
+                <Link href={`/patients/${user.id}/new-appointment`}>
                   Book Now
                 </Link>
               </Button>
             ) : (
               <Button asChild variant="outline" className="w-full">
-                <Link href={`/appointments/patients/${user.id}/register`}>
+                <Link href={`/patients/${user.id}/register`}>
                   Register First
                 </Link>
               </Button>

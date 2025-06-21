@@ -9,14 +9,20 @@ const Register = async ({ params }: { params: { userId: string } }) => {
   const session = await auth();
   const { userId } = params;
 
+  // Debug logging
+  console.log("Register page - Session user ID:", session?.user?.id);
+  console.log("Register page - URL userId:", userId);
+
   // Check authentication
   if (!session?.user || session.user.id !== userId) {
     redirect("/login");
   }
 
   const user = await getUser(userId);
+  console.log("Register page - getUser result:", user);
 
   if (!user) {
+    console.log("Register page - No user found, redirecting to /");
     redirect("/");
   }
 
