@@ -109,3 +109,47 @@ export const Github = React.forwardRef<SVGSVGElement, IconProps>(
   }
 )
 Github.displayName = "Github"
+
+export const User = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ref={ref}
+        className={className}
+        {...props}
+      >
+        <path
+          fill="currentColor"
+          d="M12 2a5 5 0 1 1-5 5l.005-.217A5 5 0 0 1 12 2m2 12a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5z"
+        />
+      </svg>
+    )
+  }
+)
+User.displayName = "User"
+
+export const Exit = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ref={ref}
+        className={className}
+        {...props}
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1"
+          d="M19.285 12h-8.012m5.237 3.636L20 12l-3.49-3.636M13.455 7V4H4v16h9.455v-3"
+        />
+      </svg>
+    )
+  }
+)
+Exit.displayName = "Exit"
