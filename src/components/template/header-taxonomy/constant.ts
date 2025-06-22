@@ -155,24 +155,24 @@ export const marketingConfig: MarketingConfig = {
   mainNav: [
     {
       title: "Setting",
-      href: "/setting",
+      href: "/auth/setting",
     },
 
     {
       title: "Server",
-      href: "/server",
+      href: "/auth/server",
     },
 
 
     {
       title: "Client",
-      href: "/client",
+      href: "/auth/client",
     },
 
 
     {
       title: "Admin",
-      href: "/admin",
+      href: "/auth/admin",
     },
     
 
