@@ -6,7 +6,7 @@ import { useCurrentUser } from '@/components/auth/use-current-user';
 import { LoginButton } from '@/components/auth/login-button';
 import { LogoutButton } from '@/components/auth/logout-button';
 import Link from 'next/link';
-import { ExitIcon } from '@radix-ui/react-icons';
+import { Exit } from '@/components/atom/icon';
 
 export const AuthButton = () => {
   const user = useCurrentUser();
