@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils'
 import React from 'react'
 import { MainNav } from './main-nav'
 import { marketingConfig } from './constant'

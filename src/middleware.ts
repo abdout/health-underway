@@ -70,6 +70,8 @@ export default auth((req) => {
   return
 })
 
+// Export config with runtime specification
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  runtime: 'nodejs' // Specify Node.js runtime instead of Edge
 }

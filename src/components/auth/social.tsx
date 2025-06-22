@@ -1,62 +1,35 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Facebook, Google } from "@/components/atom/icon";
-
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-// Function to clean Facebook URL hash
-const cleanUrlHash = () => {
-  // Only run on client side
-  if (typeof window !== "undefined") {
-    // Check if URL has the Facebook hash fragment
-    if (window.location.hash === "#_=_") {
-      // Clean the hash
-      const cleanUrl = window.location.href.replace(/#.*$/, "");
-      window.history.replaceState({}, document.title, cleanUrl);
-    }
-  }
-};
+import { Button } from "@/components/ui/button";
+import { Github, Google } from "@/components/atom/icon";
 
 export const Social = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-  const router = useRouter();
-  
-  // Clean URL hash on component mount - this will handle Facebook redirects
-  useEffect(() => {
-    cleanUrlHash();
-  }, []);
-
-  const onClick = (provider: "google" | "facebook") => {
+  const onClick = (provider: "google" | "github") => {
     signIn(provider, {
-      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: DEFAULT_LOGIN_REDIRECT
     });
-  }
+  };
 
   return (
-    <div className="grid md:gap-4 gap-3 grid-cols-2">
+    <div className="flex items-center w-full gap-x-2">
       <Button
         size="lg"
         className="w-full"
         variant="outline"
         onClick={() => onClick("google")}
       >
-        <Google className="h-5 w-5 mr-2" />
-        Google
+        <Google className="h-5 w-5" />
       </Button>
       <Button
         size="lg"
         className="w-full"
         variant="outline"
-        onClick={() => onClick("facebook")}
+        onClick={() => onClick("github")}
       >
-        <Facebook className="h-5 w-5 mr-2" />
-        Facebook
+        <Github className="h-5 w-5" />
       </Button>
     </div>
   );

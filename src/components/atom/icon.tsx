@@ -1,6 +1,8 @@
 import * as React from "react"
 
-interface IconProps extends React.SVGProps<SVGSVGElement> {}
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  className?: string;
+}
 
 export const Exclamation = React.forwardRef<SVGSVGElement, IconProps>(
   ({ className, ...props }, ref) => {
