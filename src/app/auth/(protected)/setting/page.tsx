@@ -53,7 +53,7 @@ const SettingsPage = () => {
     defaultValues: {
       password: undefined,
       newPassword: undefined,
-      name: user?.name || undefined,
+      username: user?.name || undefined,
       email: user?.email || undefined,
       role: user?.role || undefined,
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
@@ -98,10 +98,10 @@ const SettingsPage = () => {
             <div className="space-y-3">
               <FormField
                 control={form.control}
-                name="name"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
