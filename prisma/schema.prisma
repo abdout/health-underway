@@ -11,20 +11,45 @@ generator client {
 
 enum UserRole {
   ADMIN
+  DEVELOPER
   USER
+  MEMBER
+  MEMBERSHIP
+  FINANCE
+  CONTENT
+}
+
+enum Gender {
+  Male
+  Female
+}
+
+enum Status {
+  pending
+  scheduled
+  cancelled
 }
 
 model User {
   id                    String                 @id @default(cuid())
+  name                  String?
   username              String?
   email                 String?                @unique
+  phone                 String?
   emailVerified         DateTime?
   image                 String?
   password              String?
-  role                  UserRole              @default(USER)
+  role                  UserRole               @default(USER)
   accounts              Account[]
-  isTwoFactorEnabled    Boolean               @default(false)
+  isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  onboarded             Boolean                @default(false)
+  patients              Patient[]
+  appointments          Appointment[]          @relation("UserAppointments")
+  doctor                Doctor?
+  notifications         Notification[]
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
 }
 
 model Account {
@@ -77,4 +102,212 @@ model TwoFactorConfirmation {
   id     String @id @default(cuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Patient {
+  id                      String        @id @default(cuid())
+  userId                  String
+  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                    String
+  email                   String
+  phone                   String
+  birthDate               DateTime
+  gender                  Gender
+  address                 String
+  occupation              String
+  emergencyContactName    String
+  emergencyContactNumber  String
+  primaryPhysician        String
+  insuranceProvider       String
+  insurancePolicyNumber   String
+  allergies               String?
+  currentMedication       String?
+  familyMedicalHistory    String?
+  pastMedicalHistory      String?
+  identificationType      String?
+  identificationNumber    String?
+  identificationDocument  String?       // Store file path or URL
+  privacyConsent          Boolean
+  appointments            Appointment[] @relation("PatientAppointments")
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+}
+
+model Appointment {
+  id                  String      @id @default(cuid())
+  patientId           String
+  patient             Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade, name: "PatientAppointments")
+  userId              String
+  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserAppointments")
+  schedule            DateTime
+  status              Status
+  primaryPhysician    String
+  reason              String
+  note                String
+  cancellationReason  String?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+model Doctor {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  contribute           String?
+  bio                  String?         
+  cv                   String? 
+  portfolio            String?            
+  cover                String?
+
+// Contact 
+  phone                String?
+  whatsapp             String?
+  twitter              String?
+  facebook             String?
+  linkedin             String?
+  telegram             String?
+  instagram            String?
+  tiktok               String?
+  link                 String?
+
+  // Birthday
+  birthDate            DateTime?
+  birthCountry         String?
+  birthState           String?
+  birthLocality        String?
+  birthAdminUnit       String?
+  birthNeighborhood    String?
+  birthMonth           Int?
+  birthYear            Int?
+
+  // Current Location
+  currentCountry       String?
+  currentState         String?
+  currentLocality      String?
+  currentAdminUnit     String?
+  currentNeighborhood  String?
+
+  // Original Location
+  originalCountry      String?
+  originalState        String?
+  originalLocality     String?
+  originalAdminUnit    String?
+  originalNeighborhood String?
+
+  // Nationality
+  nationalityId      String?
+  maritalStatus      String?
+  gender             String?
+  religion           String?
+
+  // Education & Work
+  educationLevel       String?
+  institution          String?
+  yearOfCompletion     Int?
+  major                String?             
+  
+  // Additional education fields
+  studentYear          Int?
+  
+  // Bachelor's information
+  bachelorInstitution  String?
+  bachelorMajor        String?
+  bachelorCompletionYear Int?
+  
+  // Master's information  
+  masterInstitution    String?
+  masterMajor          String?
+  masterCompletionYear Int?
+  
+  // PhD information
+  phdInstitution       String?
+  phdMajor             String?
+  phdCompletionYear    Int?
+  
+  // Professor information
+  professorInstitution  String?
+  professorMajor        String?
+  professorCompletionYear Int?
+  
+  currentOccupation    String?             
+  employmentSector     String?             
+  workplaceAddress     String?
+  companyName          String?
+
+  // Student Details
+  studentInstitution   String?
+  studentFaculty       String?
+
+  // Activities 
+  partyMember Boolean @default(false)
+  partyName String?
+  partyStartDate DateTime?
+  partyEndDate DateTime?
+  
+  unionMember Boolean @default(false)
+  unionName String?
+  unionStartDate DateTime?
+  unionEndDate DateTime?
+  
+  ngoMember Boolean @default(false)
+  ngoName String?
+  ngoActivity String?
+  
+  clubMember Boolean @default(false)
+  clubName String?
+  clubType String?      
+  
+  // Skills and Interests
+  skills String[] @default([])
+  interests String[] @default([])
+  
+  // Emergency Contacts
+  emergencyName1       String?
+  emergencyRelation1   String?
+  emergencyPhone1      String?
+  emergencyName2       String?
+  emergencyRelation2   String?
+  emergencyPhone2      String?
+
+  // Other
+  referralSource       String?
+  acquaintanceName     String?
+  donationAmount       Float?
+  donationDate         DateTime?
+  oathAcknowledged     Boolean?             @default(false)
+
+  // Onboarding
+  onboardingStatus String? @default("PENDING")  // "PENDING" | "COMPLETED"
+  onboardingStep   Int?    @default(1)
+  
+  // Application status
+  applicationStatus String? @default("PENDING")  // "PENDING" | "APPROVED" | "REJECTED"
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+
+
+  // Notifications
+  notifications      Notification[] @relation("DoctorNotifications")
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  userId      String?   // Optional: the user this notification is for
+  doctorId    String?   // Optional: the doctor this notification is for
+  type        String    // "ONBOARDING_SUBMITTED", "APPLICATION_APPROVED", etc.
+  isRead      Boolean   @default(false)
+  metadata    Json?     // Additional data related to notification
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  doctor      Doctor?   @relation(fields: [doctorId], references: [id], onDelete: SetNull, name: "DoctorNotifications")
+  
+  @@index([userId])
+  @@index([doctorId])
+  @@index([isRead])
 }

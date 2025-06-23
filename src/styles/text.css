@@ -1,0 +1,78 @@
+  
+  
+  
+
+  
+
+  
+  
+  
+  .progress {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--accent);
+    bottom: 100px;
+  }
+  
+  .parallax-section {
+    padding: 4rem 0;
+    overflow: hidden;
+  }
+  
+  .parallax {
+    overflow: hidden;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 160px;
+    align-items: center;
+  }
+  
+  .parallax .scroller {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(5rem, 12vw, 10rem);
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  .parallax span {
+    display: block;
+    margin-right: 2rem;
+    border: none;
+    outline: none;
+  }
+  
+  .parallax span.solid {
+    color: #000;
+  }
+  
+  .parallax span.outline {
+    color: transparent;
+    -webkit-text-stroke: 3px #000;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+  
+  @media (max-width: 768px) {
+    .parallax {
+      height: 120px;
+    }
+    
+    .parallax span.outline {
+      -webkit-text-stroke: 2px #000;
+    }
+    
+    .parallax span {
+      margin-right: 1rem;
+    }
+  }
+  
