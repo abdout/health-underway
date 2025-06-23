@@ -8,21 +8,21 @@ interface SkillsProps {
 }
 
 const SKILLS = [
-  "القيادة",
-  "التواصل",
-  "العمل الجماعي",
-  "حل المشكلات",
-  "التخطيط",
-  "التنظيم",
-  "إدارة الوقت",
-  "التفاوض",
-  "الإقناع",
-  "التحليل",
-  "البحث",
-  "الكتابة",
-  "العرض",
-  "التدريب",
-  "التوجيه",
+  "Leadership",
+  "Communication",
+  "Teamwork",
+  "Problem Solving",
+  "Planning",
+  "Organization",
+  "Time Management",
+  "Negotiation",
+  "Persuasion",
+  "Analysis",
+  "Research",
+  "Writing",
+  "Presentation",
+  "Training",
+  "Mentoring",
 ] as const;
 
 const SKILL_OPTIONS: Option[] = SKILLS.map((skill) => ({
@@ -39,13 +39,13 @@ export function Skills({ value, onChange, onFocus, onBlur }: SkillsProps) {
   return (
     <div className="w-full space-y-2">
       <label className="block text-sm font-medium text-gray-700">
-        المهارات
+        Skills
       </label>
       <MultiSelect
         options={SKILL_OPTIONS}
         selected={selectedOptions}
         onChange={(selected) => onChange(selected.map(s => s.value))}
-        placeholder=" واحدة أو اكثر"
+        placeholder="One or more"
         onFocus={onFocus}
         onBlur={onBlur}
       />

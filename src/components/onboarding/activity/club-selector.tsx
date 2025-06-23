@@ -9,7 +9,7 @@ interface ClubSelectorProps {
   setSelectedTypes: (types: string[]) => void;
 }
 
-const CLUB_TYPES = ["سياسي", "نقابي", "اجتماعي", "شبابي", "تطوعي"] as const;
+const CLUB_TYPES = ["political", "union", "social", "youth", "voluntary"] as const;
 
 export default function ClubSelector({ setValue, selectedTypes, setSelectedTypes }: ClubSelectorProps) {
   const handleSelect = (type: string) => {
@@ -21,16 +21,16 @@ export default function ClubSelector({ setValue, selectedTypes, setSelectedTypes
     setValue("selectedActivities", newTypes);
     
     // Set specific booleans based on type selection
-    if (type === "سياسي") {
-      setValue("partyMember", newTypes.includes("سياسي"));
-    } else if (type === "نقابي") {
-      setValue("unionMember", newTypes.includes("نقابي"));
-    } else if (type === "اجتماعي") {
-      setValue("ngoMember", newTypes.includes("اجتماعي"));
-    } else if (type === "شبابي") {
-      setValue("clubMember", newTypes.includes("شبابي"));
-    } else if (type === "تطوعي") {
-      setValue("voluntaryMember", newTypes.includes("تطوعي"));
+    if (type === "political") {
+      setValue("partyMember", newTypes.includes("political"));
+    } else if (type === "union") {
+      setValue("unionMember", newTypes.includes("union"));
+    } else if (type === "social") {
+      setValue("ngoMember", newTypes.includes("social"));
+    } else if (type === "youth") {
+      setValue("clubMember", newTypes.includes("youth"));
+    } else if (type === "voluntary") {
+      setValue("voluntaryMember", newTypes.includes("voluntary"));
     }
   };
 
@@ -38,9 +38,9 @@ export default function ClubSelector({ setValue, selectedTypes, setSelectedTypes
     <div className="space-y-3 w-full">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
         <label className="block text-sm font-medium text-gray-900">
-           هل سبق وكنت عضو في نشاط...؟
+          Have you ever been a member of any activity...?
         </label>
-        <p className="text-sm text-gray-500">واحدة أو أكثر</p>
+        <p className="text-sm text-gray-500">One or more</p>
       </div>
       <div className="flex flex-wrap gap-3">
         {CLUB_TYPES.map((type) => (

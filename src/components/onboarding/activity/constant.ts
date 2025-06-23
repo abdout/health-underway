@@ -63,72 +63,72 @@ export const PARTY_OPTIONS = [
 ];
 
 export const UNION_OPTIONS = [
-  { value: "نقابة المعلمين", label: "نقابة المعلمين" },
-  { value: "نقابة المهندسين", label: "نقابة المهندسين" },
-  { value: "نقابة الأطباء", label: "نقابة الأطباء" },
-  { value: "نقابة المحامين", label: "نقابة المحامين" },
-  { value: "نقابة الصيادلة", label: "نقابة الصيادلة" },
-  { value: "نقابة الصحفيين", label: "نقابة الصحفيين" },
-  { value: "نقابة الفنانين", label: "نقابة الفنانين" },
-  { value: "نقابة العمال", label: "نقابة العمال" },
+  { value: "teachers union", label: "Teachers Union" },
+  { value: "engineers union", label: "Engineers Union" },
+  { value: "doctors union", label: "Doctors Union" },
+  { value: "lawyers union", label: "Lawyers Union" },
+  { value: "pharmacists union", label: "Pharmacists Union" },
+  { value: "journalists union", label: "Journalists Union" },
+  { value: "artists union", label: "Artists Union" },
+  { value: "workers union", label: "Workers Union" },
 ];
 
 export const NGO_OPTIONS = [
-  { value: "الهلال الأحمر السوري", label: "الهلال الأحمر السوري" },
-  { value: "جمعية البر والإحسان", label: "جمعية البر والإحسان" },
-  { value: "منظمة المرأة السورية", label: "منظمة المرأة السورية" },
-  { value: "جمعية رعاية الأيتام", label: "جمعية رعاية الأيتام" },
-  { value: "مؤسسة الشام الخيرية", label: "مؤسسة الشام الخيرية" },
-  { value: "جمعية حماية البيئة", label: "جمعية حماية البيئة" },
+  { value: "syrian red crescent", label: "Syrian Red Crescent" },
+  { value: "charity and goodwill society", label: "Charity and Goodwill Society" },
+  { value: "syrian women organization", label: "Syrian Women Organization" },
+  { value: "orphan care society", label: "Orphan Care Society" },
+  { value: "sham charity foundation", label: "Sham Charity Foundation" },
+  { value: "environmental protection society", label: "Environmental Protection Society" },
 ];
 
 export const NGO_ACTIVITY_OPTIONS = [
-  { value: "تعليم", label: "تعليم" },
-  { value: "صحة", label: "صحة" },
-  { value: "إغاثة", label: "إغاثة" },
-  { value: "تنمية مجتمعية", label: "تنمية مجتمعية" },
-  { value: "دعم نفسي", label: "دعم نفسي" },
-  { value: "حماية البيئة", label: "حماية البيئة" },
-  { value: "ثقافة وفنون", label: "ثقافة وفنون" },
-  { value: "تمكين المرأة", label: "تمكين المرأة" },
+  { value: "education", label: "Education" },
+  { value: "health", label: "Health" },
+  { value: "relief", label: "Relief" },
+  { value: "community development", label: "Community Development" },
+  { value: "psychological support", label: "Psychological Support" },
+  { value: "environmental protection", label: "Environmental Protection" },
+  { value: "culture and arts", label: "Culture and Arts" },
+  { value: "women empowerment", label: "Women Empowerment" },
 ];
 
 export const CLUB_OPTIONS = [
-  { value: "نادي الجلاء الرياضي", label: "نادي الجلاء الرياضي" },
-  { value: "نادي الوحدة", label: "نادي الوحدة" },
-  { value: "نادي تشرين", label: "نادي تشرين" },
-  { value: "نادي الكرامة", label: "نادي الكرامة" },
-  { value: "نادي الاتحاد", label: "نادي الاتحاد" },
-  { value: "نادي حطين", label: "نادي حطين" },
+  { value: "al jalaa sports club", label: "Al Jalaa Sports Club" },
+  { value: "al wahda club", label: "Al Wahda Club" },
+  { value: "tishreen club", label: "Tishreen Club" },
+  { value: "al karama club", label: "Al Karama Club" },
+  { value: "al ittihad club", label: "Al Ittihad Club" },
+  { value: "hattin club", label: "Hattin Club" },
 ];
 
 export const CLUB_TYPE_OPTIONS = [
-  { value: "كرة قدم", label: "كرة قدم" },
-  { value: "كرة سلة", label: "كرة سلة" },
-  { value: "كرة طائرة", label: "كرة طائرة" },
-  { value: "سباحة", label: "سباحة" },
-  { value: "تنس", label: "تنس" },
-  { value: "كاراتيه", label: "كاراتيه" },
-  { value: "جودو", label: "جودو" },
-  { value: "مصارعة", label: "مصارعة" },
+  { value: "football", label: "Football" },
+  { value: "basketball", label: "Basketball" },
+  { value: "volleyball", label: "Volleyball" },
+  { value: "swimming", label: "Swimming" },
+  { value: "tennis", label: "Tennis" },
+  { value: "karate", label: "Karate" },
+  { value: "judo", label: "Judo" },
+  { value: "wrestling", label: "Wrestling" },
 ];
 
 export const VOLUNTARY_OPTIONS = [
-  { value: "الهلال الأحمر", label: "الهلال الأحمر" },
-  { value: "كشافة", label: "كشافة" },
-  { value: "مبادرات تطوعية", label: "مبادرات تطوعية" },
-  { value: "قوافل إغاثة", label: "قوافل إغاثة" },
-  { value: "حملات تنظيف", label: "حملات تنظيف" },
-  { value: "تعليم وتدريب", label: "تعليم وتدريب" },
+  { value: "red crescent", label: "Red Crescent" },
+  { value: "scouts", label: "Scouts" },
+  { value: "voluntary initiatives", label: "Voluntary Initiatives" },
+  { value: "relief convoys", label: "Relief Convoys" },
+  { value: "cleaning campaigns", label: "Cleaning Campaigns" },
+  { value: "education and training", label: "Education and Training" },
 ];
 
 export const VOLUNTARY_ROLE_OPTIONS = [
-  { value: "متطوع", label: "متطوع" },
-  { value: "منسق", label: "منسق" },
-  { value: "قائد فريق", label: "قائد فريق" },
-  { value: "مدرب", label: "مدرب" },
-  { value: "مساعد إداري", label: "مساعد إداري" },
-  { value: "مسؤول تواصل", label: "مسؤول تواصل" },
+  { value: "volunteer", label: "Volunteer" },
+  { value: "coordinator", label: "Coordinator" },
+  { value: "team leader", label: "Team Leader" },
+  { value: "trainer", label: "Trainer" },
+  { value: "administrative assistant", label: "Administrative Assistant" },
+  { value: "communication officer", label: "Communication Officer" },
 ];
 
 export type ActivityFieldName = 
@@ -154,25 +154,25 @@ export const ACTIVITY_FIELDS: {
   club: ActivityField[];
 } = {
   political: [
-    { name: 'partyMember' as const, label: 'عضو في حزب/حركة سياسية', type: 'toggle' },
-    { name: 'partyName' as const, label: 'اسم الحزب/الحركة', type: 'text', conditional: 'partyMember' },
-    { name: 'partyStartDate' as const, label: 'تاريخ البداية', type: 'date', conditional: 'partyMember' },
-    { name: 'partyEndDate' as const, label: 'تاريخ النهاية', type: 'date', conditional: 'partyMember' },
+    { name: 'partyMember' as const, label: 'Member of political party/movement', type: 'toggle' },
+    { name: 'partyName' as const, label: 'Party/Movement name', type: 'text', conditional: 'partyMember' },
+    { name: 'partyStartDate' as const, label: 'Start date', type: 'date', conditional: 'partyMember' },
+    { name: 'partyEndDate' as const, label: 'End date', type: 'date', conditional: 'partyMember' },
   ],
   union: [
-    { name: 'unionMember' as const, label: 'عضو في نقابة/اتحاد طلابي', type: 'toggle' },
-    { name: 'unionName' as const, label: 'اسم النقابة/الاتحاد', type: 'text', conditional: 'unionMember' },
-    { name: 'unionStartDate' as const, label: 'تاريخ البداية', type: 'date', conditional: 'unionMember' },
-    { name: 'unionEndDate' as const, label: 'تاريخ النهاية', type: 'date', conditional: 'unionMember' },
+    { name: 'unionMember' as const, label: 'Member of union/student association', type: 'toggle' },
+    { name: 'unionName' as const, label: 'Union/Association name', type: 'text', conditional: 'unionMember' },
+    { name: 'unionStartDate' as const, label: 'Start date', type: 'date', conditional: 'unionMember' },
+    { name: 'unionEndDate' as const, label: 'End date', type: 'date', conditional: 'unionMember' },
   ],
   social: [
-    { name: 'ngoMember' as const, label: 'عضو في منظمة/مجموعة ثقافية', type: 'toggle' },
-    { name: 'ngoName' as const, label: 'اسم المنظمة/المجموعة', type: 'text', conditional: 'ngoMember' },
-    { name: 'ngoActivity' as const, label: 'وصف النشاط', type: 'textarea', conditional: 'ngoMember' },
+    { name: 'ngoMember' as const, label: 'Member of organization/cultural group', type: 'toggle' },
+    { name: 'ngoName' as const, label: 'Organization/Group name', type: 'text', conditional: 'ngoMember' },
+    { name: 'ngoActivity' as const, label: 'Activity description', type: 'textarea', conditional: 'ngoMember' },
   ],
   club: [
-    { name: 'clubMember' as const, label: 'عضو في نادي شبابي', type: 'toggle' },
-    { name: 'clubName' as const, label: 'اسم النادي', type: 'text', conditional: 'clubMember' },
-    { name: 'clubType' as const, label: 'نوع النادي', type: 'select', options: CLUB_TYPES, conditional: 'clubMember' },
+    { name: 'clubMember' as const, label: 'Member of youth club', type: 'toggle' },
+    { name: 'clubName' as const, label: 'Club name', type: 'text', conditional: 'clubMember' },
+    { name: 'clubType' as const, label: 'Club type', type: 'select', options: CLUB_TYPES, conditional: 'clubMember' },
   ],
 } as const; 

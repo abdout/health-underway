@@ -8,21 +8,21 @@ interface InterestsProps {
 }
 
 const INTERESTS = [
-  "السياسة",
-  "الاقتصاد",
-  "التعليم",
-  "الصحة",
-  "البيئة",
-  "التكنولوجيا",
-  "الفنون",
-  "الرياضة",
-  "العمل التطوعي",
-  "حقوق الإنسان",
-  "التنمية المستدامة",
-  "الثقافة",
-  "الإعلام",
-  "العلوم",
-  "الأدب",
+  "Politics",
+  "Economics",
+  "Education",
+  "Health",
+  "Environment",
+  "Technology",
+  "Arts",
+  "Sports",
+  "Volunteer Work",
+  "Human Rights",
+  "Sustainable Development",
+  "Culture",
+  "Media",
+  "Science",
+  "Literature",
 ] as const;
 
 const INTEREST_OPTIONS: Option[] = INTERESTS.map((interest) => ({
@@ -39,13 +39,13 @@ export function Interests({ value, onChange, onFocus, onBlur }: InterestsProps) 
   return (
     <div className="w-full space-y-2">
       <label className="block text-sm font-medium text-gray-700">
-        الاهتمامات
+        Interests
       </label>
       <MultiSelect
         options={INTEREST_OPTIONS}
         selected={selectedOptions}
         onChange={(selected) => onChange(selected.map(s => s.value))}
-        placeholder=" واحدة أو اكثر"
+        placeholder="One or more"
         onFocus={onFocus}
         onBlur={onBlur}
       />

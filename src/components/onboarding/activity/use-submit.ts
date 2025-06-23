@@ -62,8 +62,8 @@ export function useSubmit({ handleSubmit, setIsSubmitting }: UseFormSubmitProps)
       SuccessToast(); // Use centralized success toast
       router.push(getNextRoute(pathname));
     } else if (state.error) {
-      console.error("Form submission failed with error state", state.message || "An error occurred while saving the information");
-      ErrorToast(state.message ? `${state.message}` : "An error occurred while saving the information");
+      console.error("Form submission failed with error state", state.message || "Failed to save data");
+      ErrorToast(state.message ? `${state.message}` : "Failed to save data");
       setIsSubmitting(false);
     }
   }, [state, router, pathname, setIsSubmitting]);

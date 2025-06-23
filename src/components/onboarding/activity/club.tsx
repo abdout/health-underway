@@ -469,11 +469,11 @@ export default function Club({
     setTimeout(() => {
       console.log(`⏰ TIMEOUT EXPIRED, now checking completion for ${activityType}`);
       
-      const activityKey = activityType === 'party' ? "سياسي" 
-                      : activityType === 'union' ? "نقابي"
-                      : activityType === 'ngo' ? "اجتماعي"
-                      : activityType === 'club' ? "شبابي"
-                      : "تطوعي";
+      const activityKey = activityType === 'party' ? "political" 
+                      : activityType === 'union' ? "union"
+                      : activityType === 'ngo' ? "social"
+                      : activityType === 'club' ? "youth"
+                      : "voluntary";
       
       checkAndScroll(activityType, activityKey);
     }, 300);
@@ -482,17 +482,17 @@ export default function Club({
   return (
     <div ref={detailsSectionRef} className="space-y-6 w-full">
       {/* Political Party Section */}
-      {selectedActivities.includes("سياسي") && (
+      {selectedActivities.includes("political") && (
         <div ref={partySectionRef} className="flex flex-col gap-6 border-t pt-6  border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2  items-center gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                اسم الحزب
+                Party Name
               </label>
               <AutoComplete
                 options={PARTY_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر اسم الحزب"
+                emptyMessage="No results found"
+                placeholder="Select party name"
                 value={getOptionByValue(PARTY_OPTIONS, watch("partyName"))}
                 onValueChange={(option) => {
                   console.log("🏛️ PARTY NAME SELECTED:", option.value);
@@ -511,7 +511,7 @@ export default function Club({
                   // Only if both dates are already filled, then check completion
                   if (partyStartDate && partyEndDate) {
                     console.log("⏱️ Both dates already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('party', "سياسي"), 300);
+                    setTimeout(() => checkAndScroll('party', "political"), 300);
                   } else {
                     console.log("⏳ Dates not yet filled, waiting for user to fill dates");
                   }
@@ -520,7 +520,7 @@ export default function Club({
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                الفترة الزمنية
+                Time Period
               </label>
               <MonthYearRangePicker
                 value={{
@@ -528,7 +528,7 @@ export default function Club({
                   to: parseISODateToDate(watch('partyEndDate'))
                 }}
                 onChange={(range) => handleDateRangeChangeAndScroll('party', range)}
-                placeholder="اختر فترة العضوية"
+                placeholder="Select membership period"
                 className="month-year-range-picker"
               />
             </div>
@@ -537,7 +537,7 @@ export default function Club({
       )}
 
       {/* Union Section */}
-      {selectedActivities.includes("نقابي") && (
+      {selectedActivities.includes("union") && (
         <div 
           ref={unionSectionRef} 
           data-section="union-section" 
@@ -546,12 +546,12 @@ export default function Club({
           <div className="grid grid-cols-1 md:grid-cols-2  items-center gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                اسم النقابة
+                Union Name
               </label>
               <AutoComplete
                 options={UNION_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر اسم النقابة"
+                emptyMessage="No results found"
+                placeholder="Select union name"
                 value={getOptionByValue(UNION_OPTIONS, watch("unionName"))}
                 onValueChange={(option) => {
                   console.log("🏢 UNION NAME SELECTED:", option.value);
@@ -584,7 +584,7 @@ export default function Club({
                     console.log("📜 UNION NAME - Setting timeout for checkAndScroll");
                     setTimeout(() => {
                       console.log("📜 UNION NAME - Timeout executing checkAndScroll");
-                      checkAndScroll('union', "نقابي");
+                      checkAndScroll('union', "union");
                     }, 300);
                   } else {
                     console.log("⏳ Dates not yet filled, waiting for user to fill dates");
@@ -594,7 +594,7 @@ export default function Club({
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                الفترة الزمنية
+                Time Period
               </label>
               <MonthYearRangePicker
                 value={{
@@ -618,7 +618,7 @@ export default function Club({
                   
                   handleDateRangeChangeAndScroll('union', range);
                 }}
-                placeholder="اختر فترة العضوية"
+                placeholder="Select membership period"
                 className="month-year-range-picker"
               />
             </div>
@@ -627,17 +627,17 @@ export default function Club({
       )}
 
       {/* NGO Section */}
-      {selectedActivities.includes("اجتماعي") && (
+      {selectedActivities.includes("social") && (
         <div ref={ngoSectionRef} className="flex flex-col gap-6 border-t pt-6 border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2  items-center gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                اسم المنظمة
+                Organization Name
               </label>
               <AutoComplete
                 options={NGO_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر اسم المنظمة"
+                emptyMessage="No results found"
+                placeholder="Select organization name"
                 value={getOptionByValue(NGO_OPTIONS, watch("ngoName"))}
                 onValueChange={(option) => {
                   console.log("🏥 NGO NAME SELECTED:", option.value);
@@ -653,7 +653,7 @@ export default function Club({
                   // Only if activity is already filled, then check completion
                   if (ngoActivity) {
                     console.log("⏱️ Activity already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('ngo', "اجتماعي"), 300);
+                    setTimeout(() => checkAndScroll('ngo', "social"), 300);
                   } else {
                     console.log("⏳ Activity not yet filled, waiting for user to select activity");
                   }
@@ -662,12 +662,12 @@ export default function Club({
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                نوع النشاط
+                Activity Type
               </label>
               <AutoComplete
                 options={NGO_ACTIVITY_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر نوع النشاط"
+                emptyMessage="No results found"
+                placeholder="Select activity type"
                 value={getOptionByValue(NGO_ACTIVITY_OPTIONS, watch("ngoActivity"))}
                 onValueChange={(option) => {
                   console.log("🏥 NGO ACTIVITY SELECTED:", option.value);
@@ -683,7 +683,7 @@ export default function Club({
                   // Only if name is already filled, then check completion
                   if (ngoName) {
                     console.log("⏱️ Name already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('ngo', "اجتماعي"), 300);
+                    setTimeout(() => checkAndScroll('ngo', "social"), 300);
                   } else {
                     console.log("⏳ Name not yet filled, waiting for user to select name");
                   }
@@ -695,17 +695,17 @@ export default function Club({
       )}
 
       {/* Youth Club Section */}
-      {selectedActivities.includes("شبابي") && (
+      {selectedActivities.includes("youth") && (
         <div ref={clubSectionRef} className="flex flex-col gap-6 border-t pt-6 border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2  items-center gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                اسم النادي
+                Club Name
               </label>
               <AutoComplete
                 options={CLUB_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر اسم النادي"
+                emptyMessage="No results found"
+                placeholder="Select club name"
                 value={getOptionByValue(CLUB_OPTIONS, watch("clubName"))}
                 onValueChange={(option) => {
                   console.log("🏆 CLUB NAME SELECTED:", option.value);
@@ -721,7 +721,7 @@ export default function Club({
                   // Only if type is already filled, then check completion
                   if (clubType) {
                     console.log("⏱️ Type already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('club', "شبابي"), 300);
+                    setTimeout(() => checkAndScroll('club', "youth"), 300);
                   } else {
                     console.log("⏳ Type not yet filled, waiting for user to select type");
                   }
@@ -730,12 +730,12 @@ export default function Club({
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                نوع النادي
+                Club Type
               </label>
               <AutoComplete
                 options={CLUB_TYPE_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر نوع النادي"
+                emptyMessage="No results found"
+                placeholder="Select club type"
                 value={getOptionByValue(CLUB_TYPE_OPTIONS, watch("clubType"))}
                 onValueChange={(option) => {
                   console.log("🏆 CLUB TYPE SELECTED:", option.value);
@@ -751,7 +751,7 @@ export default function Club({
                   // Only if name is already filled, then check completion
                   if (clubName) {
                     console.log("⏱️ Name already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('club', "شبابي"), 300);
+                    setTimeout(() => checkAndScroll('club', "youth"), 300);
                   } else {
                     console.log("⏳ Name not yet filled, waiting for user to select name");
                   }
@@ -763,17 +763,17 @@ export default function Club({
       )}
 
       {/* Voluntary Section */}
-      {selectedActivities.includes("تطوعي") && (
+      {selectedActivities.includes("voluntary") && (
         <div ref={voluntarySectionRef} className="flex flex-col gap-6 border-t pt-7 border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2  items-center gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                اسم المبادرة
+                Initiative Name
               </label>
               <AutoComplete
                 options={VOLUNTARY_OPTIONS}
-                emptyMessage="لا توجد نتائج"
-                placeholder="اختر اسم المبادرة"
+                emptyMessage="No results found"
+                placeholder="Select initiative name"
                 value={getOptionByValue(VOLUNTARY_OPTIONS, watch("voluntaryName"))}
                 onValueChange={(option) => {
                   console.log("🤝 VOLUNTARY NAME SELECTED:", option.value);
@@ -792,7 +792,7 @@ export default function Club({
                   // Only if both dates are already filled, then check completion
                   if (voluntaryStartDate && voluntaryEndDate) {
                     console.log("⏱️ Both dates already filled, checking completion after delay");
-                    setTimeout(() => checkAndScroll('voluntary', "تطوعي"), 300);
+                    setTimeout(() => checkAndScroll('voluntary', "voluntary"), 300);
                   } else {
                     console.log("⏳ Dates not yet filled, waiting for user to fill dates");
                   }
@@ -801,7 +801,7 @@ export default function Club({
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 pb-2">
-                الفترة الزمنية
+                Time Period
               </label>
               <MonthYearRangePicker
                 value={{
@@ -809,7 +809,7 @@ export default function Club({
                   to: parseISODateToDate(watch('voluntaryEndDate'))
                 }}
                 onChange={(range) => handleDateRangeChangeAndScroll('voluntary', range)}
-                placeholder="اختر فترة التطوع"
+                placeholder="Select volunteer period"
                 className="month-year-range-picker"
               />
             </div>
