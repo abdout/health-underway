@@ -8,37 +8,117 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from './form-context';
 // import BackButton from './back-button';  // Import the BackButton component
 
-// Define the icons for each step
+// Arrow Right Icon Component
+const ArrowRightIcon = ({ className }: { className: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className={className}>
+    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7-7l7 7l-7 7"/>
+  </svg>
+);
+
+// Define the icons for each step with filled and outline variants
 const StepIcons = {
-  attachment: (className: string) => (
+  attachment: (className: string, filled: boolean = false) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={className}>
-      <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M6 15V9a6 6 0 1 1 12 0v8a4 4 0 1 1-8 0V9a2 2 0 1 1 4 0v8" strokeWidth="1"/>
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M6 15V9a6 6 0 1 1 12 0v8a4 4 0 1 1-8 0V9a2 2 0 1 1 4 0v8"
+      />
     </svg>
   ),
-  contact: (className: string) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" className={className}>
-      <g fill="currentColor" stroke="none">
-        <path d="M128 206a10 10 0 1 0-10-10a10 10 0 0 0 10 10zm100.27-117.95a170 170 0 0 0-200.54 0a6 6 0 0 0 7.08 9.7a158 158 0 0 1 186.38 0a6 6 0 0 0 7.08-9.7zm-30.03 37.83a122 122 0 0 0-140.48 0a6 6 0 1 0 7 9.76a110 110 0 0 1 126.48 0a6 6 0 0 0 7-9.76zm-30.1 37.85a74 74 0 0 0-80.28 0a6 6 0 1 0 6.9 9.78a62 62 0 0 1 66.48 0a6 6 0 0 0 8.28-1.78a6 6 0 0 0-1.38-8z"/>
-      </g>
-    </svg>
-  ),
-  information: (className: string) => (
+  contact: (className: string, filled: boolean = false) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={className}>
-      <g fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="1">
-        <circle cx="12" cy="12" r="9" strokeLinecap="round"/>
-        <path strokeWidth="1.5" d="M12 8h.01v.01H12z"/>
-        <path strokeLinecap="round" d="M12 12v4"/>
-      </g>
+      <circle 
+        cx="12" 
+        cy="12" 
+        r="3" 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeWidth={filled ? "0" : "1.5"}
+      />
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M12 1v6m0 10v6m11-7h-6M6 12H0"
+      />
     </svg>
   ),
-  education: (className: string) => (
+  information: (className: string, filled: boolean = false) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={className}>
-      <path fill="currentColor" fillRule="evenodd" d="M11.3 2.05a4.6 4.6 0 0 1 1.38 0c.515.08 1.01.279 1.84.612l7.19 2.9c.554.224 1 .404 1.33.57c.317.162.634.363.797.68c.111.215.166.45.166.685v8a.5.5 0 0 1-1 0v-6.62c-.324.162-.759.337-1.29.552l-.708.285v5.78c0 1.92-1.24 3.3-2.92 4.18s-3.9 1.32-6.08 1.32s-4.39-.437-6.07-1.32c-1.69-.88-2.93-2.27-2.93-4.18v-5.78l-.709-.286c-.554-.224-1-.404-1.33-.571c-.317-.161-.633-.362-.797-.68a1.5 1.5 0 0 1 0-1.37c.163-.316.48-.517.797-.678c.328-.167.775-.348 1.33-.571l7.18-2.9c.827-.334 1.32-.533 1.84-.613zm1.22.987a3.5 3.5 0 0 0-1.07 0c-.387.06-.768.21-1.68.577l-7.1 2.86c-.583.235-.988.4-1.27.544c-.3.153-.355.233-.362.246a.5.5 0 0 0 0 .457c.007.013.062.094.362.246c.284.145.689.31 1.27.544l7.1 2.86c.907.366 1.29.517 1.68.577a3.5 3.5 0 0 0 1.07 0c.387-.06.768-.21 1.68-.576l7.1-2.86c.583-.235.989-.4 1.27-.544c.3-.153.355-.233.362-.246a.5.5 0 0 0 0-.457c-.007-.013-.062-.093-.362-.246c-.284-.145-.69-.309-1.27-.544l-7.1-2.86c-.907-.366-1.29-.516-1.68-.576zm1.99 9.29l5.48-2.21v5.38c0 1.41-.888 2.52-2.39 3.3c-1.5.784-3.54 1.2-5.61 1.2s-4.11-.419-5.61-1.2c-1.5-.782-2.39-1.89-2.39-3.3v-5.37l5.47 2.21c.827.334 1.32.533 1.84.613c.456.07.921.07 1.38 0c.515-.08 1.01-.279 1.84-.612z" clipRule="evenodd"/>
+      <circle 
+        cx="12" 
+        cy="12" 
+        r="10" 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeWidth={filled ? "0" : "1.5"}
+      />
+      {!filled && (
+        <>
+          <path d="M12 16v-4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5"/>
+          <path d="M12 8h.01" stroke="currentColor" strokeLinecap="round" strokeWidth="2"/>
+        </>
+      )}
+      {filled && (
+        <>
+          <path d="M12 16v-4" fill="white" stroke="white" strokeLinecap="round" strokeWidth="1.5"/>
+          <circle cx="12" cy="8" r="1" fill="white"/>
+        </>
+      )}
     </svg>
   ),
-  activity: (className: string) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" className={className}>
-      <path fill="currentColor" d="M255 471L91.7 387V41h328.6v346zm-147.3-93.74L255 453l149.3-75.76V57H107.7zm146.43-65.76l98.27-49.89v-49.9l-98.14 49.82l-94.66-48.69v50zm.13 32.66l-94.66-48.69v50l94.54 48.62l98.27-49.89v-49.9z"/>
+  education: (className: string, filled: boolean = false) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={className}>
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M22 10v6M2 10l10-5 10 5-10 5z"
+      />
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M6 12v5c3 0 5-1 8-1s5 1 8 1v-5"
+      />
+    </svg>
+  ),
+  activity: (className: string, filled: boolean = false) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={className}>
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+      />
+      <circle 
+        cx="9" 
+        cy="7" 
+        r="4" 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeWidth={filled ? "0" : "1.5"}
+      />
+      <path 
+        fill={filled ? "currentColor" : "none"} 
+        stroke="currentColor" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={filled ? "0" : "1.5"}
+        d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+      />
     </svg>
   )
 };
@@ -79,7 +159,7 @@ export default function StepNavigation() {
 
   // Function to check form completion status
   const checkFormStatus = () => {
-    console.log("Checking form status...");
+    console.log("Checking form completion status...");
     
     // Check attachment form
     try {
@@ -96,10 +176,10 @@ export default function StepNavigation() {
         }));
       }
     } catch (e) {
-      console.error('Error parsing attachment data:', e);
+      console.error('Error parsing attachment form data:', e);
     }
 
-    // Check contact form - green if at least 2 fields are filled
+    // Check contact form - complete if at least 2 fields are filled
     try {
       const contactData = localStorage.getItem(FORM_STORAGE_KEYS.contact);
       if (contactData) {
@@ -114,10 +194,10 @@ export default function StepNavigation() {
         }));
       }
     } catch (e) {
-      console.error('Error parsing contact data:', e);
+      console.error('Error parsing contact form data:', e);
     }
 
-    // Check information form - green if name and location are filled
+    // Check information form - complete if name and location are filled
     try {
       const infoData = localStorage.getItem(FORM_STORAGE_KEYS.information);
       if (infoData) {
@@ -134,10 +214,10 @@ export default function StepNavigation() {
         }));
       }
     } catch (e) {
-      console.error('Error parsing information data:', e);
+      console.error('Error parsing information form data:', e);
     }
 
-    // Check education form - green if any education level is filled
+    // Check education form - complete if any education level is filled
     try {
       const educationData = localStorage.getItem(FORM_STORAGE_KEYS.education);
       if (educationData) {
@@ -150,10 +230,10 @@ export default function StepNavigation() {
         }));
       }
     } catch (e) {
-      console.error('Error parsing education data:', e);
+      console.error('Error parsing education form data:', e);
     }
 
-    // Check activity form - green if at least one skill is filled
+    // Check activity form - complete if at least one skill is filled
     try {
       const activityData = localStorage.getItem(FORM_STORAGE_KEYS.activity);
       if (activityData) {
@@ -166,16 +246,16 @@ export default function StepNavigation() {
         }));
       }
     } catch (e) {
-      console.error('Error parsing activity data:', e);
+      console.error('Error parsing activity form data:', e);
     }
   };
 
   // Check form status initially and whenever localStorage changes
   useEffect(() => {
-    // Initial check
+    // Initial status check
     checkFormStatus();
     
-    // Create a storage event listener
+    // Create a storage event listener for cross-tab changes
     const handleStorageChange = (e: StorageEvent) => {
       // Only check if the change is to one of our form data keys
       const isFormDataKey = Object.values(FORM_STORAGE_KEYS).includes(e.key || '');
@@ -187,7 +267,7 @@ export default function StepNavigation() {
     // Listen for changes to localStorage from other tabs/windows
     window.addEventListener('storage', handleStorageChange);
     
-    // We also need to periodically check for changes that happen in the same tab
+    // Periodically check for changes that happen in the same tab
     // since those don't trigger the storage event
     const interval = setInterval(checkFormStatus, 1000);
     
@@ -222,9 +302,9 @@ export default function StepNavigation() {
   return (
     <div className='flex flex-col'>
       {/* <BackButton currentStep={currentStep} /> */}
-      <div className=" ">
-        <div className="relative flex flex-row justify-between  gap-2 lg:gap-3">
-          {steps.map((step) => {
+      <div className="w-full">
+        <div className="relative flex flex-row items-center justify-between gap-1 lg:gap-2">
+          {steps.map((step, index) => {
             const isActive = currentPath === step.route || 
               (currentPath === 'information' && step.route === 'information') ||
               (currentPath === 'activity' && step.route === 'activity');
@@ -234,39 +314,106 @@ export default function StepNavigation() {
               (visitedSteps['activity'] && currentPath === 'activity');
             
             const formState = formStatus[step.route];
+            const isCompleted = formState === 'complete';
+            const isPartial = formState === 'partial';
             
-            // Simplified color logic - only muted-foreground and primary
-            const iconColorClass = isActive ? 'text-primary' : 'text-muted-foreground';
+            // Enhanced color logic with filled styles
+            const iconColorClass = clsx(
+              'transition-colors duration-200',
+              {
+                'text-green-600': isCompleted && !isActive,
+                'text-primary': isActive,
+                'text-amber-500': isPartial && !isActive && !isCompleted,
+                'text-muted-foreground': !isActive && !isCompleted && !isPartial,
+              }
+            );
 
             // Get the appropriate icon component for this step
             const IconComponent = StepIcons[step.icon as keyof typeof StepIcons];
+            const isLastStep = index === steps.length - 1;
 
             return (
-              <Link
-                href={step.link}
-                key={step.link}
-                className={clsx(
-                  "group z-20 flex items-center gap-2 p-1 rounded-md",
-                  // "transition-all duration-200 focus:outline-none",
-                  "hover:text-primary focus:text-primary", 
-            
+              <div key={step.link} className="flex items-center">
+                <Link
+                  href={step.link}
+                  className={clsx(
+                    "group z-20 flex flex-col items-center gap-1 p-2 rounded-lg",
+                    "transition-all duration-200 focus:outline-none",
+                    "hover:bg-muted/50 focus:bg-muted/50",
+                    "min-w-[60px] lg:min-w-[80px]"
+                  )}
+                  prefetch={true}
+                >
+                  <div className={clsx(
+                    'flex items-center justify-center transition-all duration-200',
+                    iconColorClass,
+                    'group-hover:text-primary group-focus:text-primary',
+                    {
+                      'scale-110': isActive,
+                      'drop-shadow-md': isActive || isCompleted,
+                    }
+                  )}>
+                    {IconComponent(
+                      clsx('w-6 h-6 lg:w-7 lg:h-7'), 
+                      isCompleted || isActive
+                    )}
+                  </div>
+                  
+                  {/* Step title */}
+                  <span className={clsx(
+                    'text-xs lg:text-sm font-medium text-center transition-colors duration-200',
+                    {
+                      'text-green-600': isCompleted && !isActive,
+                      'text-primary': isActive,
+                      'text-amber-600': isPartial && !isActive && !isCompleted,
+                      'text-muted-foreground': !isActive && !isCompleted && !isPartial,
+                    },
+                    'group-hover:text-primary group-focus:text-primary'
+                  )}>
+                    {step.title}
+                  </span>
+                  
+                  {/* Status indicator dot */}
+                  <div className={clsx(
+                    'w-2 h-2 rounded-full transition-all duration-200',
+                    {
+                      'bg-green-500': isCompleted,
+                      'bg-primary': isActive,
+                      'bg-amber-400': isPartial && !isCompleted,
+                      'bg-muted-foreground/30': !isActive && !isCompleted && !isPartial,
+                    }
+                  )} />
+                </Link>
+                
+                {/* Arrow indicator between steps */}
+                {!isLastStep && (
+                  <div className="flex items-center justify-center px-1 lg:px-2">
+                    <ArrowRightIcon 
+                      className={clsx(
+                        'transition-colors duration-200',
+                        {
+                          'text-green-500': isCompleted,
+                          'text-primary/60': isActive,
+                          'text-amber-400': isPartial && !isCompleted,
+                          'text-muted-foreground/40': !isActive && !isCompleted && !isPartial,
+                        }
+                      )}
+                    />
+                  </div>
                 )}
-                prefetch={true}
-              >
-                <div className={clsx(
-                  'flex items-center justify-center transition-colors duration-200',
-                  iconColorClass,
-                  isActive ? '' : '',
-                  'group-hover:text-primary group-focus:text-primary',
-                  'transition-all duration-200'
-                )}>
-                  {IconComponent(clsx('w-6 h-6', 
-                    isActive && 'drop-shadow-md'))}
-                </div>
-              </Link>
+              </div>
             );
           })}
-          {/* <div className="absolute top-3 flex h-1 w-full border-b border-dashed " /> */}
+        </div>
+        
+        {/* Progress bar */}
+        <div className="mt-4 w-full bg-muted rounded-full h-1.5">
+          <div 
+            className="bg-gradient-to-r from-primary to-green-500 h-1.5 rounded-full transition-all duration-500 ease-out"
+            style={{
+              width: `${(Object.values(formStatus).filter(status => status === 'complete').length / steps.length) * 100}%`
+            }}
+          />
         </div>
       </div>
     </div>

@@ -1,0 +1,297 @@
+"use server";
+
+import { revalidatePath } from 'next/cache';
+import { db } from '@/lib/db';
+import { currentUser } from '@/lib/auth';
+import type { PaediatricSchema } from './validation';
+import { paediatricSchema } from './validation';
+
+// Action result type
+interface ActionResult {
+  success: boolean;
+  error?: string;
+}
+
+// ActionState for backwards compatibility
+export type ActionState = {
+  success: boolean;
+  error: boolean;
+  message?: string;
+};
+
+/**
+ * Create new paediatric doctor record
+ */
+export async function createPaediatricDoctor(
+  prevState: ActionState,
+  formData: PaediatricSchema | FormData
+): Promise<ActionResult> {
+  try {
+    console.log('Server: createPaediatricDoctor called with formData:', 
+      formData instanceof FormData ? 'FormData object' : formData);
+      
+    // Authenticate user
+    const user = await currentUser();
+    if (!user?.id) {
+      console.error('User not found or not authenticated');
+      return { success: false, error: 'User not found or not authenticated' };
+    }
+
+    // Handle either FormData or direct object
+    let processedData: PaediatricSchema;
+    
+    if (formData instanceof FormData) {
+      // If it's FormData, extract the values
+      const formObject: Record<string, string | File | boolean | string[]> = {};
+      
+      // Handle arrays (qualifications and subspecialties)
+      const qualifications: string[] = [];
+      const subspecialties: string[] = [];
+      
+      formData.forEach((value, key) => {
+        if (key === 'qualifications') {
+          qualifications.push(value.toString());
+        } else if (key === 'paediatricsSubspecialty') {
+          subspecialties.push(value.toString());
+        } else if (key === 'agreeToEmailPublication' || key === 'agreeToPhotoPublication') {
+          formObject[key] = value === 'true';
+        } else {
+          formObject[key] = value;
+        }
+      });
+      
+      formObject.qualifications = qualifications;
+      formObject.paediatricsSubspecialty = subspecialties;
+      
+      processedData = formObject as PaediatricSchema;
+    } else {
+      // If it's already an object
+      processedData = formData;
+    }
+
+    // Validate form data
+    const validatedData = paediatricSchema.safeParse(processedData);
+    if (!validatedData.success) {
+      console.error('Validation error:', validatedData.error);
+      return { success: false, error: 'Invalid data provided' };
+    }
+
+    const data = validatedData.data;
+
+    // Create paediatric doctor profile
+    await db.paediatricDoctor.create({
+      data: {
+        userId: user.id,
+        fullNameEnglish: data.fullNameEnglish,
+        fullNameArabic: data.fullNameArabic,
+        namePrefix: data.namePrefix,
+        stageOfCareer: data.stageOfCareer,
+        placeOfBirth: data.placeOfBirth,
+        dateOfBirth: data.dateOfBirth,
+        originalHomeTownOrVillage: data.originalHomeTownOrVillage,
+        personalEmail: data.personalEmail,
+        agreeToEmailPublication: data.agreeToEmailPublication,
+        universityOfPrimaryGraduation: data.universityOfPrimaryGraduation,
+        countryOfUniversityOfPrimaryGraduation: data.countryOfUniversityOfPrimaryGraduation,
+        yearOfGraduationFromMedicine: data.yearOfGraduationFromMedicine,
+        awardsDuringPrimaryMedicalDegree: data.awardsDuringPrimaryMedicalDegree,
+        qualifications: data.qualifications,
+        otherQualification: data.otherQualification,
+        postGraduateStudies: data.postGraduateStudies,
+        otherQualifications: data.otherQualifications,
+        paediatricsSubspecialty: data.paediatricsSubspecialty,
+        otherSubspecialty: data.otherSubspecialty,
+        subspecialtyCertified: data.subspecialtyCertified,
+        subspecialtyDegreeName: data.subspecialtyDegreeName,
+        currentPositionInHospital: data.currentPositionInHospital,
+        countryOfMajorityPaediatricsTraining: data.countryOfMajorityPaediatricsTraining,
+        academicPositionCurrentOrPast: data.academicPositionCurrentOrPast,
+        pastCareerPositions: data.pastCareerPositions,
+        scientificPapersPublished: data.scientificPapersPublished,
+        booksEdited: data.booksEdited,
+        chaptersEditedInPaediatricsBooks: data.chaptersEditedInPaediatricsBooks,
+        majorCareerAchievement: data.majorCareerAchievement,
+        recognitionOfServices: data.recognitionOfServices,
+        secondNationality: data.secondNationality,
+        agreeToPhotoPublication: data.agreeToPhotoPublication,
+        hobbiesOrInterests: data.hobbiesOrInterests,
+        nameOfSpouse: data.nameOfSpouse,
+        workOfSpouse: data.workOfSpouse,
+        childrenNamesAndStatus: data.childrenNamesAndStatus,
+        specialOccasionOrRole: data.specialOccasionOrRole,
+        extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
+        scientificPapersFiles: data.scientificPapersFiles,
+        personalPhoto: data.personalPhoto,
+        updatedCV: data.updatedCV,
+      }
+    });
+
+    // Revalidate paths
+    revalidatePath('/paediatric');
+    revalidatePath('/dashboard');
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error creating paediatric doctor record:', error);
+    return { success: false, error: 'Failed to save paediatric doctor information' };
+  }
+}
+
+/**
+ * Get paediatric doctor data
+ */
+export async function getPaediatricDoctor() {
+  try {
+    const user = await currentUser();
+    if (!user?.id) return null;
+
+    const paediatricData = await db.paediatricDoctor.findUnique({
+      where: { userId: user.id }
+    });
+
+    return paediatricData;
+  } catch (error) {
+    console.error('Error fetching paediatric doctor data:', error);
+    return null;
+  }
+}
+
+/**
+ * Update existing paediatric doctor record
+ */
+export async function updatePaediatricDoctor(
+  prevState: ActionState,
+  formData: PaediatricSchema | FormData
+): Promise<ActionResult> {
+  try {
+    console.log('Server: updatePaediatricDoctor called with formData:', 
+      formData instanceof FormData ? 'FormData object' : formData);
+    
+    // Authenticate user
+    const user = await currentUser();
+    if (!user?.id) {
+      console.error('User not found or not authenticated');
+      return { success: false, error: 'User not found or not authenticated' };
+    }
+
+    // Handle either FormData or direct object
+    let processedData: PaediatricSchema;
+    
+    if (formData instanceof FormData) {
+      // If it's FormData, extract the values
+      const formObject: Record<string, string | File | boolean | string[]> = {};
+      
+      // Handle arrays (qualifications and subspecialties)
+      const qualifications: string[] = [];
+      const subspecialties: string[] = [];
+      
+      formData.forEach((value, key) => {
+        if (key === 'qualifications') {
+          qualifications.push(value.toString());
+        } else if (key === 'paediatricsSubspecialty') {
+          subspecialties.push(value.toString());
+        } else if (key === 'agreeToEmailPublication' || key === 'agreeToPhotoPublication') {
+          formObject[key] = value === 'true';
+        } else {
+          formObject[key] = value;
+        }
+      });
+      
+      formObject.qualifications = qualifications;
+      formObject.paediatricsSubspecialty = subspecialties;
+      
+      processedData = formObject as PaediatricSchema;
+    } else {
+      // If it's already an object
+      processedData = formData;
+    }
+
+    // Validate form data
+    const validatedData = paediatricSchema.safeParse(processedData);
+    if (!validatedData.success) {
+      console.error('Validation error:', validatedData.error);
+      return { success: false, error: 'Invalid data provided' };
+    }
+
+    const data = validatedData.data;
+
+    // Update paediatric doctor profile
+    await db.paediatricDoctor.update({
+      where: { userId: user.id },
+      data: {
+        fullNameEnglish: data.fullNameEnglish,
+        fullNameArabic: data.fullNameArabic,
+        namePrefix: data.namePrefix,
+        stageOfCareer: data.stageOfCareer,
+        placeOfBirth: data.placeOfBirth,
+        dateOfBirth: data.dateOfBirth,
+        originalHomeTownOrVillage: data.originalHomeTownOrVillage,
+        personalEmail: data.personalEmail,
+        agreeToEmailPublication: data.agreeToEmailPublication,
+        universityOfPrimaryGraduation: data.universityOfPrimaryGraduation,
+        countryOfUniversityOfPrimaryGraduation: data.countryOfUniversityOfPrimaryGraduation,
+        yearOfGraduationFromMedicine: data.yearOfGraduationFromMedicine,
+        awardsDuringPrimaryMedicalDegree: data.awardsDuringPrimaryMedicalDegree,
+        qualifications: data.qualifications,
+        otherQualification: data.otherQualification,
+        postGraduateStudies: data.postGraduateStudies,
+        otherQualifications: data.otherQualifications,
+        paediatricsSubspecialty: data.paediatricsSubspecialty,
+        otherSubspecialty: data.otherSubspecialty,
+        subspecialtyCertified: data.subspecialtyCertified,
+        subspecialtyDegreeName: data.subspecialtyDegreeName,
+        currentPositionInHospital: data.currentPositionInHospital,
+        countryOfMajorityPaediatricsTraining: data.countryOfMajorityPaediatricsTraining,
+        academicPositionCurrentOrPast: data.academicPositionCurrentOrPast,
+        pastCareerPositions: data.pastCareerPositions,
+        scientificPapersPublished: data.scientificPapersPublished,
+        booksEdited: data.booksEdited,
+        chaptersEditedInPaediatricsBooks: data.chaptersEditedInPaediatricsBooks,
+        majorCareerAchievement: data.majorCareerAchievement,
+        recognitionOfServices: data.recognitionOfServices,
+        secondNationality: data.secondNationality,
+        agreeToPhotoPublication: data.agreeToPhotoPublication,
+        hobbiesOrInterests: data.hobbiesOrInterests,
+        nameOfSpouse: data.nameOfSpouse,
+        workOfSpouse: data.workOfSpouse,
+        childrenNamesAndStatus: data.childrenNamesAndStatus,
+        specialOccasionOrRole: data.specialOccasionOrRole,
+        extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
+        scientificPapersFiles: data.scientificPapersFiles,
+        personalPhoto: data.personalPhoto,
+        updatedCV: data.updatedCV,
+      }
+    });
+
+    // Revalidate paths
+    revalidatePath('/paediatric');
+    revalidatePath('/dashboard');
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating paediatric doctor record:', error);
+    return { success: false, error: 'Failed to update paediatric doctor information' };
+  }
+}
+
+/**
+ * Delete paediatric doctor record
+ */
+export async function deletePaediatricDoctor() {
+  try {
+    const user = await currentUser();
+    if (!user?.id) return { success: false, error: 'User not found' };
+
+    await db.paediatricDoctor.delete({
+      where: { userId: user.id }
+    });
+
+    revalidatePath('/paediatric');
+    revalidatePath('/dashboard');
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting paediatric doctor record:', error);
+    return { success: false, error: 'Failed to delete paediatric doctor record' };
+  }
+} 

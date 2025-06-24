@@ -47,6 +47,7 @@ model User {
   patients              Patient[]
   appointments          Appointment[]          @relation("UserAppointments")
   doctor                Doctor?
+  paediatricDoctor      PaediatricDoctor?
   notifications         Notification[]
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
@@ -290,6 +291,78 @@ model Doctor {
 
   // Notifications
   notifications      Notification[] @relation("DoctorNotifications")
+}
+
+model PaediatricDoctor {
+  id                                    String    @id @default(cuid())
+  userId                                String    @unique
+  user                                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic Information
+  fullNameEnglish                       String
+  fullNameArabic                        String
+  namePrefix                            String
+  stageOfCareer                         String
+  
+  // Personal Details
+  placeOfBirth                          String?
+  dateOfBirth                           String?
+  originalHomeTownOrVillage             String?
+  personalEmail                         String
+  agreeToEmailPublication               Boolean
+  
+  // Education
+  universityOfPrimaryGraduation         String
+  countryOfUniversityOfPrimaryGraduation String
+  yearOfGraduationFromMedicine          String
+  awardsDuringPrimaryMedicalDegree      String?
+  
+  // Qualifications - Multiple checkboxes stored as array
+  qualifications                        String[]
+  otherQualification                    String?
+  
+  // Post Graduate Studies
+  postGraduateStudies                   String?
+  otherQualifications                   String?
+  
+  // Subspecialty - Multiple checkboxes stored as array
+  paediatricsSubspecialty               String[]
+  otherSubspecialty                     String?
+  
+  // Certification
+  subspecialtyCertified                 String
+  subspecialtyDegreeName                String?
+  
+  // Career Information
+  currentPositionInHospital             String
+  countryOfMajorityPaediatricsTraining  String
+  academicPositionCurrentOrPast         String?
+  pastCareerPositions                   String?
+  
+  // Research and Publications
+  scientificPapersPublished             String?
+  booksEdited                           String?
+  chaptersEditedInPaediatricsBooks      String?
+  majorCareerAchievement                String?
+  recognitionOfServices                 String?
+  
+  // Personal Information
+  secondNationality                     String?
+  agreeToPhotoPublication               Boolean   @default(false)
+  hobbiesOrInterests                    String?
+  nameOfSpouse                          String?
+  workOfSpouse                          String?
+  childrenNamesAndStatus                String?
+  specialOccasionOrRole                 String?
+  extendedRequestFamilyPhoto            String?
+  
+  // File uploads (optional - will store file paths/URLs)
+  scientificPapersFiles                 String[]  @default([])
+  personalPhoto                         String?
+  updatedCV                             String?
+  
+  createdAt                             DateTime  @default(now())
+  updatedAt                             DateTime  @updatedAt
 }
 
 model Notification {
