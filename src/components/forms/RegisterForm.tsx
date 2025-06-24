@@ -57,8 +57,8 @@ const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof PatientFormValidation>>({
-    resolver: zodResolver<z.infer<typeof PatientFormValidation>>(PatientFormValidation),
+  const form = useForm({
+    resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
       name: user.name ?? "",
@@ -136,8 +136,9 @@ const RegisterForm = ({ user }: { user: User }) => {
         console.log("❌ [RegisterForm] newPatient is falsy, no redirect");
       }
     } catch (error) {
-      console.error("❌ [RegisterForm] Error in onSubmit:", error);
-      console.error("❌ [RegisterForm] Error stack:", error.stack);
+      const err = error as Error;
+      console.error("❌ [RegisterForm] Error in onSubmit:", err);
+      console.error("❌ [RegisterForm] Error stack:", err.stack);
     }
 
     console.log("🏁 [RegisterForm] Setting loading to false");
