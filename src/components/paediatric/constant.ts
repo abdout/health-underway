@@ -114,7 +114,8 @@ export const PAEDIATRIC_SUBSPECIALTIES: Option[] = [
 export const SUBSPECIALTY_CERTIFIED_OPTIONS: Option[] = [
   { value: "yes", label: "Yes" },
   { value: "no", label: "No" },
-  { value: "other", label: "Other" },
+  { value: "in-progress", label: "In Progress" },
+  { value: "not-applicable", label: "Not Applicable" }
 ];
 
 // Extended Request Family Photo options
@@ -137,15 +138,91 @@ export const generateGraduationYears = (): Option[] => {
 
 // Common universities (can be expanded)
 export const UNIVERSITIES: Option[] = [
-  { value: "university_of_khartoum", label: "University of Khartoum" },
-  { value: "cairo_university", label: "Cairo University" },
-  { value: "oxford_university", label: "Oxford University" },
-  { value: "cambridge_university", label: "Cambridge University" },
-  { value: "harvard_university", label: "Harvard University" },
-  { value: "johns_hopkins", label: "Johns Hopkins University" },
-  { value: "university_of_toronto", label: "University of Toronto" },
-  { value: "king_saud_university", label: "King Saud University" },
-  { value: "american_university_beirut", label: "American University of Beirut" },
+  { value: "university-of-khartoum", label: "University of Khartoum" },
+  { value: "university-of-gezira", label: "University of Gezira" },
+  { value: "university-of-blue-nile", label: "University of Blue Nile" },
+  { value: "university-of-kassala", label: "University of Kassala" },
+  { value: "university-of-red-sea", label: "University of Red Sea" },
+  { value: "university-of-dongola", label: "University of Dongola" },
+  { value: "university-of-nyala", label: "University of Nyala" },
+  { value: "university-of-al-fashir", label: "University of Al-Fashir" },
+  { value: "university-of-sennar", label: "University of Sennar" },
+  { value: "university-of-west-kordofan", label: "University of West Kordofan" },
+  { value: "ahfad-university", label: "Ahfad University for Women" },
+  { value: "national-ribat-university", label: "National Ribat University" },
+  { value: "university-of-medical-sciences", label: "University of Medical Sciences and Technology" },
+  { value: "cairo-university", label: "Cairo University" },
+  { value: "ain-shams-university", label: "Ain Shams University" },
+  { value: "alexandria-university", label: "Alexandria University" },
+  { value: "al-azhar-university", label: "Al-Azhar University" },
+  { value: "king-saud-university", label: "King Saud University" },
+  { value: "king-abdulaziz-university", label: "King Abdulaziz University" },
+  { value: "university-of-dammam", label: "University of Dammam" },
+  { value: "harvard-university", label: "Harvard University" },
+  { value: "johns-hopkins-university", label: "Johns Hopkins University" },
+  { value: "university-of-pennsylvania", label: "University of Pennsylvania" },
+  { value: "stanford-university", label: "Stanford University" },
+  { value: "university-of-california", label: "University of California" },
+  { value: "university-of-oxford", label: "University of Oxford" },
+  { value: "university-of-cambridge", label: "University of Cambridge" },
+  { value: "imperial-college-london", label: "Imperial College London" },
+  { value: "university-college-london", label: "University College London" },
+  { value: "university-of-edinburgh", label: "University of Edinburgh" },
+  { value: "university-of-glasgow", label: "University of Glasgow" },
+  { value: "university-of-toronto", label: "University of Toronto" },
+  { value: "mcgill-university", label: "McGill University" },
+  { value: "university-of-british-columbia", label: "University of British Columbia" },
+  { value: "university-of-sydney", label: "University of Sydney" },
+  { value: "university-of-melbourne", label: "University of Melbourne" },
+  { value: "other", label: "Other" }
+];
+
+// Positions
+export const POSITIONS: Option[] = [
+  { value: "consultant", label: "Consultant" },
+  { value: "senior_registrar", label: "Senior Registrar" },
+  { value: "registrar", label: "Registrar" },
+  { value: "senior_house_officer", label: "Senior House Officer" },
+  { value: "house_officer", label: "House Officer" },
+  { value: "professor", label: "Professor" },
+  { value: "associate_professor", label: "Associate Professor" },
+  { value: "assistant_professor", label: "Assistant Professor" },
+  { value: "lecturer", label: "Lecturer" },
+  { value: "other", label: "Other" },
+];
+
+// Places of Training
+export const PLACES_OF_TRAINING: Option[] = [
+  { value: "sudan", label: "Sudan" },
+  { value: "saudi_arabia", label: "Saudi Arabia" },
+  { value: "united_kingdom", label: "United Kingdom" },
+  { value: "ireland", label: "Ireland" },
+  { value: "usa", label: "USA" },
+  { value: "canada", label: "Canada" },
+  { value: "australia", label: "Australia" },
+  { value: "other", label: "Other" },
+];
+
+// Academic Ranks
+export const ACADEMIC_RANKS: Option[] = [
+  { value: "professor", label: "Professor" },
+  { value: "associate_professor", label: "Associate Professor" },
+  { value: "assistant_professor", label: "Assistant Professor" },
+  { value: "lecturer", label: "Lecturer" },
+  { value: "senior_lecturer", label: "Senior Lecturer" },
+  { value: "clinical_professor", label: "Clinical Professor" },
+  { value: "visiting_professor", label: "Visiting Professor" },
+  { value: "emeritus_professor", label: "Emeritus Professor" },
+  { value: "none", label: "None" },
+  { value: "other", label: "Other" },
+];
+
+// Marital Status Options
+export const MARITAL_STATUS_OPTIONS: Option[] = [
+  { value: "single", label: "Single" },
+  { value: "married", label: "Married" },
+  { value: "divorced", label: "Divorced" },
+  { value: "widowed", label: "Widowed" },
   { value: "other", label: "Other" },
 ];
 

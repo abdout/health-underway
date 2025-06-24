@@ -132,7 +132,7 @@
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: auto;
   /* Removed conflicting padding/margin styles */
 } 
 

@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useTransition, useRef, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { paediatricSchema } from "./validation";
 import type { PaediatricSchema } from "./validation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { createPaediatricDoctor, updatePaediatricDoctor } from "./action";
 import { toast } from "sonner";
+import { InformationSection } from "./information";
+import { ProfessionalSection } from "./professional";
+import { ResearchSection } from "./research";
+import SiteHeading from "../atom/site-heading";
 
 interface FormProps {
   type: "create" | "update";
@@ -18,83 +21,110 @@ interface FormProps {
 
 const Form = ({ type, data }: FormProps) => {
   const [isPending, startTransition] = useTransition();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const form = useForm<PaediatricSchema>({
+    resolver: zodResolver(paediatricSchema),
+    defaultValues: data || {
+      qualifications: [],
+      paediatricsSubspecialty: [],
+      skills: [],
+      hobbiesOrInterests: [],
+      agreeToEmailPublication: false,
+      agreeToPhotoPublication: false,
+    },
+    mode: 'onChange'
+  });
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<PaediatricSchema>({
-    resolver: zodResolver(paediatricSchema),
-    defaultValues: data,
-    mode: 'onChange'
-  });
+    reset
+  } = form;
 
-  const onSubmit = (formData: PaediatricSchema) => {
-    console.log('Form submitted:', formData);
-    toast.success('Form submitted successfully');
+  // Initialize form with data if provided
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data, reset]);
+
+  const onSubmit: SubmitHandler<PaediatricSchema> = (formData) => {
+    startTransition(async () => {
+      try {
+        const action = type === "create" ? createPaediatricDoctor : updatePaediatricDoctor;
+        const result = await action({ success: false, error: false }, formData);
+        
+        if (result.success) {
+          toast.success(`Paediatric doctor information ${type === "create" ? "created" : "updated"} successfully.`);
+        } else {
+          toast.error(result.error || "An error occurred");
+        }
+      } catch (error) {
+        toast.error("An unexpected error occurred");
+      }
+    });
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Sudanese Paediatric Doctors Data Collection
-          </CardTitle>
-          <CardDescription className="text-center">
-            June July 2025 - Complete your professional profile
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <Label htmlFor="fullNameEnglish">Full Name in English *</Label>
-              <Input
-                id="fullNameEnglish"
-                {...register('fullNameEnglish')}
-                placeholder="Enter your full name in English"
+    <div className="min-h-screen py-8">
+      <div className="flex flex-col items-center justify-center gap-2">
+        <h1 className="font-heading">Paediatric Doctor</h1>
+        <p className="text-lg">Sudanese Paediatric Doctors Data Collection</p>
+      </div>
+      <div className="max-w-4xl mx-auto px-4">
+        <Card className="border-none shadow-none">
+        
+          
+          <CardContent className="p-8">
+            <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              
+              {/* Personal Information Section */}
+              <InformationSection
+                register={register}
+                setValue={setValue}
+                errors={errors}
+                data={data}
               />
-              {errors.fullNameEnglish && (
-                <p className="text-red-500 text-sm">{errors.fullNameEnglish.message}</p>
-              )}
-            </div>
 
-            <div>
-              <Label htmlFor="fullNameArabic">Full Name in Arabic *</Label>
-              <Input
-                id="fullNameArabic"
-                {...register('fullNameArabic')}
-                placeholder="Enter your full name in Arabic"
-                className="text-right"
+              {/* Professional Background Section */}
+              <ProfessionalSection
+                register={register}
+                setValue={setValue}
+                watch={watch}
+                errors={errors}
+                data={data}
               />
-              {errors.fullNameArabic && (
-                <p className="text-red-500 text-sm">{errors.fullNameArabic.message}</p>
-              )}
-            </div>
 
-            <div>
-              <Label htmlFor="personalEmail">Personal Email *</Label>
-              <Input
-                id="personalEmail"
-                type="email"
-                {...register('personalEmail')}
-                placeholder="Enter personal email"
+              {/* Research & Family Section */}
+                <ResearchSection
+                register={register}
+                setValue={setValue}
+                watch={watch}
+                errors={errors}
+                data={data}
               />
-              {errors.personalEmail && (
-                <p className="text-red-500 text-sm">{errors.personalEmail.message}</p>
-              )}
-            </div>
 
-            <Button 
-              type="submit" 
-              disabled={isPending}
-              className="w-full"
-            >
-              {isPending ? 'Submitting...' : `${type === "create" ? "Submit" : "Update"} Information`}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              {/* Submit Button */}
+              <div className="flex justify-center md:justify-start pt-6">
+                <Button 
+                  type="submit" 
+                  disabled={isPending}
+                  className="w-full md:w-auto px-10 py-4"
+                >
+                  {isPending 
+                    ? `${type === "create" ? "Creating" : "Updating"}...` 
+                    : `${type === "create" ? "Create" : "Update"} Profile`
+                  }
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
