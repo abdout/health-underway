@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/command"
 import { useState, useRef, useCallback, forwardRef, useEffect, useLayoutEffect, useMemo } from "react"
 import { createPortal } from "react-dom"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, Variants } from "framer-motion"
 
 export type Option = Record<"value" | "label", string> & Record<string, string>
 
@@ -39,7 +39,7 @@ export type AutoCompleteProps = {
 }
 
 // Dropdown animation variants
-const dropdownVariants = {
+const dropdownVariants: Variants = {
   hidden: { 
     opacity: 0,
     y: -5,
