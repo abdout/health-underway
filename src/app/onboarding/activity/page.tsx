@@ -59,10 +59,26 @@ export default async function ActivityPage() {
   }
 
   // Transform userData to ensure skills and interests are arrays
-  const doctorData = userData?.doctor;
+  // Check if userData has doctor property (not flattened) or is already flattened
+  const isFlattened = 'partyMember' in userData;
+  const doctorData = isFlattened ? userData : userData.doctor;
+  
   const transformedUserData = {
     id: userData.id,
-    ...doctorData,
+    partyMember: doctorData?.partyMember || false,
+    partyName: doctorData?.partyName || null,
+    partyStartDate: doctorData?.partyStartDate || null,
+    partyEndDate: doctorData?.partyEndDate || null,
+    unionMember: doctorData?.unionMember || false,
+    unionName: doctorData?.unionName || null,
+    unionStartDate: doctorData?.unionStartDate || null,
+    unionEndDate: doctorData?.unionEndDate || null,
+    ngoMember: doctorData?.ngoMember || false,
+    ngoName: doctorData?.ngoName || null,
+    ngoActivity: doctorData?.ngoActivity || null,
+    clubMember: doctorData?.clubMember || false,
+    clubName: doctorData?.clubName || null,
+    clubType: doctorData?.clubType || null,
     skills: Array.isArray(doctorData?.skills) ? doctorData.skills : [],
     interests: Array.isArray(doctorData?.interests) ? doctorData.interests : [],
     // Add empty voluntary fields for the form
