@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PaediatricSchema } from "./validation";
-import { NAME_PREFIXES, CAREER_STAGES } from "./constant";
+import { NAME_PREFIXES, CAREER_STAGES, COUNTRIES } from "./constant";
 
 interface InformationSectionProps {
   register: UseFormRegister<PaediatricSchema>;
@@ -53,11 +53,11 @@ export function InformationSection({
         </div>
       </div>
 
-      {/* Prefix and Career Stage */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Prefix, Career, and Birth Information */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div>
-          <Select onValueChange={(value) => setValue('namePrefix', value)} defaultValue={data?.namePrefix}>
-            <SelectTrigger className="bg-white">
+          <Select onValueChange={(value) => setValue('namePrefix', value)} defaultValue={data?.namePrefix} >
+            <SelectTrigger className="bg-white h-10">
               <SelectValue placeholder="Select Name Prefix *" />
             </SelectTrigger>
             <SelectContent>
@@ -90,17 +90,20 @@ export function InformationSection({
             <p className="text-red-500 text-sm mt-1">{errors.stageOfCareer.message}</p>
           )}
         </div>
-      </div>
 
-      {/* Birth Information */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Input
-            id="placeOfBirth"
-            {...register('placeOfBirth')}
-            placeholder="Place of Birth"
-            className="bg-white"
-          />
+          <Select onValueChange={(value) => setValue('placeOfBirth', value)} defaultValue={data?.placeOfBirth}>
+            <SelectTrigger className="bg-white">
+              <SelectValue placeholder="Place of Birth" />
+            </SelectTrigger>
+            <SelectContent>
+              {COUNTRIES.map((country) => (
+                <SelectItem key={country.value} value={country.value}>
+                  {country.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
         <div>

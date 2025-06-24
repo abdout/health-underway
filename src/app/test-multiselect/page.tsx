@@ -36,9 +36,9 @@ export default function TestMultiselectPage() {
     <div className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold mb-8">MultiSelect Test Page</h1>
-        
-        <div className="space-y-6">
-          <div>
+          
+          <div className="space-y-6">
+            <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Test MultiSelect (Raw)
             </label>
