@@ -6,46 +6,22 @@ import { Clock, ThumbsUp } from 'lucide-react';
 import { Ngo } from '@/components/atom/icon';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { fetchUserForReview } from './edit/review/action';
+import { fetchPaediatricDoctorForReview } from '@/components/paediatric/review/action';
 import PDFViewer from './pdf-viewer';
 
-// Helper function to format dates with Arabic month names
-const formatDateWithArabicMonth = (date: Date): string => {
-  const arabicMonths: Record<string, string> = {
-    "1": "يناير", "2": "فبراير", "3": "مارس", "4": "أبريل",
-    "5": "مايو", "6": "يونيو", "7": "يوليو", "8": "أغسطس",
-    "9": "سبتمبر", "10": "أكتوبر", "11": "نوفمبر", "12": "ديسمبر"
-  };
-  
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  return `${arabicMonths[month.toString()]} ${year}`;
+// Helper function to format dates with English month names
+const formatDate = (date: Date): string => {
+  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 };
 
-interface UserSkillsData {
-  skills?: string[] | null;
-  interests?: string[] | null;
+type UserSkillsData = {
+  skills?: string[];
+  interests?: string[];
   cv?: string | null;
   portfolio?: string | null;
   additionalFile?: string | null;
-  image?: string | null;
-  // Membership info
-  partyMember?: boolean;
-  partyName?: string;
-  partyStartDate?: string | Date;
-  partyEndDate?: string | Date;
-  unionMember?: boolean;
-  unionName?: string;
-  unionStartDate?: string | Date;
-  unionEndDate?: string | Date;
-  ngoMember?: boolean;
-  ngoName?: string;
-  ngoActivity?: string;
-  clubMember?: boolean;
-  clubName?: string;
-  clubType?: string;
-  contribute?: string;
-}
+  contribute?: string | null;
+};
 
 // Custom SVG icons as React components
 const LightbulbIcon = () => (
@@ -100,16 +76,16 @@ const createAppendixContent = (
 ) => {
   return {
     resume: {
-      title: "السيرة",
+      title: "Resume",
     },
     docs: {
-      title: "بورتفوليو",
+      title: "Portfolio",
     },
     certificates: {
-      title: "شهادات",
+      title: "Certificates",
     },
     projects: {
-      title: "مشاريع",
+      title: "Projects",
     }
   };
 };
@@ -193,14 +169,22 @@ export default function Contribute() {
         setIsLoading(true);
         
         // Fetch user information
-        const { error, data } = await fetchUserForReview();
+        const { error, data } = await fetchPaediatricDoctorForReview();
         
         if (error) {
           setError(error);
         } else if (data) {
-          setUserData(data);
-          // Update appendix content with the user data
-          setAppendixContent(createAppendixContent(data));
+          // Transform paediatric doctor data to match UserSkillsData shape
+          const transformed: UserSkillsData = {
+            skills: (data as any).skills || [],
+            interests: data.hobbiesOrInterests ? data.hobbiesOrInterests.split(',').map(s => s.trim()).filter(Boolean) : [],
+            cv: data.updatedCV || null,
+            portfolio: null,
+            additionalFile: Array.isArray(data.scientificPapersFiles) && data.scientificPapersFiles.length > 0 ? data.scientificPapersFiles[0] : null,
+            contribute: data.majorCareerAchievement || data.recognitionOfServices || null,
+          };
+          setUserData(transformed);
+          setAppendixContent(createAppendixContent(transformed));
         }
       } catch (error) {
         console.error("Error loading user data:", error);
@@ -220,12 +204,12 @@ export default function Contribute() {
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2 mb-2">
             <LightbulbIcon />
-            <CardTitle className="text-lg font-semibold">دعوة</CardTitle>
+            <CardTitle className="text-lg font-semibold">Invitation</CardTitle>
           </div>
           <CardDescription className="text-foreground leading-normal">
             {userData?.contribute
               ? <span>{userData.contribute}</span>
-              : <span>لم تتم إضافة وصف للمساهمة بعد.</span>
+              : <span>No contribution description added yet.</span>
             }
           </CardDescription>
         </CardHeader>
@@ -236,7 +220,7 @@ export default function Contribute() {
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
             <CheckCircleIcon />
-            <CardTitle className="text-md">المهارات والاهتمامات</CardTitle>
+            <CardTitle className="text-md">Skills & Interests</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
@@ -271,7 +255,7 @@ export default function Contribute() {
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-center py-2">لا توجد مهارات أو اهتمامات متاحة</p>
+                <p className="text-muted-foreground text-center py-2">No skills or interests available.</p>
               )}
             </div>
           )}
@@ -283,7 +267,7 @@ export default function Contribute() {
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
             <Ngo />
-            <CardTitle className="text-md">العضوية</CardTitle>
+            <CardTitle className="text-md">Membership</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
@@ -295,57 +279,7 @@ export default function Contribute() {
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (
-            <div className="space-y-2">
-              {/* Political Party */}
-              {userData?.partyMember && (
-                <div className="">
-                  <p className="text-md">
-                    عضو في {userData.partyName ? `حزب ${userData.partyName}` : 'حزب سياسي'}
-                    {(userData?.partyStartDate || userData?.partyEndDate) && ' في الفترة من '}
-                    {userData.partyStartDate ? formatDateWithArabicMonth(new Date(userData.partyStartDate)) : ''}
-                    {userData.partyEndDate ? ` إلى ${formatDateWithArabicMonth(new Date(userData.partyEndDate))}` : userData.partyStartDate ? ' حتى الآن' : ''}
-                  </p>
-                </div>
-              )}
-              
-              {/* Union */}
-              {userData?.unionMember && (
-                <div className="">
-                  <p className="text-md">
-                    عضو في {userData.unionName ? `نقابة ${userData.unionName}` : 'نقابة'}
-                    {(userData?.unionStartDate || userData?.unionEndDate) && ' في الفترة من '}
-                    {userData.unionStartDate ? formatDateWithArabicMonth(new Date(userData.unionStartDate)) : ''}
-                    {userData.unionEndDate ? ` إلى ${formatDateWithArabicMonth(new Date(userData.unionEndDate))}` : userData.unionStartDate ? ' حتى الآن' : ''}
-                  </p>
-                </div>
-              )}
-              
-              {/* NGO */}
-              {userData?.ngoMember && (
-                <div className="">
-                  <p className="text-md flex items-center gap-2">
-                   
-                    عضو في {userData.ngoName ? `منظمة ${userData.ngoName}` : 'منظمة غير حكومية'}
-                    {userData?.ngoActivity ? ` (${userData.ngoActivity})` : ''}
-                  </p>
-                </div>
-              )}
-              
-              {/* Club */}
-              {userData?.clubMember && (
-                <div className="">
-                  <p className="text-md">
-                    عضو في {userData.clubName ? ` ${userData.clubName}` : 'نادي'}
-                    {userData?.clubType ? ` (${userData.clubType})` : ''}
-                  </p>
-                </div>
-              )}
-              
-              {/* No memberships message */}
-              {!userData?.partyMember && !userData?.unionMember && !userData?.ngoMember && !userData?.clubMember && (
-                <p className="text-muted-foreground text-center py-2">لا توجد عضويات متاحة</p>
-              )}
-            </div>
+            <p className="text-muted-foreground text-center py-2">Membership section not available.</p>
           )}
         </CardContent>
       </Card>
@@ -355,14 +289,14 @@ export default function Contribute() {
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="h-[22px] w-[22px] text-primary"><path fill="currentColor" d="M11.1 19h1.75v-1.25q1.25-.225 2.15-.975t.9-2.225q0-1.05-.6-1.925T12.9 11.1q-1.5-.5-2.075-.875T10.25 9.2t.463-1.025T12.05 7.8q.8 0 1.25.387t.65.963l1.6-.65q-.275-.875-1.012-1.525T12.9 6.25V5h-1.75v1.25q-1.25.275-1.95 1.1T8.5 9.2q0 1.175.688 1.9t2.162 1.25q1.575.575 2.188 1.025t.612 1.175q0 .825-.587 1.213t-1.413.387t-1.463-.512T9.75 14.1l-1.65.65q.35 1.2 1.088 1.938T11.1 17.7zm.9 3q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/></svg>
-            <CardTitle className="text-md">خدمات مدفوعة</CardTitle>
+            <CardTitle className="text-md">Paid Services</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="pt-0 space-y-3">
           <div className="flex items-start gap-2">
             
            
-              <p className="text-sm text-muted-foreground leading-normal">أتمتة الاعمال · تطوير الويب · الانظمة المدمجة</p>
+              <p className="text-sm text-muted-foreground leading-normal">Business automation · Web development · Embedded systems</p>
             
           </div>
           
@@ -379,12 +313,12 @@ export default function Contribute() {
                 <path fill="currentColor" d="M8 1C4.136 1 1 4.136 1 8s3.136 7 7 7s7-3.136 7-7s-3.136-7-7-7m1 11H7V7.5h2zm0-6H7V4h2z"/>
               </g>
             </svg>
-            <CardTitle className="text-md">مرفقات</CardTitle>
+            <CardTitle className="text-md">Attachments</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
           <p className="text-sm text-muted-foreground mb-4">
-            يمكن الاطلاع على المستندات والمرفقات التالية للحصول على مزيد من المعلومات.
+            You can view the following documents for more information.
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3">
@@ -395,7 +329,7 @@ export default function Contribute() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
               </svg>
-              <p className="text-foreground text-sm font-medium">السيرة</p>
+              <p className="text-foreground text-sm font-medium">Resume</p>
             </button>
             
             <button 
@@ -405,7 +339,7 @@ export default function Contribute() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  mb-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
               </svg>
-              <p className="text-foreground text-sm font-medium">بورتفوليو</p>
+              <p className="text-foreground text-sm font-medium">Portfolio</p>
             </button>
             
             <button
@@ -415,7 +349,7 @@ export default function Contribute() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  mb-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
               </svg>
-              <p className="text-foreground text-sm font-medium">شهادات</p>
+              <p className="text-foreground text-sm font-medium">Certificates</p>
             </button>
             
             <button
@@ -425,7 +359,7 @@ export default function Contribute() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  mb-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
               </svg>
-              <p className="text-foreground text-sm font-medium">مشاريع</p>
+              <p className="text-foreground text-sm font-medium">Projects</p>
             </button>
           </div>
         </CardContent>
