@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { NotificationIcon } from '@/components/notifications/NotificationIcon';
-import { useCurrentRole } from '@/components/auth/hooks/use-current-role';
+import { useCurrentRole } from '@/components/auth/use-current-role';
 
 // Custom SVG icons as React components
 const HomeIcon = ({ className }: { className?: string }) => (
