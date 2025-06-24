@@ -58,6 +58,7 @@
     "react-icons": "^5.5.0",
     "react-phone-number-input": "^3.4.12",
     "react-spinners": "^0.17.0",
+    "recharts": "^3.0.0",
     "resend": "^4.6.0",
     "sonner": "^2.0.5",
     "streamifier": "^0.1.1",

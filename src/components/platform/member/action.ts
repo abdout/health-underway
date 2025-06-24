@@ -4,7 +4,6 @@ import { db } from '@/lib/db';
 import { currentUser } from '@/lib/auth';
 import { notifyNewApplication } from '@/lib/notification';
 import { member } from './type';
-import { getLocalityLabel } from '@/utils/getArabicLabel';
 
 // Keep full UserReviewData type for component use
 export type UserReviewData = {
@@ -154,157 +153,25 @@ export async function fetchUserForReview(): Promise<{ error: string | null, data
       return { error: "Unauthorized", data: null };
     }
     
-    // Only select fields that are confirmed to exist in the schema
-    const userData = await db.user.findUnique({
+    // Fetch the PaediatricDoctor profile linked to this user
+    const doctorData = await db.paediatricDoctor.findUnique({
       where: {
-        id: user.id,
-      },
-      select: {
-        // System fields
-        id: true,
-        name: true,
-        fullname: true,
-        email: true,
-        role: true,
-        onboardingStatus: true,
-        onboardingStep: true,
-        createdAt: true,
-        updatedAt: true,
-        
-        // Personal info
-        contribute: true,
-        bio: true,
-        phone: true,
-        whatsapp: true,
-        
-        // Social Media
-        twitter: true,
-        facebook: true,
-        linkedin: true,
-        telegram: true,
-        instagram: true,
-        tiktok: true,
-        
-        // Personal details
-        nationalityId: true,
-        maritalStatus: true,
-        gender: true,
-        religion: true,
-        
-        // Birthday
-        birthDate: true,
-        birthCountry: true,
-        birthState: true,
-        birthLocality: true,
-        birthAdminUnit: true,
-        birthNeighborhood: true,
-        birthMonth: true,
-        birthYear: true,
-        
-        // Current Location
-        currentCountry: true,
-        currentState: true,
-        currentLocality: true,
-        currentAdminUnit: true,
-        currentNeighborhood: true,
-        
-        // Original Location
-        originalCountry: true,
-        originalState: true,
-        originalLocality: true,
-        originalAdminUnit: true,
-        originalNeighborhood: true,
-        
-        // Education & Work
-        educationLevel: true,
-        studentYear: true,
-        
-        // Bachelor's information
-        bachelorInstitution: true,
-        bachelorMajor: true,
-        bachelorCompletionYear: true,
-        
-        // Master's information
-        masterInstitution: true,
-        masterMajor: true,
-        masterCompletionYear: true,
-        
-        // PhD information
-        phdInstitution: true,
-        phdMajor: true,
-        phdCompletionYear: true,
-        
-        // Work information
-        currentOccupation: true,
-        employmentSector: true,
-        workplaceAddress: true,
-        companyName: true,
-        
-        // Student Details
-        studentInstitution: true,
-        studentFaculty: true,
-        
-        // Activities
-        partyMember: true,
-        partyName: true,
-        partyStartDate: true,
-        partyEndDate: true,
-        
-        unionMember: true,
-        unionName: true,
-        unionStartDate: true,
-        unionEndDate: true,
-        
-        ngoMember: true,
-        ngoName: true,
-        ngoActivity: true,
-        
-        clubMember: true,
-        clubName: true,
-        clubType: true,
-        
-        // Emergency Contacts
-        emergencyName1: true,
-        emergencyRelation1: true,
-        emergencyPhone1: true,
-        emergencyName2: true,
-        emergencyRelation2: true,
-        emergencyPhone2: true,
-        
-        // Other
-        referralSource: true,
-        acquaintanceName: true,
-        donationAmount: true,
-        donationDate: true,
-        oathAcknowledged: true,
-        
-        // Files
-        cover: true,
-        cv: true,
-        portfolio: true,
-        
-        // Skills and Interests
-        skills: true,
-        interests: true,
+        userId: user.id,
       },
     });
-    
-    if (!userData) {
-      return { error: "User not found", data: null };
+
+    if (!doctorData) {
+      return { error: "Doctor profile not found", data: null };
     }
     
-    console.log("Raw user data from DB:", userData);
-    console.log("Skills in raw data:", userData.skills);
-    console.log("Interests in raw data:", userData.interests);
+    console.log("Raw doctor data from DB:", doctorData);
     
     // Convert null values to undefined to match the UserReviewData type
     const cleanedData: UserReviewData = Object.fromEntries(
-      Object.entries(userData).map(([key, value]) => [key, value === null ? undefined : value])
+      Object.entries(doctorData as Record<string, any>).map(([key, value]) => [key, value === null ? undefined : value])
     ) as UserReviewData;
     
-    console.log("Cleaned user data:", cleanedData);
-    console.log("Skills in cleaned data:", cleanedData.skills);
-    console.log("Interests in cleaned data:", cleanedData.interests);
+    console.log("Cleaned doctor data:", cleanedData);
     
     return { error: null, data: cleanedData };
   } catch (error) {
@@ -323,27 +190,34 @@ export async function completeOnboarding(): Promise<{ success: boolean, error: s
       return { success: false, error: "Unauthorized" };
     }
     
+    // Update onboarding status on the PaediatricDoctor profile
+    await db.paediatricDoctor.update({
+      where: { userId: user.id },
+      data: {
+        onboardingStatus: "COMPLETED",
+        // Using a temporary workaround until Prisma schema is updated
+        ...(process.env.NODE_ENV === 'production' ? {} : { applicationStatus: "PENDING" })
+      }
+    });
+    
+    // Fetch doctor profile for better notification details
+    const doctorProfile = await db.paediatricDoctor.findUnique({
+      where: { userId: user.id },
+      select: {
+        fullNameArabic: true,
+        fullNameEnglish: true,
+      }
+    });
+    
     // Get user details for notification
     const userData = await db.user.findUnique({
       where: { id: user.id },
       select: {
         id: true,
         name: true,
-        fullname: true,
         email: true,
         phone: true,
-        whatsapp: true,
         image: true,
-      }
-    });
-    
-    // Update onboarding status
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        onboardingStatus: "COMPLETED",
-        // Using a temporary workaround until Prisma schema is updated
-        ...(process.env.NODE_ENV === 'production' ? {} : { applicationStatus: "PENDING" })
       }
     });
     
@@ -371,10 +245,10 @@ export async function completeOnboarding(): Promise<{ success: boolean, error: s
       // Send notification about new application
       await notifyNewApplication(
         uniqueNotificationEmails,
-        userData.fullname || userData.name || "User",
+        (doctorProfile?.fullNameArabic ?? doctorProfile?.fullNameEnglish ?? userData.name) || "User",
         userData.email,
         userData.phone,
-        userData.whatsapp
+        null // WhatsApp not available on PaediatricDoctor
       );
     }
     
@@ -390,61 +264,38 @@ export async function completeOnboarding(): Promise<{ success: boolean, error: s
  */
 export async function fetchAllMembers(): Promise<{ error: string | null, data: member[] }> {
   try {
-    // Fetch all users who have completed the onboarding process
-    const members = await db.user.findMany({
+    // Fetch all paediatric doctors who have completed the onboarding process
+    const doctors = await db.paediatricDoctor.findMany({
       where: {
-        onboardingStatus: "COMPLETED"
+        onboardingStatus: "COMPLETED",
       },
-      select: {
-        id: true,
-        name: true,
-        fullname: true,
-        gender: true,
-        birthDate: true,
-        currentOccupation: true,
-        skills: true,
-        interests: true,
-        clubName: true,
-        image: true,
-        phone: true,
-        whatsapp: true,
-        facebook: true,
-        currentCountry: true,
-        currentState: true,
-        currentLocality: true,
-      }
+      include: {
+        user: {
+          select: {
+            phone: true,
+          },
+        },
+      },
     });
 
     // Transform the data to match the expected format
-    const formattedMembers = members.map(member => {
-      // Safely convert locality to Arabic
-      let addressDisplay = "غير محدد";
-      try {
-        if (member.currentLocality) {
-          addressDisplay = getLocalityLabel(member.currentLocality).replace('محلية ', '');
-        }
-      } catch (error) {
-        console.error("Error converting locality:", error);
-        // Fallback to raw locality value if conversion fails
-        addressDisplay = member.currentLocality || "غير محدد";
-      }
-
+    const formattedMembers = doctors.map(doc => {
       return {
-        _id: member.id,
-        name: member.name || member.fullname || "",
-        dob: member.birthDate ? new Date(member.birthDate).toISOString().split('T')[0] : "",
-        address: addressDisplay,
-        gender: member.gender || "",
-        rank: member.currentOccupation || "",
-        interest: Array.isArray(member.interests) ? member.interests.join(", ") : "",
-        skill: Array.isArray(member.skills) ? member.skills.join(", ") : "",
-        club: member.clubName || "",
-        image: member.image || "",
+        _id: doc.userId,
+        name: doc.fullNameArabic || doc.fullNameEnglish || "",
+        dob: doc.dateOfBirth || "",
+        address: doc.originalHomeTownOrVillage || "غير محدد",
+        gender: "", // Gender not available on PaediatricDoctor
+        rank: doc.currentPositionInHospital || "",
+        interest: doc.hobbiesOrInterests || "",
+        skill: Array.isArray(doc.qualifications) ? doc.qualifications.join(", ") : (doc.otherQualification || ""),
+        club: "", // Club name not available on PaediatricDoctor
+        image: doc.personalPhoto || "",
         contact: {
-          phone: member.phone || "",
-          facebook: member.facebook || "",
-          whatsapp: member.whatsapp || ""
-        }
+          phone: doc.user?.phone || "",
+          facebook: "",
+          whatsapp: "",
+        },
       };
     });
 

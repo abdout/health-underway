@@ -34,7 +34,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MixerHorizontalIcon } from '@radix-ui/react-icons'
 import { useFilter } from './useFilter'
 import { member } from './type'
-import { ShadcnDailog } from '@/components/atom/dailog'
+// import { ShadcnDailog } from '@/components/atom/dailog'
 import MemberChart from './chart'
 import { Icon } from '@iconify/react'
 import { useModal } from "@/components/atom/modal/context"

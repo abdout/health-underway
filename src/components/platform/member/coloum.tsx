@@ -42,20 +42,20 @@ const ActionsCell: React.FC<ActionsProps> = ({ row }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
-        <DropdownMenuLabel>الضبط</DropdownMenuLabel>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => navigator.clipboard.writeText(user._id)}
         >
-          نسخ 
+          Copy
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link href={`/member/${user._id}`}>
-            ملف
+            Profile
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>تجميد</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => user._id && deleteMember(user._id)}>حذف</DropdownMenuItem> 
+        <DropdownMenuItem>Freeze</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => user._id && deleteMember(user._id)}>Delete</DropdownMenuItem> 
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -66,13 +66,13 @@ export const columns: ColumnDef<member>[] = [
     accessorKey: 'name',
     header: ({ column }) => {
       return (
-        <div className="text-right">
+        <div className="text-left">
           <Button
             className='p-0 m-0'
             variant='ghost'
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            الاسم
+            Name
             <ArrowUpDown className=' h-4 w-4' />
           </Button>
         </div>
@@ -81,31 +81,31 @@ export const columns: ColumnDef<member>[] = [
   },
   {
     accessorKey: 'address',
-    header: () => <div className="text-right">العنوان</div>,
+    header: () => <div className="text-left">Address</div>,
   },
   {
     accessorKey: 'gender',
-    header: () => <div className="text-right">النوع</div>,
+    header: () => <div className="text-left">Gender</div>,
   },
   {
     accessorKey: 'rank',
-    header: () => <div className="text-right">التخصص</div>,
+    header: () => <div className="text-left">Position</div>,
   },
   {
     accessorKey: 'skill',
-    header: () => <div className="text-right">المهارة</div>,    
+    header: () => <div className="text-left">Skills</div>,    
   },
   {
     accessorKey: 'interest',
-    header: () => <div className="text-right">الاهتمام</div>,    
+    header: () => <div className="text-left">Interests</div>,    
   },
   {
     accessorKey: 'dob',
-    header: () => <div className="text-right">العمر</div>,    
+    header: () => <div className="text-left">DOB</div>,    
   },
   {
     accessorKey: 'contact',
-    header: () => <div className="text-right">الاتصال</div>,
+    header: () => <div className="text-left">Contact</div>,
     cell: ({ row }) => {
       const { phone, whatsapp } = row.original.contact || {};
 
