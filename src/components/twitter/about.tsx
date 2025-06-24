@@ -1,11 +1,9 @@
 'use client';
 
+// Presentational component for displaying a paediatric‐doctor profile in English.
 import { useEffect, useState } from 'react';
-import { getInformation } from './edit/information/action';
-import { getContact } from './edit/contact/action';
-import { getAttachment } from '@/components/onboarding/attachment/action';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, GraduationCap, Mail, MapPin, Calendar, Briefcase, Home } from 'lucide-react';
+import { Building2, GraduationCap, MapPin, Calendar, Briefcase, Home } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 // Labels are now in English, no need for Arabic label utils
 import { FaTwitter, FaFacebook, FaLinkedin, FaTelegram, FaInstagram, FaTiktok, FaWhatsapp, FaPhone, FaEnvelope } from 'react-icons/fa';
