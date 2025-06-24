@@ -10,8 +10,8 @@ export async function approveApplication(userId: string) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
 
-  await db.user.update({
-    where: { id: userId },
+  await db.paediatricDoctor.update({
+    where: { userId },
     data: {
       applicationStatus: "APPROVED",
       reviewedBy: session.user.id,
@@ -26,8 +26,8 @@ export async function approveApplication(userId: string) {
 export async function rejectApplication(userId: string) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
-  await db.user.update({
-    where: { id: userId },
+  await db.paediatricDoctor.update({
+    where: { userId },
     data: {
       applicationStatus: "REJECTED",
       reviewedBy: session.user.id,
@@ -42,8 +42,8 @@ export async function rejectApplication(userId: string) {
 export async function redoApplication(userId: string) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
-  await db.user.update({
-    where: { id: userId },
+  await db.paediatricDoctor.update({
+    where: { userId },
     data: {
       applicationStatus: "PENDING",
       reviewedBy: null,
@@ -58,8 +58,8 @@ export async function redoApplication(userId: string) {
 export async function setOnboardingStatus(userId: string, status: string) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
-  await db.user.update({
-    where: { id: userId },
+  await db.paediatricDoctor.update({
+    where: { userId },
     data: {
       onboardingStatus: status,
     },

@@ -365,6 +365,16 @@ model PaediatricDoctor {
   
   createdAt                             DateTime  @default(now())
   updatedAt                             DateTime  @updatedAt
+
+  // Onboarding
+  onboardingStatus String? @default("PENDING")  // "PENDING" | "COMPLETED"
+  onboardingStep   Int?    @default(1)
+  
+  // Application status
+  applicationStatus String? @default("PENDING")  // "PENDING" | "APPROVED" | "REJECTED"
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
 }
 
 model Notification {
