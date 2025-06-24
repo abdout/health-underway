@@ -58,8 +58,8 @@ export default async function TwitterProfile() {
     link: '',
     ...paediatricData,
   } : null;
-  const name = userData?.name || "غير معروف";
-  const occupation = userData?.currentOccupation || "غير معروف";
+  const name = userData?.name || "Unknown";
+  const occupation = userData?.currentOccupation || "Unknown";
 
   const { image: userImage, cover } = await getUserImageAndCover();
   const image = userImage || paediatricData?.personalPhoto || "/placeholder.svg?height=128&width=128";
@@ -98,7 +98,7 @@ export default async function TwitterProfile() {
           </div>
           <Link href="/dashboard/profile/edit">
             <Button variant="outline" size='sm' className="md:mt-4 mt-3 rounded-full border border-primary">
-              تعديل
+              Edit Profile
             </Button>
           </Link>
         </div>
@@ -115,7 +115,7 @@ export default async function TwitterProfile() {
               {userData?.currentLocality ? (
                 <span>{userData.currentLocality}</span>
               ) : (
-                <span>غير محدد</span>
+                <span>Not specified</span>
               )}
             </div>
             <div className="flex items-center gap-1">
@@ -148,32 +148,32 @@ export default async function TwitterProfile() {
 
       {/* Navigation Tabs */}
       <div className="mt-3 relative">
-        <Tabs dir="rtl" defaultValue="about" className="-mx-3 md:mx-1">
+        <Tabs defaultValue="about" className="-mx-3 md:mx-1">
           <div className="relative">
             <TabsList className="flex w-full h-auto bg-transparent border-0 p-0 shadow-none relative z-10">
               <TabsTrigger 
                 value="about"
                 className="flex-1 py-3 px-0 text-center rounded-none border-0 shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:bg-transparent text-[#5b7083] hover:text-foreground transition-colors font-medium"
               >
-                حول
+                About
               </TabsTrigger>
               <TabsTrigger 
                 value="contribute"
                 className="flex-1 py-3 px-0 text-center rounded-none border-0 shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:bg-transparent text-[#5b7083] hover:text-foreground  transition-colors font-medium"
               >
-                سهم
+                Contribute
               </TabsTrigger>
               <TabsTrigger 
                 value="issue"
                 className="flex-1 py-3 px-0 text-center rounded-none border-0 shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:bg-transparent text-[#5b7083] hover:text-foreground transition-colors font-medium"
               >
-                مشكلة
+                Issues
               </TabsTrigger>
               <TabsTrigger 
                 value="likes"
                 className="flex-1 py-3 px-0 text-center rounded-none border-0 shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:bg-transparent text-[#5b7083] hover:text-foreground transition-colors font-medium"
               >
-                ثريد
+                Threads
               </TabsTrigger>
             </TabsList>
             
@@ -194,7 +194,7 @@ export default async function TwitterProfile() {
           </TabsContent>
           
           <TabsContent value="likes" className="mt-6 text-center text-muted-foreground py-8">
-            لا توجد ثريد حتى الآن
+            No threads yet
           </TabsContent>
         </Tabs>
       </div>

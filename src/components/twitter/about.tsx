@@ -53,7 +53,7 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
   if (!userData || Object.values(userData).filter(Boolean).length < 3) {
     return (
       <div className="text-center text-muted-foreground py-8 px-4">
-        لا توجد معلومات كافية. يرجى إكمال ملفك الشخصي.
+        Insufficient information. Please complete your profile.
       </div>
     );
   }
@@ -177,9 +177,9 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
           <div className="flex items-center gap-2 text-sm">
             <MapPin size={18} className="text-muted-foreground" />
             <span>
-              يقيم في
-                              {userData.currentCountry && ` ${userData.currentCountry}`}
-                {userData.currentLocality && ` - ${userData.currentLocality}`}
+              Lives in
+              {userData.currentCountry && ` ${userData.currentCountry}`}
+              {userData.currentLocality && ` - ${userData.currentLocality}`}
             </span>
           </div>
         )}
@@ -189,9 +189,9 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
           <div className="flex items-center gap-2 text-sm">
             <Home size={18} className="text-muted-foreground" />
             <span>
-              من
-                              {userData.birthCountry && ` ${userData.birthCountry}`}
-                {userData.birthLocality && ` - ${userData.birthLocality}`}
+              From
+              {userData.birthCountry && ` ${userData.birthCountry}`}
+              {userData.birthLocality && ` - ${userData.birthLocality}`}
             </span>
           </div>
         )}
@@ -201,8 +201,8 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
           <div className="flex items-center gap-2 text-sm">
             <Calendar size={18} className="text-muted-foreground" />
             <span>
-              ولد في :
-                              {` ${userData.birthMonth}/${userData.birthYear}`}
+              Born:
+              {` ${userData.birthMonth}/${userData.birthYear}`}
             </span>
           </div>
         )}
@@ -214,8 +214,8 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
             <div className="flex items-center gap-2">
               <GraduationCap size={18} className="text-muted-foreground" />
               <span className="text-sm">
-                دكتوراه{userData.phdMajor ? `، ${userData.phdMajor}` : ''}
-                {userData.phdInstitution ? `، ${userData.phdInstitution}` : ''}
+                PhD{userData.phdMajor ? `, ${userData.phdMajor}` : ''}
+                {userData.phdInstitution ? `, ${userData.phdInstitution}` : ''}
                 {userData.phdCompletionYear ? ` - ${userData.phdCompletionYear}` : ''}
               </span>
             </div>
@@ -225,8 +225,8 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
             <div className="flex items-center gap-2">
               <GraduationCap size={18} className="text-muted-foreground" />
               <span className="text-sm">
-                ماجستير{userData.masterMajor ? `، ${userData.masterMajor}` : ''}
-                {userData.masterInstitution ? `، ${userData.masterInstitution}` : ''}
+                Master's{userData.masterMajor ? `, ${userData.masterMajor}` : ''}
+                {userData.masterInstitution ? `, ${userData.masterInstitution}` : ''}
                 {userData.masterCompletionYear ? ` - ${userData.masterCompletionYear}` : ''}
               </span>
             </div>
@@ -236,8 +236,8 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
             <div className="flex items-center gap-2">
               <GraduationCap size={18} className="text-muted-foreground" />
               <span className="text-sm">
-                بكالوريوس{userData.bachelorMajor ? `، ${userData.bachelorMajor}` : ''}
-                {userData.bachelorInstitution ? `، ${userData.bachelorInstitution}` : ''}
+                Bachelor's{userData.bachelorMajor ? `, ${userData.bachelorMajor}` : ''}
+                {userData.bachelorInstitution ? `, ${userData.bachelorInstitution}` : ''}
                 {userData.bachelorCompletionYear ? ` - ${userData.bachelorCompletionYear}` : ''}
               </span>
             </div>
@@ -250,7 +250,7 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
             <Briefcase size={18} className="text-muted-foreground" />
             <span>
               {userData.currentOccupation && `${userData.currentOccupation}`}
-              {userData.companyName && ` في ${userData.companyName}`}
+              {userData.companyName && ` at ${userData.companyName}`}
               {userData.employmentSector && ` (${userData.employmentSector})`}
             </span>
           </div>
@@ -260,7 +260,7 @@ export default function About({ userData }: { userData: AboutUserData | null }) 
         {userData.workplaceAddress && (
           <div className="flex items-center gap-2 text-sm">
             <Building2 size={18} className="text-muted-foreground" />
-            <span>يعمل في {userData.workplaceAddress}</span>
+            <span>Works at {userData.workplaceAddress}</span>
           </div>
         )}
       </div>
