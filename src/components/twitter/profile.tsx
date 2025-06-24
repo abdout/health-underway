@@ -1,14 +1,12 @@
 import Image from "next/image"
 import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { getAttachment } from "@/components/twitter/edit/attachment/action"
 import Link from "next/link"
-import { getInformation } from "./edit/information/action"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import About, { AboutUserData } from "./about"
 import Contribute from "./contribute"
 import Issue from "./issue"
-import { fetchUserForReview } from "@/components/onboarding/review/action"
+import { fetchPaediatricDoctorForReview } from '@/components/paediatric/review/action'
 import { currentUser } from "@/lib/auth"
 import { db } from "@/lib/db"
 // Labels are now in English, no need for Arabic label utils
@@ -36,25 +34,35 @@ async function getUserImageAndCover() {
         select: {
           cover: true,
         }
+      },
+      paediatricDoctor: {
+        select: {
+          personalPhoto: true,
+        }
       }
     }
   });
 
   return {
-    image: userData?.image || null,
+    image: userData?.image || userData?.paediatricDoctor?.personalPhoto || null,
     cover: userData?.doctor?.cover || null
   };
 }
 
 export default async function TwitterProfile() {
-  const { image: userImage, cover } = await getUserImageAndCover();
-  const image = userImage || "/placeholder.svg?height=128&width=128";
-
-  const { data: userData } = await fetchUserForReview();
+  const { data: paediatricData } = await fetchPaediatricDoctorForReview();
+  const userData = paediatricData ? {
+    name: paediatricData.fullNameEnglish || paediatricData.fullNameArabic,
+    currentOccupation: paediatricData.currentPositionInHospital,
+    currentLocality: paediatricData.originalHomeTownOrVillage,
+    link: '',
+    ...paediatricData,
+  } : null;
   const name = userData?.name || "غير معروف";
   const occupation = userData?.currentOccupation || "غير معروف";
 
-  
+  const { image: userImage, cover } = await getUserImageAndCover();
+  const image = userImage || paediatricData?.personalPhoto || "/placeholder.svg?height=128&width=128";
 
   return (
     <div className="md:max-w-2xl md:mx-20 overflow-hidden">
