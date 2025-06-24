@@ -196,11 +196,13 @@ export const Ngo = ({ className = "" }: { className?: string }) => (
 );
 
 // Paper
-export const Paper = ({ className = "" }: { className?: string }) => (
-  <svg className={className + " h-5 w-5 text-[#8B949E]"} viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M16.5 15.5v-8l-4-4h-6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2" strokeWidth="1.5"/>
+export const Paper = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => (
+  <svg ref={ref} className={className} viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M16.5 15.5v-8l-4-4h-6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2" strokeWidth="1"/>
   </svg>
-);
+));
+Paper.displayName = "Paper";
 
 // Filter
 export const Filter = ({ className = "" }: { className?: string }) => (
@@ -208,3 +210,68 @@ export const Filter = ({ className = "" }: { className?: string }) => (
     <path fill="currentColor" d="M14.037 20.937a1 1 0 0 1-.518-.145l-3.334-2a2.55 2.55 0 0 1-1.233-2.176v-4.525a1.53 1.53 0 0 0-.284-.891L4.013 4.658a1.01 1.01 0 0 1 .822-1.6h14.33a1.009 1.009 0 0 1 .822 1.6L15.332 11.2a1.53 1.53 0 0 0-.285.891v7.834a1.013 1.013 0 0 1-1.01 1.012M4.835 4.063l4.647 6.557a2.5 2.5 0 0 1 .47 1.471v4.524a1.54 1.54 0 0 0 .747 1.318l3.334 2l.014-7.843a2.5 2.5 0 0 1 .471-1.471l4.654-6.542Z"/>
   </svg>
 );
+
+export const Photo = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ref={ref}
+        className={className}
+        {...props}
+      >
+        <path fill="currentColor" d="M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h12.769q.69 0 1.153.463T20 5.616v12.769q0 .69-.462 1.153T18.384 20zm0-1h12.769q.23 0 .423-.192t.192-.424V5.616q0-.231-.192-.424T18.384 5H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192M5 19V5zm3.308-2.5h7.538q.243 0 .354-.217t-.03-.43l-2.02-2.712q-.13-.162-.323-.162q-.192 0-.323.162l-2.292 2.898l-1.427-1.725q-.131-.143-.314-.143q-.182 0-.313.162l-1.154 1.52q-.162.213-.05.43t.354.217"/>
+      </svg>
+    )
+  }
+)
+Photo.displayName = "Photo"
+
+export const Pdf = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 16 16"
+        ref={ref}
+        className={className}
+        {...props}
+      >
+        <path 
+          fill="none" 
+          stroke="currentColor"
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          d="M2.8 14.34c1.81-1.25 3.02-3.16 3.91-5.5c.9-2.33 1.86-4.33 1.44-6.63c-.06-.36-.57-.73-.83-.7c-1.02.06-.95 1.21-.85 1.9c.24 1.71 1.56 3.7 2.84 5.56c1.27 1.87 2.32 2.16 3.78 2.26c.5.03 1.25-.14 1.37-.58c.77-2.8-9.02-.54-12.28 2.08c-.4.33-.86 1-.6 1.46c.2.36.87.4 1.23.15h0Z" 
+          strokeWidth="0.7"
+        />
+      </svg>
+    )
+  }
+)
+Pdf.displayName = "Pdf"
+
+export const Plus = React.forwardRef<SVGSVGElement, IconProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ref={ref}
+        className={className}
+        {...props}
+      >
+        <g fill="none" stroke="currentColor" strokeDasharray="16" strokeDashoffset="16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1">
+            <path d="M5 12h14">
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="16;0"/>
+            </path>
+            <path d="M12 5v14">
+                <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.4s" dur="0.4s" values="16;0"/>
+            </path>
+        </g>
+      </svg>
+    )
+  }
+)
+Plus.displayName = "Plus"

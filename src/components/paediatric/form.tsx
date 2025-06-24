@@ -13,6 +13,7 @@ import { InformationSection } from "./information";
 import { ProfessionalSection } from "./professional";
 import { ResearchSection } from "./research";
 import SiteHeading from "../atom/site-heading";
+import { AttachmentSection } from "./attachment";
 
 interface FormProps {
   type: "create" | "update";
@@ -32,6 +33,7 @@ const Form = ({ type, data }: FormProps) => {
       hobbiesOrInterests: [],
       agreeToEmailPublication: false,
       agreeToPhotoPublication: false,
+      scientificPapersFiles: [],
     },
     mode: 'onChange'
   });
@@ -41,6 +43,7 @@ const Form = ({ type, data }: FormProps) => {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
     reset
   } = form;
@@ -82,6 +85,16 @@ const Form = ({ type, data }: FormProps) => {
           <CardContent className="p-8">
             <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               
+              {/* Attachment Section */}
+              <AttachmentSection
+                control={control}
+                register={register}
+                setValue={setValue}
+                errors={errors}
+                watch={watch}
+                data={data}
+              />
+
               {/* Personal Information Section */}
               <InformationSection
                 register={register}

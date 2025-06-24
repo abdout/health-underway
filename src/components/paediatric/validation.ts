@@ -80,9 +80,9 @@ export const paediatricSchema = z.object({
   extendedRequestFamilyPhoto: z.string().optional(),
   
   // File uploads (optional - will be handled separately)
-  scientificPapersFiles: z.array(z.string()).optional(),
-  personalPhoto: z.string().optional(),
-  updatedCV: z.string().optional(),
+  scientificPapersFiles: z.array(z.any()).optional(),
+  personalPhoto: z.any().optional(),
+  updatedCV: z.any().optional(),
 });
 
 export type PaediatricSchema = z.infer<typeof paediatricSchema>; 
