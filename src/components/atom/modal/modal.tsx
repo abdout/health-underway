@@ -3,7 +3,7 @@ import { useModal } from "@/components/atom/modal/context";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Icon } from '@iconify/react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 // Custom hook for managing body scroll
 function useBodyScroll(open: boolean) {
@@ -45,17 +45,15 @@ function Modal({ content, sm = false }: Props) {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  const modalVariants = {
+  const modalVariants: Variants = {
     hidden: { 
       opacity: 0,
       scale: 0.8,
     },
-  
     visible: { 
       opacity: 1,
       scale: 1,
       transition: {
-  
         duration: 0.2,
         ease: 'easeOut'
       }
@@ -70,7 +68,7 @@ function Modal({ content, sm = false }: Props) {
     }
   };
 
-  const backdropVariants = {
+  const backdropVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   };

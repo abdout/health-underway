@@ -33,6 +33,8 @@ export type RegisterUserParams = {
   identificationType?: string | null;
   identificationNumber?: string | null;
   privacyConsent: boolean;
+  treatmentConsent: boolean;
+  disclosureConsent: boolean;
 };
 
 // Define AppointmentWithPatient type

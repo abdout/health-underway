@@ -49,6 +49,8 @@ type RegisterUserParams = {
   identificationNumber?: string | null;
   identificationDocument?: File | null;
   privacyConsent: boolean;
+  treatmentConsent: boolean;
+  disclosureConsent: boolean;
 };
 
 const RegisterForm = ({ user }: { user: User }) => {
@@ -113,6 +115,8 @@ const RegisterForm = ({ user }: { user: User }) => {
         identificationNumber: values.identificationNumber ?? null,
         identificationDocument: file,
         privacyConsent: values.privacyConsent,
+        treatmentConsent: values.treatmentConsent,
+        disclosureConsent: values.disclosureConsent,
       };
 
       console.log("📊 [RegisterForm] Patient data prepared:", patient);

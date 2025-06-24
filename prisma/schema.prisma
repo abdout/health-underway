@@ -128,7 +128,9 @@ model Patient {
   identificationType      String?
   identificationNumber    String?
   identificationDocument  String?       // Store file path or URL
-  privacyConsent          Boolean
+  privacyConsent         Boolean?      // Made optional initially
+  treatmentConsent       Boolean?      // Made optional initially
+  disclosureConsent      Boolean?      // Made optional initially
   appointments            Appointment[] @relation("PatientAppointments")
   createdAt               DateTime      @default(now())
   updatedAt               DateTime      @updatedAt
