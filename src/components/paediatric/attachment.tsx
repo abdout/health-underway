@@ -121,7 +121,7 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
         <hr className="my-4" />
       </div>
 
-      <div className="flex w-full items-start flex-wrap gap-8">
+      <div className="flex w-full items-start flex-wrap gap-12">
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center space-y-2">
           <Label htmlFor="personalPhoto" className="cursor-pointer">
@@ -205,9 +205,9 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
         </div>
 
         {/* Scientific Papers Section */}
-        <div className="flex flex-col items-center space-y-2" style={{ width: '320px' }}>
+        <div className="flex flex-col items-center space-y-2" style={{ width: '380px' }}>
           <div 
-            className="grid grid-cols-2 gap-2 w-full" // vertical gap is 2 (8px) to match V_GAP_PX
+            className="grid grid-cols-2 gap-x-12 gap-y-2 w-full" // vertical gap is 2 (8px) to match V_GAP_PX
             style={{ 
               gridTemplateRows: `repeat(${paperRows}, ${paperBoxHeight}px)`,
               height: `${PAPER_CONTAINER_HEIGHT}px`
