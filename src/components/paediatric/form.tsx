@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition, useRef, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { paediatricSchema } from "./validation";
 import type { PaediatricSchema } from "./validation";
@@ -25,7 +25,7 @@ const Form = ({ type, data }: FormProps) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm<PaediatricSchema>({
-    resolver: zodResolver(paediatricSchema),
+    resolver: zodResolver(paediatricSchema) as Resolver<PaediatricSchema>,
     defaultValues: data || {
       qualifications: [],
       paediatricsSubspecialty: [],

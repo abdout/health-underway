@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { XCircle } from 'lucide-react';
 import { Photo, Pdf, Plus, Paper } from '@/components/atom/icon';
+import { ErrorToast } from '@/components/atom/toast';
 
 interface AttachmentSectionProps {
   control: Control<PaediatricSchema>;
@@ -32,22 +33,17 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
     }
   }, [fields.length, append]);
 
-  const personalPhotoValue = watch('personalPhoto');
-  const [photoPreview, setPhotoPreview] = useState<string | null>(typeof data?.personalPhoto === 'string' ? data.personalPhoto : null);
+  const personalPhotoValue = watch('personalPhoto') as string | undefined;
+  const [photoPreview, setPhotoPreview] = useState<string | null>(typeof personalPhotoValue === 'string' ? personalPhotoValue : null);
 
   useEffect(() => {
-    if (personalPhotoValue && personalPhotoValue.length > 0) {
-      const file = personalPhotoValue[0];
-      if (file instanceof File) {
-        const newUrl = URL.createObjectURL(file);
-        setPhotoPreview(newUrl);
-        return () => URL.revokeObjectURL(newUrl);
-      }
+    if (typeof personalPhotoValue === 'string') {
+      setPhotoPreview(personalPhotoValue);
     }
   }, [personalPhotoValue]);
 
-  const updatedCvValue = watch('updatedCV');
-  const scientificPapersValues = watch('scientificPapersFiles');
+  const updatedCvValue = watch('updatedCV') as string | undefined;
+  const scientificPapersValues = watch('scientificPapersFiles') as string[] | undefined;
 
   const paperCount = fields.length;
   const totalPaperSlots = paperCount + 1; // Always +1 for "More Paper" button
@@ -68,20 +64,34 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
   // Ref for hidden file input used when adding a new paper
   const hiddenPaperInputRef = useRef<HTMLInputElement>(null);
 
+  // === Cloudinary upload helper ===
+  const uploadToCloudinary = async (file: File, fieldType: 'image' | 'raw'): Promise<string> => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${fieldType === 'raw' ? 'raw' : 'image'}/upload`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'social'); // make sure this preset exists in Cloudinary
+    try {
+      const res = await fetch(url, { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      return data.secure_url as string;
+    } catch (err) {
+      console.error('Cloudinary upload error:', err);
+      ErrorToast('فشل رفع الملف. حاول مرة أخرى.');
+      throw err;
+    }
+  };
+
   // Handle file selection from the hidden input – will append a new field *only* if a file was chosen
-  const handleHiddenPaperChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHiddenPaperChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const newIndex = fields.length; // index that the new paper will take
-      // First create a new slot in the field-array
-      append(undefined, { shouldFocus: false });
-      // Then assign the chosen file(s) to that slot
-      setValue(`scientificPapersFiles.${newIndex}` as const, files as any, {
-        shouldValidate: true,
-      });
+      const file = files[0];
+      try {
+        const url = await uploadToCloudinary(file, 'raw');
+        append(url as any, { shouldFocus: false });
+      } catch (_) {}
     }
-
-    // Reset the input so selecting the same file again will still trigger onChange
     if (hiddenPaperInputRef.current) {
       hiddenPaperInputRef.current.value = "";
     }
@@ -100,6 +110,9 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
     // Simply open the hidden file input – new box will be added after successful upload
     hiddenPaperInputRef.current?.click();
   };
+
+  // Helper to detect if a Cloudinary/raw URL is a PDF
+  const isPdfUrl = (url: string) => url.toLowerCase().endsWith('.pdf') || (url.includes('cloudinary.com') && url.includes('/raw/'));
 
   return (
     <div className="space-y-6">
@@ -123,19 +136,53 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
               )}
             </div>
           </Label>
-          <Input id="personalPhoto" type="file" accept="image/*" {...register('personalPhoto')} className="hidden" />
+          <Input id="personalPhoto" type="file" accept="image/*" className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              try {
+                const url = await uploadToCloudinary(file, 'image');
+                setValue('personalPhoto' as const, url, { shouldValidate: true });
+                setPhotoPreview(url);
+              } catch (_) {}
+            }}
+          />
           {errors.personalPhoto && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.personalPhoto.message as string}</p>}
         </div>
 
         {/* CV Upload */}
         <div className="flex flex-col items-center space-y-2">
           <Label htmlFor="updatedCV" className="cursor-pointer">
-            <div className="w-40 h-40 rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors p-2">
-              {updatedCvValue && updatedCvValue[0] ? (
-                <div className="text-center text-gray-600">
-                  <Pdf className="mx-auto h-10 w-10" />
-                  <p className="mt-1 text-sm break-words w-full px-1">{updatedCvValue[0].name}</p>
-                </div>
+            <div className="w-40 h-40 rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors">
+              {updatedCvValue ? (
+                isPdfUrl(updatedCvValue) ? (
+                  <div className="relative w-full h-full overflow-hidden bg-white">
+                    <div className="absolute" style={{ width: '120%', height: '120%', left: '-5%', top: '-1%' }}>
+                      <iframe
+                        src={updatedCvValue}
+                        width="100%"
+                        height="100%"
+                        className="pointer-events-none w-full h-full"
+                        title="CV Preview"
+                        frameBorder="0"
+                        scrolling="no"
+                      />
+                    </div>
+                    <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-xs text-center py-1 z-10">
+                      Resume
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center text-gray-600">
+                    <Pdf className="mx-auto h-10 w-10" />
+                    <p className="mt-1 text-sm break-words w-full px-1">
+                      {(() => {
+                        const name = updatedCvValue.split('/').pop() || 'Resume';
+                        return name.length > 20 ? `${name.substring(0, 20)}...` : name;
+                      })()}
+                    </p>
+                  </div>
+                )
               ) : (
                 <div className="text-center">
                   <Pdf className="mx-auto h-10 w-10 text-gray-400" />
@@ -144,7 +191,16 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
               )}
             </div>
           </Label>
-          <Input id="updatedCV" type="file" accept=".pdf,.doc,.docx" {...register('updatedCV')} className="hidden" />
+          <Input id="updatedCV" type="file" accept=".pdf,.doc,.docx" className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              try {
+                const url = await uploadToCloudinary(file, 'raw');
+                setValue('updatedCV' as const, url, { shouldValidate: true });
+              } catch (_) {}
+            }}
+          />
           {errors.updatedCV && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.updatedCV.message as string}</p>}
         </div>
 
@@ -162,19 +218,35 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
               <div key={field.id} className="relative">
                 <div
                   onClick={() => handlePaperUpload(index)}
-                  className="cursor-pointer w-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors p-2"
+                  className="cursor-pointer w-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors"
                   style={{ height: `${paperBoxHeight}px` }}
                 >
-                  {scientificPapersValues?.[index]?.[0] ? (
-                    <div className="text-center text-gray-600">
-                      <Paper className="mx-auto h-6 w-6" />
-                      <p className="mt-1 text-xs break-words w-full px-1 leading-tight">
-                        {scientificPapersValues[index][0].name.length > 20 
-                          ? `${scientificPapersValues[index][0].name.substring(0, 20)}...` 
-                          : scientificPapersValues[index][0].name
-                        }
-                      </p>
-                    </div>
+                  {scientificPapersValues && scientificPapersValues[index] ? (
+                    isPdfUrl(scientificPapersValues[index]) ? (
+                      <div className="relative w-full h-full overflow-hidden bg-white">
+                        <div className="absolute" style={{ width: '122%', height: '122%', left: '-5%', top: '-1%' }}>
+                          <iframe
+                            src={scientificPapersValues[index]}
+                            width="100%"
+                            height="100%"
+                            className="pointer-events-none w-full h-full"
+                            title={`Paper ${index + 1} Preview`}
+                            frameBorder="0"
+                            scrolling="no"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-600">
+                        <Paper className="mx-auto h-6 w-6" />
+                        <p className="mt-1 text-xs break-words w-full px-1 leading-tight">
+                          {(() => {
+                            const name = scientificPapersValues[index].split('/').pop() || `Paper ${index + 1}`;
+                            return name.length > 20 ? `${name.substring(0, 20)}...` : name;
+                          })()}
+                        </p>
+                      </div>
+                    )
                   ) : (
                     <div className="text-center">
                       <Paper className="mx-auto h-6 w-6" />
@@ -190,7 +262,14 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
                   id={`scientificPapersFiles.${index}`}
                   type="file"
                   accept=".pdf"
-                  {...register(`scientificPapersFiles.${index}` as const)}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    try {
+                      const url = await uploadToCloudinary(file, 'raw');
+                      setValue(`scientificPapersFiles.${index}` as const, url, { shouldValidate: true });
+                    } catch (_) {}
+                  }}
                   className="hidden"
                 />
                 {fields.length > 1 && (
