@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ReviewContainerProps } from './type';
 import { ReviewActions } from './review-action';
+import React from 'react';
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -22,7 +23,7 @@ function KeyValue({ label, value }: { label: string; value?: React.ReactNode }) 
   );
 }
 
-export function ReviewContainer({ data, isSubmitting, handleSubmit }: ReviewContainerProps) {
+export function ReviewContainer({ data, isSubmitting, handleSubmit, hideActions = false }: ReviewContainerProps & { hideActions?: boolean; }) {
   return (
     <div className="min-h-screen -mt-10">
       <div className="max-w-7xl mx-auto px-4">
@@ -105,7 +106,9 @@ export function ReviewContainer({ data, isSubmitting, handleSubmit }: ReviewCont
         </div>
 
         {/* Submit Button */}
-        <ReviewActions isSubmitting={isSubmitting} onSubmit={handleSubmit} />
+        {!hideActions && (
+          <ReviewActions isSubmitting={isSubmitting} onSubmit={handleSubmit} />
+        )}
       </div>
     </div>
   );

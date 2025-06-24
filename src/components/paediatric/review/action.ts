@@ -44,4 +44,17 @@ export async function submitPaediatricDoctorProfile() {
     console.error('submitPaediatricDoctorProfile error', e);
     return { success: false, error: 'Submission failed' } as const;
   }
+}
+
+export async function fetchPaediatricDoctorByUserId(userId: string) {
+  try {
+    if (!userId) return { error: 'Invalid user id', data: null } as const;
+
+    const data = await db.paediatricDoctor.findUnique({ where: { userId } });
+    if (!data) return { error: 'Not found', data: null } as const;
+    return { error: null, data } as const;
+  } catch (e) {
+    console.error('fetchPaediatricDoctorByUserId error', e);
+    return { error: 'Failed to fetch data', data: null } as const;
+  }
 } 
