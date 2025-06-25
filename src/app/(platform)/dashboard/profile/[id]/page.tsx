@@ -1,14 +1,12 @@
-"use client";
-
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ProfileAbout, ProfileActivities } from "@/components/platform/profile";
 
-interface ProfilePageProps {
-  params: { id: string };
+interface Params {
+  id: string;
 }
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
+export default async function ProfilePage({ params }: { params: Params }) {
   const { id } = params;
 
   // Fetch user and paediatric doctor
@@ -20,7 +18,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   });
 
   if (!user || !user.paediatricDoctor) {
-    return notFound();
+    notFound();
   }
 
   const paed = user.paediatricDoctor;
