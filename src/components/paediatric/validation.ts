@@ -61,6 +61,8 @@ export const paediatricSchema = z.object({
   currentInstitution: z.string().min(1, { message: "Institution is required" }),
   countryOfWork: z.string().min(1, { message: "Country is required" }),
   yearsInPosition: z.string().optional(),
+  academicPositionCurrentOrPast: z.string().optional(),
+  pastCareerPositions: z.string().optional(),
   
   // Research and Publications
   scientificPapersPublished: z.string().optional(),
