@@ -37,14 +37,14 @@ async function getUserImageAndCover() {
       },
       paediatricDoctor: {
         select: {
-          personalPhoto: true,
+          personalPhotos: true,
         }
       }
     }
   });
 
   return {
-    image: userData?.image || userData?.paediatricDoctor?.personalPhoto || null,
+    image: userData?.image || userData?.paediatricDoctor?.personalPhotos[0] || null,
     cover: userData?.doctor?.cover || null
   };
 }
@@ -53,7 +53,7 @@ export default async function TwitterProfile() {
   const { data: paediatricData } = await fetchPaediatricDoctorForReview();
   const userData = paediatricData ? {
     name: paediatricData.fullNameEnglish || paediatricData.fullNameArabic,
-    currentOccupation: paediatricData.currentPositionInHospital,
+    currentOccupation: paediatricData.currentPosition,
     currentLocality: paediatricData.originalHomeTownOrVillage,
     link: '',
     ...paediatricData,
@@ -62,7 +62,7 @@ export default async function TwitterProfile() {
   const occupation = userData?.currentOccupation || "Unknown";
 
   const { image: userImage, cover } = await getUserImageAndCover();
-  const image = userImage || paediatricData?.personalPhoto || "/placeholder.svg?height=128&width=128";
+  const image = userImage || (Array.isArray(paediatricData?.personalPhotos) && paediatricData.personalPhotos.length ? paediatricData.personalPhotos[0] : "/placeholder.svg?height=128&width=128");
 
   return (
     <div className="md:max-w-2xl md:mx-20 overflow-hidden">
