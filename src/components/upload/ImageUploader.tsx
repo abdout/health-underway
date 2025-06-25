@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { useImageUpload } from '@/hooks/useImageUpload';
+import { useImageUpload } from './useImageUpload';
 
 export type ImageUploaderProps = {
   onUploadComplete?: (imageData: any) => void;
