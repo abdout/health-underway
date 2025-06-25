@@ -10,56 +10,57 @@ export interface FooterSection {
 
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
-    title: "Product",
+    title: "Services",
     links: [
-      { href: "#editor", label: "Editor" },
-      { href: "#collaboration", label: "Collaboration" },
-      { href: "#content-ai", label: "Content AI" },
-      { href: "#documents", label: "Documents" },
-      { href: "#pricing", label: "Pricing" },
+      { href: "/appointments", label: "Book Appointment" },
+      { href: "/departments", label: "Departments" },
+      { href: "/doctors", label: "Find Doctors" },
+      { href: "/emergency", label: "Emergency Care" },
+      { href: "/telemedicine", label: "Telemedicine" },
     ],
   },
   {
-    title: "Company",
+    title: "Patients",
     links: [
-      { href: "#blog", label: "Blog" },
-      { href: "#contact", label: "Contact us" },
-    ],
-  },
-  {
-    title: "Docs",
-    links: [
-      { href: "#docs-editor", label: "Editor" },
-      { href: "#hocuspocus", label: "Hocuspocus" },
-      { href: "#extensions", label: "Extensions" },
-      { href: "#examples", label: "Examples" },
+      { href: "/patient-portal", label: "Patient Portal" },
+      { href: "/medical-records", label: "Medical Records" },
+      { href: "/insurance", label: "Insurance" },
+      { href: "/billing", label: "Billing & Payments" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { href: "#release-notes", label: "Release notes" },
-      { href: "#roi-calculator", label: "ROI Calculator" },
-      { href: "#experiments", label: "Experiments" },
-      { href: "#mit-license", label: "MIT license" },
-      { href: "#security", label: "Security" },
-      { href: "#pro-license", label: "Pro license" },
+      { href: "/health-library", label: "Health Library" },
+      { href: "/wellness", label: "Wellness Tips" },
+      { href: "/faq", label: "FAQs" },
+      { href: "/patient-guide", label: "Patient Guide" },
+    ],
+  },
+  {
+    title: "About Us",
+    links: [
+      { href: "/about", label: "Our Hospital" },
+      { href: "/careers", label: "Careers" },
+      { href: "/news", label: "News & Updates" },
+      { href: "/research", label: "Research" },
+      { href: "/contact", label: "Contact Us" },
     ],
   },
   {
     title: "Connect",
     links: [
-      { href: "#github", label: "GitHub" },
-      { href: "#discord", label: "Discord" },
-      { href: "#linkedin", label: "LinkedIn" },
-      { href: "#x", label: "X" },
+      { href: "/facebook", label: "Facebook" },
+      { href: "/instagram", label: "Instagram" },
+      { href: "/linkedin", label: "LinkedIn" },
+      { href: "/youtube", label: "YouTube" },
     ],
   },
 ]
 
 export const FOOTER_BOTTOM_LINKS: FooterLink[] = [
-  { href: "#system-status", label: "System status" },
-  { href: "#privacy-policy", label: "Privacy policy" },
-  { href: "#terms", label: "Terms" },
-  { href: "#legal-notice", label: "Legal notice" },
+  { href: "/accessibility", label: "Accessibility" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
+  { href: "/hipaa", label: "HIPAA Notice" },
 ]

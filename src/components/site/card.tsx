@@ -25,7 +25,7 @@ const FeatureCard = ({
       "bg-transparent",
       className
     )}>
-      <div className="flex flex-col space-y-3 text-center">
+      <div className="flex flex-col space-y-3">
         <div 
           className="text-5xl font-bold"
           style={{
@@ -35,10 +35,10 @@ const FeatureCard = ({
           {number}
         </div>
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-lg font-semibold">
             {title}
           </h3>
-          <p className="text-base text-white/90">
+          <p className="text-base text-muted-foreground">
             {subtitle}
           </p>
         </div>
@@ -51,43 +51,43 @@ const FeatureCards = () => {
   const features = [
     {
       number: "01",
-      title: "Seamless",
-      subtitle: "scaling",
-      borderColor: "border-purple-500",
-      strokeColor: "#a855f7"
-    },
-    {
-      number: "02", 
-      title: "Enterprise",
-      subtitle: "security",
-      borderColor: "border-purple-400",
-      strokeColor: "#c084fc"
-    },
-    {
-      number: "03",
-      title: "Faster time",
-      subtitle: "to market", 
+      title: "Instant",
+      subtitle: "booking",
       borderColor: "border-blue-500",
       strokeColor: "#3b82f6"
     },
     {
+      number: "02", 
+      title: "Expert",
+      subtitle: "doctors",
+      borderColor: "border-cyan-500",
+      strokeColor: "#06b6d4"
+    },
+    {
+      number: "03",
+      title: "Digital",
+      subtitle: "records", 
+      borderColor: "border-teal-500",
+      strokeColor: "#14b8a6"
+    },
+    {
       number: "04",
-      title: "Cloud or",
-      subtitle: "on-premises",
-      borderColor: "border-cyan-400",
-      strokeColor: "#22d3ee"
+      title: "Smart",
+      subtitle: "reminders",
+      borderColor: "border-emerald-500",
+      strokeColor: "#10b981"
     },
     {
       number: "05",
-      title: "Extensive",
+      title: "Patient",
       subtitle: "support",
-      borderColor: "border-teal-400",
-      strokeColor: "#2dd4bf"
+      borderColor: "border-green-500",
+      strokeColor: "#22c55e"
     }
   ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 p-6  items-center mt-20">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 p-6 items-center mt-20">
       {features.map((feature, index) => (
         <FeatureCard
           key={index}

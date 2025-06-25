@@ -68,7 +68,7 @@ export function SiteFooter() {
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col text-sm text-gray-300  md:flex-row justify-center items-center gap-4">
               
-                © {new Date().getFullYear()} Tiptap
+                © {new Date().getFullYear()} Shifa
               
               <div className="flex flex-wrap gap-6 text-sm">
                 {FOOTER_BOTTOM_LINKS.map((link) => (
