@@ -3,6 +3,7 @@
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { notifyOnboardingSubmission } from '@/components/notifications/action';
 
 // Fetch paediatric doctor data for review page
 export async function fetchPaediatricDoctorForReview() {
@@ -35,7 +36,21 @@ export async function submitPaediatricDoctorProfile() {
       return { success: false, error: 'Unauthorized' } as const;
     }
 
-    // You may want to update a status column here. For now we just revalidate caches.
+    // Update applicationStatus to SUBMITTED
+    const paediatricProfile = await db.paediatricDoctor.update({
+      where: { userId: user.id },
+      data: { applicationStatus: 'SUBMITTED' },
+    });
+
+    // Notify admins about new submission
+    await notifyOnboardingSubmission(
+      paediatricProfile.fullNameEnglish,
+      user.id,
+      paediatricProfile.personalEmail,
+      undefined,
+      undefined // WhatsApp placeholder
+    );
+
     revalidatePath('/paediatric');
     revalidatePath('/dashboard');
 

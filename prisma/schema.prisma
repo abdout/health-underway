@@ -30,6 +30,13 @@ enum Status {
   cancelled
 }
 
+enum ApplicationStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
 model User {
   id                    String                 @id @default(cuid())
   name                  String?
@@ -286,7 +293,7 @@ model Doctor {
   onboardingStep   Int?    @default(1)
   
   // Application status
-  applicationStatus String? @default("PENDING")  // "PENDING" | "APPROVED" | "REJECTED"
+  applicationStatus ApplicationStatus @default(PENDING)
   reviewedBy        String?
   reviewedAt        DateTime?
   reviewNotes       String?
@@ -372,7 +379,7 @@ model PaediatricDoctor {
   onboardingStep   Int?    @default(1)
   
   // Application status
-  applicationStatus String? @default("PENDING")  // "PENDING" | "APPROVED" | "REJECTED"
+  applicationStatus ApplicationStatus @default(PENDING)
   reviewedBy        String?
   reviewedAt        DateTime?
   reviewNotes       String?

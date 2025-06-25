@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { notifyApplicationApproved, notifyApplicationRejected } from "@/components/notifications/action";
 
 // Approve application: sets applicationStatus to "APPROVED"
 export async function approveApplication(userId: string) {
@@ -18,6 +19,19 @@ export async function approveApplication(userId: string) {
       reviewedAt: new Date(),
     },
   });
+
+  // Promote user role to MEMBER if not already
+  await db.user.update({
+    where: { id: userId },
+    data: { role: UserRole.MEMBER },
+  });
+
+  // Send notification to applicant
+  const applicant = await db.user.findUnique({ where: { id: userId } });
+  if (applicant) {
+    await notifyApplicationApproved(applicant.id, applicant.name || "");
+  }
+
   revalidatePath('/dashboard/membership');
   return { success: true };
 }
@@ -34,6 +48,12 @@ export async function rejectApplication(userId: string) {
       reviewedAt: new Date(),
     },
   });
+
+  // Send rejection notification
+  const applicant = await db.user.findUnique({ where: { id: userId } });
+  if (applicant) {
+    await notifyApplicationRejected(applicant.id, applicant.name || "");
+  }
   revalidatePath('/dashboard/membership');
   return { success: true };
 }

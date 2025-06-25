@@ -8,28 +8,28 @@ export default async function LabPage() {
   const currentUserId = session?.user?.id;
 
   // Fetch all users from the database, including doctor profile data
-  const users = await db.user.findMany({
+  const usersRaw = await db.user.findMany({
     select: {
       id: true,
       name: true,
       email: true,
       image: true,
-      onboarded: true,
       role: true,
-      doctor: {
+      paediatricDoctor: {
         select: {
-          bio: true,
-          currentCountry: true,
-          currentLocality: true,
           onboardingStatus: true,
           applicationStatus: true,
-        }
-      }
+        },
+      },
     },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: { createdAt: "desc" },
   });
+
+  const users = usersRaw.map((u) => ({
+    ...u,
+    onboardingStatus: u.paediatricDoctor?.onboardingStatus,
+    applicationStatus: u.paediatricDoctor?.applicationStatus,
+  }));
 
   return (
     <div className="container">

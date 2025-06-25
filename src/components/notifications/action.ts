@@ -164,4 +164,47 @@ export async function markNotificationAsRead(notificationId: string) {
     console.error('Error marking notification as read:', error);
     return { success: false, error };
   }
+}
+
+/**
+ * Notify applicant that their application has been approved
+ */
+export async function notifyApplicationApproved(applicantId: string, applicantName: string) {
+  try {
+    // In-app notification
+    await createNotification({
+      title: 'تم قبول طلب العضوية',
+      content: `مبروك ${applicantName}، تم قبول طلب عضويتك.`,
+      recipientId: applicantId,
+      type: NotificationType.APPLICATION_APPROVED,
+    });
+
+    // TODO: WhatsApp / Telegram if desired
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error notifying application approval:', error);
+    return { success: false };
+  }
+}
+
+/**
+ * Notify applicant that their application has been rejected
+ */
+export async function notifyApplicationRejected(applicantId: string, applicantName: string) {
+  try {
+    await createNotification({
+      title: 'تم رفض طلب العضوية',
+      content: `عذرًا ${applicantName}، لم يتم قبول طلب عضويتك في هذه المرحلة.`,
+      recipientId: applicantId,
+      type: NotificationType.APPLICATION_REJECTED,
+    });
+
+    // TODO: WhatsApp / Telegram if desired
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error notifying application rejection:', error);
+    return { success: false };
+  }
 } 

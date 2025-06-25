@@ -14,6 +14,7 @@ import { ProfessionalSection } from "./professional";
 import { ResearchSection } from "./research";
 import SiteHeading from "../atom/site-heading";
 import { AttachmentSection } from "./attachment";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
   type: "create" | "update";
@@ -23,6 +24,7 @@ interface FormProps {
 const Form = ({ type, data }: FormProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   const form = useForm<PaediatricSchema>({
     resolver: zodResolver(paediatricSchema) as Resolver<PaediatricSchema>,
@@ -62,7 +64,8 @@ const Form = ({ type, data }: FormProps) => {
         const result = await action({ success: false, error: false }, formData);
         
         if (result.success) {
-          toast.success(`Paediatric doctor information ${type === "create" ? "created" : "updated"} successfully.`);
+          toast.success(`تم حفظ معلومات الطبيب بنجاح.`);
+          router.push("/paediatric/review");
         } else {
           toast.error(result.error || "An error occurred");
         }
