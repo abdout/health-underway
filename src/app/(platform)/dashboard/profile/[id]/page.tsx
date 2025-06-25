@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ProfileAbout, ProfileActivities } from "@/components/platform/profile";
+import type { PageProps } from "next";
 
-interface Params {
-  id: string;
-}
-
-export default async function ProfilePage({ params }: { params: Params }) {
+export default async function ProfilePage({ params }: PageProps<{ id: string }>) {
   const { id } = params;
 
   // Fetch user and paediatric doctor
