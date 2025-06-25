@@ -9,3 +9,5 @@ const NewVerificationPage = () => {
 }
  
 export default NewVerificationPage;
+
+export const dynamic = 'force-dynamic';

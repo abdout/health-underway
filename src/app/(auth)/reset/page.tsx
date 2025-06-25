@@ -9,3 +9,5 @@ const ResetPage = () => {
 }
  
 export default ResetPage;
+
+export const dynamic = 'force-dynamic';

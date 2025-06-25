@@ -9,3 +9,5 @@ const RegisterPage = () => {
 }
  
 export default RegisterPage;
+
+export const dynamic = 'force-dynamic';

@@ -7,5 +7,7 @@ const NewPasswordPage = () => {
     <NewPasswordForm />
    );
 }
- 
+
+export const dynamic = 'force-dynamic';
+
 export default NewPasswordPage;
