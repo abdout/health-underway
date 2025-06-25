@@ -1,3 +1,5 @@
+'use client';
+
 import { NewVerificationForm } from "@/components/auth/verification/form";
 
 const NewVerificationPage = () => {

@@ -1,3 +1,5 @@
+'use client';
+
 import { NewPasswordForm } from "@/components/auth/password/form";
 
 const NewPasswordPage = () => {
