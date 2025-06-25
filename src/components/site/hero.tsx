@@ -36,7 +36,7 @@ export function Hero() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 items-center mt-2">
                             <Link href="/appointment">
-                                <ExpandButton variant="default">
+                                <ExpandButton variant="default" href="/appointment">
                                     Appointment
                                 </ExpandButton>
                             </Link>

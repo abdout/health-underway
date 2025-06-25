@@ -21,12 +21,12 @@ export function InformationSection({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Personal Information</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Information</h2>
         <hr className="my-4" />
       </div>
       
       {/* Names */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <Input
             id="fullNameEnglish"
@@ -43,8 +43,8 @@ export function InformationSection({
           <Input
             id="fullNameArabic"
             {...register('fullNameArabic')}
-            placeholder="Full Name in Arabic Language *"
-            className="text-right bg-white"
+            placeholder="الاسم الكامل باللغة العربية *"
+            className="text-right bg-white "
             dir="rtl"
           />
           {errors.fullNameArabic && (
@@ -54,11 +54,11 @@ export function InformationSection({
       </div>
 
       {/* Prefix, Career, and Birth Information */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="flex flex-col md:flex-row justify-between">
         <div>
           <Select onValueChange={(value) => setValue('namePrefix', value)} defaultValue={data?.namePrefix} >
-            <SelectTrigger className="bg-white h-10">
-              <SelectValue placeholder="Select Name Prefix *" />
+            <SelectTrigger className="bg-white  w-full md:w-44">
+              <SelectValue placeholder="Prefix *" />
             </SelectTrigger>
             <SelectContent>
               {NAME_PREFIXES.map((prefix) => (
@@ -75,8 +75,8 @@ export function InformationSection({
         
         <div>
           <Select onValueChange={(value) => setValue('stageOfCareer', value)} defaultValue={data?.stageOfCareer}>
-            <SelectTrigger className="bg-white">
-              <SelectValue placeholder="Select Stage of Career *" />
+            <SelectTrigger className="bg-white w-full md:w-44">
+              <SelectValue placeholder="Career *" />
             </SelectTrigger>
             <SelectContent>
               {CAREER_STAGES.map((stage) => (
@@ -93,7 +93,7 @@ export function InformationSection({
 
         <div>
           <Select onValueChange={(value) => setValue('placeOfBirth', value)} defaultValue={data?.placeOfBirth}>
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-white w-full md:w-44">
               <SelectValue placeholder="Place of Birth" />
             </SelectTrigger>
             <SelectContent>
@@ -106,19 +106,19 @@ export function InformationSection({
           </Select>
         </div>
         
-        <div>
+        <div className="w-full md:w-40 h-10">
           <Input
             id="dateOfBirth"
             type="date"
             {...register('dateOfBirth')}
             placeholder="Date of Birth"
-            className="bg-white"
+            className="bg-white h-10 w-full md:w-44"
           />
         </div>
       </div>
 
       {/* Location and Email */}
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
         <Input
           id="originalHomeTownOrVillage"
           {...register('originalHomeTownOrVillage')}
@@ -136,16 +136,16 @@ export function InformationSection({
         {errors.personalEmail && (
           <p className="text-red-500 text-sm mt-1">{errors.personalEmail.message}</p>
         )}
-      </div>
+      </div> */}
 
       {/* Agreement */}
-      <div className="flex items-center space-x-3">
+      {/* <div className="flex items-center space-x-3">
         <Checkbox
           id="agreeToEmailPublication"
           {...register('agreeToEmailPublication')}
         />
         <span className="text-sm">Agree to email publication *</span>
-      </div>
+      </div> */}
       {errors.agreeToEmailPublication && (
         <p className="text-red-500 text-sm mt-1">{errors.agreeToEmailPublication.message}</p>
       )}

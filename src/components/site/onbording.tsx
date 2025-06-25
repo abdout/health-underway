@@ -27,7 +27,7 @@ export function PaediatricOnbording({ className }: PaediatricOnbordingProps) {
             </h1>
             <p className="max-w-xl mx-auto text-muted-foreground text-2xl leading-8">Join the community of Sudanese paediatric care—connect, share, and inspire healing.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ExpandButton className="group flex items-center">
+              <ExpandButton href="/paediatric" className="group flex items-center">
                 <span className="order-1 transition-all duration-300 group-hover:order-2">
                   Join the community
                 </span>
