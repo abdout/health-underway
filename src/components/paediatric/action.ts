@@ -78,9 +78,10 @@ export async function createPaediatricDoctor(
 
     const data = validatedData.data;
 
-    // Create paediatric doctor profile
-    await db.paediatricDoctor.create({
-      data: {
+    // Upsert paediatric doctor profile (create or update if already exists)
+    await db.paediatricDoctor.upsert({
+      where: { userId: user.id },
+      create: {
         userId: user.id,
         fullNameEnglish: data.fullNameEnglish,
         fullNameArabic: data.fullNameArabic,
@@ -123,7 +124,50 @@ export async function createPaediatricDoctor(
         scientificPapersFiles: data.scientificPapersFiles,
         personalPhoto: data.personalPhoto,
         updatedCV: data.updatedCV,
-      }
+      },
+      update: {
+        fullNameEnglish: data.fullNameEnglish,
+        fullNameArabic: data.fullNameArabic,
+        namePrefix: data.namePrefix,
+        stageOfCareer: data.stageOfCareer,
+        placeOfBirth: data.placeOfBirth,
+        dateOfBirth: data.dateOfBirth,
+        originalHomeTownOrVillage: data.originalHomeTownOrVillage,
+        personalEmail: data.personalEmail,
+        agreeToEmailPublication: data.agreeToEmailPublication,
+        universityOfPrimaryGraduation: data.universityOfPrimaryGraduation,
+        countryOfUniversityOfPrimaryGraduation: data.countryOfUniversityOfPrimaryGraduation,
+        yearOfGraduationFromMedicine: data.yearOfGraduationFromMedicine,
+        awardsDuringPrimaryMedicalDegree: data.awardsDuringPrimaryMedicalDegree,
+        qualifications: data.qualifications,
+        otherQualification: data.otherQualification,
+        postGraduateStudies: data.postGraduateStudies,
+        otherQualifications: data.otherQualifications,
+        paediatricsSubspecialty: data.paediatricsSubspecialty,
+        otherSubspecialty: data.otherSubspecialty,
+        subspecialtyCertified: data.subspecialtyCertified,
+        subspecialtyDegreeName: data.subspecialtyDegreeName,
+        currentPositionInHospital: data.currentPositionInHospital,
+        countryOfMajorityPaediatricsTraining: data.countryOfMajorityPaediatricsTraining,
+        academicPositionCurrentOrPast: data.academicPositionCurrentOrPast,
+        pastCareerPositions: data.pastCareerPositions,
+        scientificPapersPublished: data.scientificPapersPublished,
+        booksEdited: data.booksEdited,
+        chaptersEditedInPaediatricsBooks: data.chaptersEditedInPaediatricsBooks,
+        majorCareerAchievement: data.majorCareerAchievement,
+        recognitionOfServices: data.recognitionOfServices,
+        secondNationality: data.secondNationality,
+        agreeToPhotoPublication: data.agreeToPhotoPublication,
+        hobbiesOrInterests: Array.isArray(data.hobbiesOrInterests) ? data.hobbiesOrInterests.join(', ') : (data.hobbiesOrInterests as any),
+        nameOfSpouse: data.nameOfSpouse,
+        workOfSpouse: data.workOfSpouse,
+        childrenNamesAndStatus: data.childrenNamesAndStatus,
+        specialOccasionOrRole: data.specialOccasionOrRole,
+        extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
+        scientificPapersFiles: data.scientificPapersFiles,
+        personalPhoto: data.personalPhoto,
+        updatedCV: data.updatedCV,
+      },
     });
 
     // Revalidate paths
@@ -131,9 +175,9 @@ export async function createPaediatricDoctor(
     revalidatePath('/dashboard');
 
     return { success: true };
-  } catch (error) {
-    console.error('Error creating paediatric doctor record:', error);
-    return { success: false, error: 'Failed to save paediatric doctor information' };
+  } catch (error: any) {
+    console.error('Error creating/updating paediatric doctor record:', error);
+    return { success: false, error: error?.message || 'Failed to save paediatric doctor information' };
   }
 }
 
