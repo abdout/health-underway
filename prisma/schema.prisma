@@ -49,6 +49,7 @@ model User {
   doctor                Doctor?
   paediatricDoctor      PaediatricDoctor?
   notifications         Notification[]
+  images                Image[]
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
 }
@@ -395,4 +396,22 @@ model Notification {
   @@index([userId])
   @@index([doctorId])
   @@index([isRead])
+}
+
+// Image uploads metadata
+model Image {
+  id          String   @id @default(cuid())
+  url         String
+  fileId      String   @unique
+  fileName    String
+  filePath    String?
+  thumbnailUrl String?
+  size        Int?
+  width       Int?
+  height      Int?
+  format      String?
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
