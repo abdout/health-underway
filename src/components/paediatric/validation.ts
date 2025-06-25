@@ -21,11 +21,8 @@ export const paediatricSchema = z.object({
   placeOfBirth: z.string().optional(),
   dateOfBirth: z.string().optional(),
   originalHomeTownOrVillage: z.string().optional(),
-  personalEmail: z.string()
-    .email({ message: "Please enter a valid email address" }),
-  agreeToEmailPublication: z.boolean()
-    .default(false)
-    .refine(val => val === true, { message: "You must agree to email publication" }),
+  personalEmail: z.string().optional(),
+  agreeToEmailPublication: z.boolean().optional(),
   
   // Primary Education
   universityOfPrimaryGraduation: z.string()
@@ -73,7 +70,7 @@ export const paediatricSchema = z.object({
   
   // Personal Information
   secondNationality: z.string().optional(),
-  agreeToPhotoPublication: z.boolean().default(false),
+  agreeToPhotoPublication: z.boolean().optional(),
   hobbiesOrInterests: z.array(z.string()).optional(),
   nameOfSpouse: z.string().optional(),
   workOfSpouse: z.string().optional(),
