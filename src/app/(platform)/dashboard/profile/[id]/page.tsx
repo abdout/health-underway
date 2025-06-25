@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ProfileAbout, ProfileActivities } from "@/components/platform/profile";
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+export default async function ProfilePage({ params }: any) {
   const { id } = params;
 
   // Fetch user and paediatric doctor
