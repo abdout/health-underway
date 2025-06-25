@@ -60,12 +60,15 @@ export const registerPatient = async ({
     return result;
   } catch (error) {
     console.error("❌ [registerPatient] Error occurred:", error);
+
+    const err = error as Error;
     console.error("❌ [registerPatient] Error details:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
+      message: err.message,
+      stack: err.stack,
+      name: err.name,
     });
-    throw error;
+
+    throw err;
   }
 };
 
