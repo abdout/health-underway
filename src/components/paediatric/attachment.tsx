@@ -33,14 +33,15 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
     }
   }, [fields.length, append]);
 
-  const personalPhotoValue = watch('personalPhoto') as string | undefined;
-  const [photoPreview, setPhotoPreview] = useState<string | null>(typeof personalPhotoValue === 'string' ? personalPhotoValue : null);
+  const personalPhotos = watch('personalPhotos') as string[] | undefined;
+  const firstPhoto = Array.isArray(personalPhotos) ? personalPhotos[0] : undefined;
+  const [photoPreview, setPhotoPreview] = useState<string | null>(typeof firstPhoto === 'string' ? firstPhoto : null);
 
   useEffect(() => {
-    if (typeof personalPhotoValue === 'string') {
-      setPhotoPreview(personalPhotoValue);
+    if (typeof firstPhoto === 'string') {
+      setPhotoPreview(firstPhoto);
     }
-  }, [personalPhotoValue]);
+  }, [firstPhoto]);
 
   const updatedCvValue = watch('updatedCV') as string | undefined;
   const scientificPapersValues = watch('scientificPapersFiles') as string[] | undefined;
@@ -124,7 +125,7 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
       <div className="flex w-full items-start flex-wrap gap-12">
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center space-y-2">
-          <Label htmlFor="personalPhoto" className="cursor-pointer">
+          <Label htmlFor="personalPhotos" className="cursor-pointer">
             <div className="w-40 h-40 rounded-full border border-dashed border-gray-500 flex items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors overflow-hidden">
               {photoPreview ? (
                 <Image src={photoPreview} alt="Profile Preview" width={160} height={160} className="w-full h-full object-cover" />
@@ -136,18 +137,20 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
               )}
             </div>
           </Label>
-          <Input id="personalPhoto" type="file" accept="image/*" className="hidden"
+          <Input id="personalPhotos" type="file" accept="image/*" className="hidden"
             onChange={async (e) => {
               const file = e.target.files?.[0];
               if (!file) return;
               try {
                 const url = await uploadToCloudinary(file, 'image');
-                setValue('personalPhoto' as const, url, { shouldValidate: true });
+                const updated = Array.isArray(personalPhotos) ? [...personalPhotos] : [];
+                updated[0] = url;
+                setValue('personalPhotos', updated, { shouldValidate: true });
                 setPhotoPreview(url);
               } catch (_) {}
             }}
           />
-          {errors.personalPhoto && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.personalPhoto.message as string}</p>}
+          {errors.personalPhotos && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.personalPhotos.message as string}</p>}
         </div>
 
         {/* CV Upload */}

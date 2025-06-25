@@ -81,7 +81,7 @@ export const paediatricSchema = z.object({
   
   // File uploads (optional - will be handled separately)
   scientificPapersFiles: z.array(z.any()).optional(),
-  personalPhoto: z.any().optional(),
+  personalPhotos: z.array(z.any()).optional(),
   updatedCV: z.any().optional(),
 });
 

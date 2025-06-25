@@ -58,8 +58,8 @@ export function ReviewContainer({ data, isSubmitting, handleSubmit, hideActions 
             {/* Professional Info */}
             <SectionCard title="Professional Information">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                <KeyValue label="Current Position in Hospital" value={data?.currentPositionInHospital} />
-                <KeyValue label="Country of Majority Training" value={data?.countryOfMajorityPaediatricsTraining} />
+                <KeyValue label="Current Position" value={data?.currentPosition} />
+                <KeyValue label="Country of Work" value={data?.countryOfWork} />
                 <KeyValue label="Academic Position (Current/Past)" value={data?.academicPositionCurrentOrPast} />
                 <KeyValue label="Past Career Positions" value={data?.pastCareerPositions} />
               </div>
@@ -99,7 +99,7 @@ export function ReviewContainer({ data, isSubmitting, handleSubmit, hideActions 
             <SectionCard title="Attachments & Photos">
               <KeyValue label="Agree to Photo Publication" value={data?.agreeToPhotoPublication ? 'Yes' : 'No'} />
               <KeyValue label="Scientific Papers Files" value={Array.isArray(data?.scientificPapersFiles) ? `${data?.scientificPapersFiles.length} file(s)` : '0'} />
-              <KeyValue label="Personal Photo" value={data?.personalPhoto ? 'Uploaded' : 'Not uploaded'} />
+              <KeyValue label="Personal Photos" value={Array.isArray(data?.personalPhotos) && data?.personalPhotos.length > 0 ? `${data?.personalPhotos.length} uploaded` : 'Not uploaded'} />
               <KeyValue label="Updated CV" value={data?.updatedCV ? 'Uploaded' : 'Not uploaded'} />
             </SectionCard>
           </div>

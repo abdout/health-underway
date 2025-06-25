@@ -24,7 +24,7 @@ export default async function ProfilePage({ params }: any) {
       <ProfileAbout
         user={{
           bio: paed.majorCareerAchievement ?? null,
-          currentCountry: paed.countryOfMajorityPaediatricsTraining || null,
+          currentCountry: paed.countryOfWork || null,
           currentLocality: paed.originalHomeTownOrVillage || null,
           currentNeighborhood: null,
           email: user.email ?? null,

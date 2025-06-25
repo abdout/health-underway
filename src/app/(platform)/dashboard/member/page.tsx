@@ -24,7 +24,7 @@ export default async function ApprovedMembersPage() {
         select: {
           applicationStatus: true,
           onboardingStatus: true,
-          countryOfMajorityPaediatricsTraining: true,
+          countryOfWork: true,
         },
       },
     },

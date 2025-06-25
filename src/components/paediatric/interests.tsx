@@ -140,7 +140,7 @@ export function Interests({ value = [], onChange, onFocus, onBlur }: InterestsPr
   return (
     <div className="w-full space-y-2">
       <label className="block text-sm font-medium text-gray-700">
-        Hobbies or Interests
+        Interests
       </label>
       
       <div className="relative">
@@ -168,7 +168,7 @@ export function Interests({ value = [], onChange, onFocus, onBlur }: InterestsPr
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            placeholder={safeValue.length === 0 ? "Type to search and add interests..." : "Add more interests..."}
+            placeholder={safeValue.length === 0 ? "add one or more interests *" : "Add more interests..."}
             className="w-full outline-none text-sm bg-transparent"
           />
         </div>
@@ -192,9 +192,9 @@ export function Interests({ value = [], onChange, onFocus, onBlur }: InterestsPr
         )}
       </div>
 
-      <div className="text-xs text-gray-500">
+      {/* <div className="text-xs text-gray-500">
         {safeValue.length > 0 ? `${safeValue.length} interest${safeValue.length > 1 ? 's' : ''} selected` : 'No interests selected'}
-      </div>
+      </div> */}
     </div>
   );
 } 
