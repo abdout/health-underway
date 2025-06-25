@@ -102,12 +102,12 @@ export function Subspecialty({ value = [], onChange, onFocus, onBlur }: Subspeci
 
   return (
     <div className="w-full space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        Paediatric Subspecialty *
+      <label className="block text-sm font-medium">
+        Subspecialty
       </label>
       
       <div className="relative">
-        <div className="min-h-[40px] p-2 border border-gray-300 rounded-md bg-white focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+        <div className="min-h-[40px] p-2 border border-gray-300 rounded-md bg-white focus-within:border-primary">
           <div className="flex flex-wrap gap-1 mb-1">
             {safeValue.map((subspecialty) => (
               <Badge key={subspecialty} variant="secondary" className="text-xs">
@@ -131,7 +131,7 @@ export function Subspecialty({ value = [], onChange, onFocus, onBlur }: Subspeci
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            placeholder={safeValue.length === 0 ? "Type to search and add subspecialties..." : "Add more subspecialties..."}
+            placeholder={safeValue.length === 0 ? "add one or more subspecialties *" : "Add more subspecialties..."}
             className="w-full outline-none text-sm bg-transparent"
           />
         </div>
@@ -155,9 +155,9 @@ export function Subspecialty({ value = [], onChange, onFocus, onBlur }: Subspeci
         )}
       </div>
 
-      <div className="text-xs text-gray-500">
+      {/* <div className="text-xs text-gray-500">
         {safeValue.length > 0 ? `${safeValue.length} subspecialt${safeValue.length > 1 ? 'ies' : 'y'} selected` : 'No subspecialties selected'}
-      </div>
+      </div> */}
     </div>
   );
 } 

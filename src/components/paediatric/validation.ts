@@ -27,7 +27,7 @@ export const paediatricSchema = z.object({
     .default(false)
     .refine(val => val === true, { message: "You must agree to email publication" }),
   
-  // Education
+  // Primary Education
   universityOfPrimaryGraduation: z.string()
     .min(1, { message: "University of primary graduation is required" }),
   countryOfUniversityOfPrimaryGraduation: z.string()
@@ -36,13 +36,16 @@ export const paediatricSchema = z.object({
     .min(1, { message: "Year of graduation is required" }),
   awardsDuringPrimaryMedicalDegree: z.string().optional(),
   
+  // Post Graduate Education
+  universityOfPostGraduation: z.string().optional(),
+  countryOfUniversityOfPostGraduation: z.string().optional(),
+  yearOfPostGraduation: z.string().optional(),
+  awardsPostGraduate: z.string().optional(),
+  otherQualifications: z.string().optional(),
+  
   // Qualifications - Multiple checkboxes
   qualifications: z.array(z.string()).min(1, { message: "Please select at least one qualification" }),
   otherQualification: z.string().optional(),
-  
-  // Post Graduate Studies
-  postGraduateStudies: z.string().optional(),
-  otherQualifications: z.string().optional(),
   
   // Subspecialty - Multiple checkboxes
   paediatricsSubspecialty: z.array(z.string()).min(1, { message: "Please select at least one subspecialty" }),
@@ -54,13 +57,10 @@ export const paediatricSchema = z.object({
   subspecialtyDegreeName: z.string().optional(),
   
   // Career Information
-  currentPositionInHospital: z.string()
-    .min(1, { message: "Current position is required" }),
-  countryOfMajorityPaediatricsTraining: z.string()
-    .min(1, { message: "Country of training is required" }),
-  academicPositionCurrentOrPast: z.string().optional(),
-  pastCareerPositions: z.string().optional(),
-  skills: z.array(z.string()).optional(),
+  currentPosition: z.string().min(1, { message: "Position is required" }),
+  currentInstitution: z.string().min(1, { message: "Institution is required" }),
+  countryOfWork: z.string().min(1, { message: "Country is required" }),
+  yearsInPosition: z.string().optional(),
   
   // Research and Publications
   scientificPapersPublished: z.string().optional(),

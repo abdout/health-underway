@@ -89,12 +89,12 @@ export function Qualifications({ value = [], onChange, onFocus, onBlur }: Qualif
 
   return (
     <div className="w-full space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        Qualifications *
+      <label className="block text-sm font-medium">
+        Qualifications
       </label>
       
       <div className="relative">
-        <div className="min-h-[40px] p-2 border border-gray-300 rounded-md bg-white focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+        <div className="min-h-[40px] p-2 border border-gray-300 rounded-md bg-white  focus-within:border-primary">
           <div className="flex flex-wrap gap-1 mb-1">
             {safeValue.map((qualification) => (
               <Badge key={qualification} variant="secondary" className="text-xs">
@@ -118,7 +118,7 @@ export function Qualifications({ value = [], onChange, onFocus, onBlur }: Qualif
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            placeholder={safeValue.length === 0 ? "Type to search and add qualifications..." : "Add more qualifications..."}
+            placeholder={safeValue.length === 0 ? "add one or more qualifications *" : "Add more qualifications..."}
             className="w-full outline-none text-sm bg-transparent"
           />
         </div>
@@ -142,9 +142,9 @@ export function Qualifications({ value = [], onChange, onFocus, onBlur }: Qualif
         )}
       </div>
 
-      <div className="text-xs text-gray-500">
+      {/* <div className="text-xs text-gray-500">
         {safeValue.length > 0 ? `${safeValue.length} qualification${safeValue.length > 1 ? 's' : ''} selected` : 'No qualifications selected'}
-      </div>
+      </div> */}
     </div>
   );
 } 

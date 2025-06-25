@@ -54,7 +54,7 @@ export function InformationSection({
       </div>
 
       {/* Prefix, Career, and Birth Information */}
-      <div className="flex flex-col md:flex-row justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <Select onValueChange={(value) => setValue('namePrefix', value)} defaultValue={data?.namePrefix} >
             <SelectTrigger className="bg-white  w-full md:w-44">

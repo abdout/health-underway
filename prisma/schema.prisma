@@ -326,13 +326,16 @@ model PaediatricDoctor {
   yearOfGraduationFromMedicine          String
   awardsDuringPrimaryMedicalDegree      String?
   
+  // Post Graduate Studies
+  universityOfPostGraduation           String?
+  countryOfUniversityOfPostGraduation  String?
+  yearOfPostGraduation                 String?
+  awardsPostGraduate                   String?
+  otherQualifications                  String?
+  
   // Qualifications - Multiple checkboxes stored as array
   qualifications                        String[]
   otherQualification                    String?
-  
-  // Post Graduate Studies
-  postGraduateStudies                   String?
-  otherQualifications                   String?
   
   // Subspecialty - Multiple checkboxes stored as array
   paediatricsSubspecialty               String[]
@@ -343,10 +346,12 @@ model PaediatricDoctor {
   subspecialtyDegreeName                String?
   
   // Career Information
-  currentPositionInHospital             String
-  countryOfMajorityPaediatricsTraining  String
-  academicPositionCurrentOrPast         String?
-  pastCareerPositions                   String?
+  currentPosition                      String
+  currentInstitution                   String
+  countryOfWork                        String
+  yearsInPosition                      String?
+  academicPositionCurrentOrPast        String?
+  pastCareerPositions                  String?
   
   // Research and Publications
   scientificPapersPublished             String?

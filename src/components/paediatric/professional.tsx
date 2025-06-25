@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PaediatricSchema } from "./validation";
-import { UNIVERSITIES, COUNTRIES, POSITIONS, PLACES_OF_TRAINING, PAEDIATRIC_SUBSPECIALTIES, SUBSPECIALTY_CERTIFIED_OPTIONS } from "./constant";
+import { UNIVERSITIES, COUNTRIES } from "./constant";
 import { Qualifications } from "./qualifications";
 import { Subspecialty } from "./subspecialty";
 
@@ -25,6 +25,28 @@ const generateGraduationYears = () => {
   return years.reverse();
 };
 
+// Career Information Constants
+const CAREER_POSITIONS = [
+  { value: "consultant", label: "Consultant" },
+  { value: "specialist", label: "Specialist" },
+  { value: "resident", label: "Resident" },
+  { value: "fellow", label: "Fellow" },
+  { value: "professor", label: "Professor" },
+  { value: "lecturer", label: "Lecturer" },
+];
+
+const INSTITUTIONS = [
+  { value: "hospital", label: "Hospital" },
+  { value: "university", label: "University" },
+  { value: "clinic", label: "Clinic" },
+  { value: "research_center", label: "Research Center" },
+];
+
+const YEARS_OF_EXPERIENCE = Array.from({ length: 40 }, (_, i) => ({
+  value: (i + 1).toString(),
+  label: `${i + 1} ${i + 1 === 1 ? 'year' : 'years'}`
+}));
+
 export function ProfessionalSection({ 
   register, 
   setValue, 
@@ -35,19 +57,19 @@ export function ProfessionalSection({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Professional Background</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Professional</h2>
         <hr className="my-4" />
       </div>
       
-      {/* Education */}
+      {/* Primary Graduation */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Education</h3>
+        <h3 className="text-sm font-medium text-gray-800">Primary graduation</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-6">
           <div>
             <Select onValueChange={(value) => setValue('universityOfPrimaryGraduation', value)} defaultValue={data?.universityOfPrimaryGraduation}>
-              <SelectTrigger className="bg-white">
-                <SelectValue placeholder="University of Primary Graduation *" />
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="University *" />
               </SelectTrigger>
               <SelectContent>
                 {UNIVERSITIES.map((university) => (
@@ -64,8 +86,8 @@ export function ProfessionalSection({
           
           <div>
             <Select onValueChange={(value) => setValue('countryOfUniversityOfPrimaryGraduation', value)} defaultValue={data?.countryOfUniversityOfPrimaryGraduation}>
-              <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Country of University *" />
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Country *" />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
@@ -79,13 +101,11 @@ export function ProfessionalSection({
               <p className="text-red-500 text-sm mt-1">{errors.countryOfUniversityOfPrimaryGraduation.message}</p>
             )}
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <Select onValueChange={(value) => setValue('yearOfGraduationFromMedicine', value)} defaultValue={data?.yearOfGraduationFromMedicine}>
-              <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Year of Graduation from Medicine *" />
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Year *" />
               </SelectTrigger>
               <SelectContent>
                 {generateGraduationYears().map((year) => (
@@ -104,45 +124,88 @@ export function ProfessionalSection({
             <Input
               id="awardsDuringPrimaryMedicalDegree"
               {...register('awardsDuringPrimaryMedicalDegree')}
-              placeholder="Awards During Primary Medical Degree"
-              className="bg-white"
+              placeholder="Awards"
+              className="bg-white w-full md:w-44"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Post Graduation */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-gray-800">Post graduation</h3>
+        
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-6">
+          <div>
+            <Select onValueChange={(value) => setValue('universityOfPostGraduation', value)} defaultValue={data?.universityOfPostGraduation}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="University" />
+              </SelectTrigger>
+              <SelectContent>
+                {UNIVERSITIES.map((university) => (
+                  <SelectItem key={university.value} value={university.value}>
+                    {university.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
+            <Select onValueChange={(value) => setValue('countryOfUniversityOfPostGraduation', value)} defaultValue={data?.countryOfUniversityOfPostGraduation}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Country" />
+              </SelectTrigger>
+              <SelectContent>
+                {COUNTRIES.map((country) => (
+                  <SelectItem key={country.value} value={country.value}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Select onValueChange={(value) => setValue('yearOfPostGraduation', value)} defaultValue={data?.yearOfPostGraduation}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {generateGraduationYears().map((year) => (
+                  <SelectItem key={year.value} value={year.value}>
+                    {year.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
+            <Input
+              id="awardsPostGraduate"
+              {...register('awardsPostGraduate')}
+              placeholder="Awards"
+              className="bg-white w-full md:w-44"
             />
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <Input
-            id="otherQualification"
-            {...register('otherQualification')}
-            placeholder="Other Qualification"
-            className="bg-white"
-          />
-        </div>
-
-        <div>
-          <Textarea
-            id="postGraduateStudies"
-            {...register('postGraduateStudies')}
-            placeholder="Post Graduate Studies - Mention University and Degree and year awarded"
-            rows={3}
-            className="bg-white"
-          />
-        </div>
-
-        <div>
-          <Textarea
             id="otherQualifications"
             {...register('otherQualifications')}
             placeholder="Other Qualifications"
-            rows={3}
             className="bg-white"
           />
-        </div>
+        </div> */}
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
       {/* Qualifications */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Qualifications</h3>
+        {/* <h3 className="text-sm font-medium text-gray-800">Qualifications</h3> */}
         <Qualifications
           value={watch('qualifications') || []}
           onChange={(qualifications) => setValue('qualifications', qualifications)}
@@ -151,7 +214,7 @@ export function ProfessionalSection({
 
       {/* Subspecialty */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Paediatrics Subspecialty</h3>
+        {/* <h3 className="text-sm font-medium text-gray-800">Subspecialty</h3> */}
         <Subspecialty
           value={watch('paediatricsSubspecialty') || []}
           onChange={(subspecialties) => setValue('paediatricsSubspecialty', subspecialties)}
@@ -160,7 +223,7 @@ export function ProfessionalSection({
           <p className="text-red-500 text-sm mt-1">{errors.paediatricsSubspecialty.message}</p>
         )}
 
-        <div>
+        {/* <div>
           <Input
             id="otherSubspecialty"
             {...register('otherSubspecialty')}
@@ -196,62 +259,83 @@ export function ProfessionalSection({
               className="bg-white"
             />
           </div>
-        </div>
+        </div> */}
+      </div>
       </div>
 
       {/* Career Information */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Career Information</h3>
+        <h3 className="text-sm font-medium text-gray-800">Career Information</h3>
         
-        <div>
-          <Textarea
-            id="currentPositionInHospital"
-            {...register('currentPositionInHospital')}
-            placeholder="Current Position in Hospital/University/Health Center *"
-            rows={3}
-            className="bg-white"
-          />
-          {errors.currentPositionInHospital && (
-            <p className="text-red-500 text-sm mt-1">{errors.currentPositionInHospital.message}</p>
-          )}
-        </div>
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-6">
+          <div>
+            <Select onValueChange={(value) => setValue('currentPosition', value)} defaultValue={data?.currentPosition}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Position *" />
+              </SelectTrigger>
+              <SelectContent>
+                {CAREER_POSITIONS.map((position) => (
+                  <SelectItem key={position.value} value={position.value}>
+                    {position.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.currentPosition && (
+              <p className="text-red-500 text-sm mt-1">{errors.currentPosition.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Select onValueChange={(value) => setValue('countryOfMajorityPaediatricsTraining', value)} defaultValue={data?.countryOfMajorityPaediatricsTraining}>
-            <SelectTrigger className="bg-white">
-              <SelectValue placeholder="Country of Majority of Paediatrics Training *" />
-            </SelectTrigger>
-            <SelectContent>
-              {COUNTRIES.map((country) => (
-                <SelectItem key={country.value} value={country.value}>
-                  {country.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors.countryOfMajorityPaediatricsTraining && (
-            <p className="text-red-500 text-sm mt-1">{errors.countryOfMajorityPaediatricsTraining.message}</p>
-          )}
-        </div>
+          <div>
+            <Select onValueChange={(value) => setValue('currentInstitution', value)} defaultValue={data?.currentInstitution}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Institution *" />
+              </SelectTrigger>
+              <SelectContent>
+                {INSTITUTIONS.map((institution) => (
+                  <SelectItem key={institution.value} value={institution.value}>
+                    {institution.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.currentInstitution && (
+              <p className="text-red-500 text-sm mt-1">{errors.currentInstitution.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Textarea
-            id="academicPositionCurrentOrPast"
-            {...register('academicPositionCurrentOrPast')}
-            placeholder="Academic Position Current or Past with Dates"
-            rows={3}
-            className="bg-white"
-          />
-        </div>
+          <div>
+            <Select onValueChange={(value) => setValue('countryOfWork', value)} defaultValue={data?.countryOfWork}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Country *" />
+              </SelectTrigger>
+              <SelectContent>
+                {COUNTRIES.map((country) => (
+                  <SelectItem key={country.value} value={country.value}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.countryOfWork && (
+              <p className="text-red-500 text-sm mt-1">{errors.countryOfWork.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Textarea
-            id="pastCareerPositions"
-            {...register('pastCareerPositions')}
-            placeholder="Past Career Positions"
-            rows={3}
-            className="bg-white"
-          />
+          <div>
+            <Select onValueChange={(value) => setValue('yearsInPosition', value)} defaultValue={data?.yearsInPosition}>
+              <SelectTrigger className="bg-white w-full md:w-44">
+                <SelectValue placeholder="Experience" />
+              </SelectTrigger>
+              <SelectContent>
+                {YEARS_OF_EXPERIENCE.map((year) => (
+                  <SelectItem key={year.value} value={year.value}>
+                    {year.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
