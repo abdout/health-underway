@@ -286,11 +286,11 @@ export async function fetchAllMembers(): Promise<{ error: string | null, data: m
         dob: doc.dateOfBirth || "",
         address: doc.originalHomeTownOrVillage || "غير محدد",
         gender: "", // Gender not available on PaediatricDoctor
-        rank: doc.currentPositionInHospital || "",
-        interest: doc.hobbiesOrInterests || "",
+        rank: doc.currentPosition || "",
+        interest: Array.isArray(doc.hobbiesOrInterests) ? doc.hobbiesOrInterests.join(", ") : "",
         skill: Array.isArray(doc.qualifications) ? doc.qualifications.join(", ") : (doc.otherQualification || ""),
         club: "", // Club name not available on PaediatricDoctor
-        image: doc.personalPhoto || "",
+        image: Array.isArray(doc.personalPhotos) && doc.personalPhotos.length ? doc.personalPhotos[0] : "",
         contact: {
           phone: doc.user?.phone || "",
           facebook: "",
