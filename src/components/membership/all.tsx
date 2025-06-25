@@ -67,7 +67,7 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
     let statusMatch = true;
     switch (status) {
       case "PENDING":
-        statusMatch = !user.applicationStatus || user.applicationStatus === "PENDING" || user.applicationStatus === "SUBMITTED";
+        statusMatch = !user.applicationStatus || user.applicationStatus === "PENDING";
         break;
       case "COMPLETED":
         statusMatch = user.onboardingStatus === "COMPLETED";

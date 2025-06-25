@@ -32,7 +32,6 @@ enum Status {
 
 enum ApplicationStatus {
   PENDING
-  SUBMITTED
   APPROVED
   REJECTED
 }

@@ -19,6 +19,7 @@ export default async function LabPage() {
         select: {
           onboardingStatus: true,
           applicationStatus: true,
+          fullNameEnglish: true,
         },
       },
     },
@@ -27,6 +28,7 @@ export default async function LabPage() {
 
   const users = usersRaw.map((u) => ({
     ...u,
+    name: u.name ?? u.paediatricDoctor?.fullNameEnglish ?? null,
     onboardingStatus: u.paediatricDoctor?.onboardingStatus,
     applicationStatus: u.paediatricDoctor?.applicationStatus,
   }));

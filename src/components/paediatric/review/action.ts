@@ -36,10 +36,10 @@ export async function submitPaediatricDoctorProfile() {
       return { success: false, error: 'Unauthorized' } as const;
     }
 
-    // Update applicationStatus to SUBMITTED
+    // Ensure applicationStatus remains PENDING (default)
     const paediatricProfile = await db.paediatricDoctor.update({
       where: { userId: user.id },
-      data: { applicationStatus: 'SUBMITTED' },
+      data: { applicationStatus: 'PENDING' },
     });
 
     // Notify admins about new submission

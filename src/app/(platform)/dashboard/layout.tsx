@@ -19,7 +19,7 @@ export default function PlatformLayout({
   return (
     <div className="flex h-screen ">
       <DashboardSidebar />
-      <div className="flex-1 py-2 ">
+      <div className="flex-1 p-10">
         {children}
       </div>
     </div>

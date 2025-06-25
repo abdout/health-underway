@@ -28,11 +28,6 @@ export default async function ApplicationStatusBanner() {
       title = "قيد المراجعة";
       description = "تم استلام طلب العضوية وسيقوم فريق العضوية بمراجعته قريبًا.";
       break;
-    case "SUBMITTED":
-      color = "bg-blue-100 text-blue-700";
-      title = "تم الإرسال";
-      description = "تم تقديم طلبك وهو الآن في انتظار المراجعة.";
-      break;
     case "APPROVED":
       color = "bg-green-100 text-green-700";
       title = "مبروك! تم القبول";

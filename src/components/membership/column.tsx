@@ -164,7 +164,7 @@ export const columns = (
     accessorKey: 'name',
     header: ({ column }) => {
       return (
-        <div className="text-right">
+        <div className="text-left">
           <Button
             className='p-0 m-0'
             variant='ghost'
@@ -190,22 +190,22 @@ export const columns = (
       // Limit name to first two words
       const displayName = user.name
         ? user.name.split(" ").slice(0, 2).join(" ")
-        : "مستخدم بدون اسم";
+        : "Unnamed user";
       
       return (
         <div className="flex items-center gap-3">
           <Avatar className="hidden md:block h-6 w-6">
-            <AvatarImage src={user.image || ""} alt={user.name || "عضو"} />
+            <AvatarImage src={user.image || ""} alt={user.name || "Member"} />
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>
           </Avatar>
-          <span title={user.name || "مستخدم بدون اسم"}>{displayName}</span>
+          <span title={user.name || "Unnamed user"}>{displayName}</span>
         </div>
       );
     }
   },
   {
     accessorKey: 'onboardingStatus',
-    header: () => <div className="text-right">Application</div>,
+    header: () => <div className="text-left">Application</div>,
     cell: ({ row }) => {
       const status = row.original.onboardingStatus;
       
@@ -218,7 +218,7 @@ export const columns = (
   },
   {
     accessorKey: 'applicationStatus',
-    header: () => <div className="text-right">Status</div>,
+    header: () => <div className="text-left">Status</div>,
     cell: ({ row }) => {
       const status = row.original.applicationStatus;
       
@@ -235,7 +235,7 @@ export const columns = (
   },
   {
     accessorKey: 'role',
-    header: () => <div className="text-right">Role</div>,
+    header: () => <div className="text-left">Role</div>,
     cell: ({ row }) => {
       const role = row.original.role;
       
