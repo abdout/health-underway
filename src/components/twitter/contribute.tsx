@@ -177,7 +177,7 @@ export default function Contribute() {
           // Transform paediatric doctor data to match UserSkillsData shape
           const transformed: UserSkillsData = {
             skills: (data as any).skills || [],
-            interests: data.hobbiesOrInterests ? data.hobbiesOrInterests.split(',').map(s => s.trim()).filter(Boolean) : [],
+            interests: Array.isArray(data.hobbiesOrInterests) ? data.hobbiesOrInterests : [],
             cv: data.updatedCV || null,
             portfolio: null,
             additionalFile: Array.isArray(data.scientificPapersFiles) && data.scientificPapersFiles.length > 0 ? data.scientificPapersFiles[0] : null,
