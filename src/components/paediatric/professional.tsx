@@ -6,6 +6,7 @@ import { PaediatricSchema } from "./validation";
 import { UNIVERSITIES, COUNTRIES } from "./constant";
 import { Qualifications } from "./qualifications";
 import { Subspecialty } from "./subspecialty";
+import { Interests } from "./interests";
 
 interface ProfessionalSectionProps {
   register: UseFormRegister<PaediatricSchema>;
@@ -201,7 +202,7 @@ export function ProfessionalSection({
         </div> */}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
       {/* Qualifications */}
       <div className="space-y-4">
@@ -222,45 +223,16 @@ export function ProfessionalSection({
         {errors.paediatricsSubspecialty && (
           <p className="text-red-500 text-sm mt-1">{errors.paediatricsSubspecialty.message}</p>
         )}
-
-        {/* <div>
-          <Input
-            id="otherSubspecialty"
-            {...register('otherSubspecialty')}
-            placeholder="Other Subspecialty"
-            className="bg-white"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <Select onValueChange={(value) => setValue('subspecialtyCertified', value)} defaultValue={data?.subspecialtyCertified}>
-              <SelectTrigger className="bg-white">
-                <SelectValue placeholder="Subspecialty Certified *" />
-              </SelectTrigger>
-              <SelectContent>
-                {SUBSPECIALTY_CERTIFIED_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.subspecialtyCertified && (
-              <p className="text-red-500 text-sm mt-1">{errors.subspecialtyCertified.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <Input
-              id="subspecialtyDegreeName"
-              {...register('subspecialtyDegreeName')}
-              placeholder="Subspecialty Degree Name"
-              className="bg-white"
-            />
-          </div>
-        </div> */}
       </div>
+
+      {/* Hobbies / Interests */}
+      <div className="space-y-4">
+        <Interests
+          value={watch('hobbiesOrInterests') || []}
+          onChange={(interests) => setValue('hobbiesOrInterests', interests)}
+        />
+      </div>
+
       </div>
 
       {/* Career Information */}

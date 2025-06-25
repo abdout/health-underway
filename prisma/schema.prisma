@@ -363,7 +363,7 @@ model PaediatricDoctor {
   // Personal Information
   secondNationality                     String?
   agreeToPhotoPublication               Boolean   @default(false)
-  hobbiesOrInterests                    String?
+  hobbiesOrInterests                    String[]  @default([])
   nameOfSpouse                          String?
   workOfSpouse                          String?
   childrenNamesAndStatus                String?
