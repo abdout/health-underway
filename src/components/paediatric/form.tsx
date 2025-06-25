@@ -15,6 +15,7 @@ import { ResearchSection } from "./research";
 import SiteHeading from "../atom/site-heading";
 import { AttachmentSection } from "./attachment";
 import { useRouter } from "next/navigation";
+import { QUALIFICATIONS, PAEDIATRIC_SUBSPECIALTIES } from "./constant";
 
 interface FormProps {
   type: "create" | "update";
@@ -91,6 +92,36 @@ const Form = ({ type, data }: FormProps) => {
     });
   };
 
+  // Handler to auto-fill form with sample data for testing
+  const handleFillTest = () => {
+    const sample: Partial<PaediatricSchema> = {
+      fullNameEnglish: "Test Doctor",
+      fullNameArabic: "طبيب اختبار",
+      namePrefix: "doctor",
+      stageOfCareer: "trainee",
+      placeOfBirth: "sudan",
+      dateOfBirth: "1990-01-01",
+      originalHomeTownOrVillage: "Omdurman",
+      personalEmail: "test@example.com",
+      agreeToEmailPublication: true,
+      universityOfPrimaryGraduation: "university-of-khartoum",
+      countryOfUniversityOfPrimaryGraduation: "sudan",
+      yearOfGraduationFromMedicine: "2015",
+      qualifications: ["mbbs"],
+      paediatricsSubspecialty: ["general_paediatrics"],
+      subspecialtyCertified: "yes",
+      currentPositionInHospital: "consultant",
+      countryOfMajorityPaediatricsTraining: "sudan",
+    };
+
+    for (const [key, value] of Object.entries(sample)) {
+      // @ts-ignore
+      setValue(key, value);
+    }
+
+    toast.info("Form filled with test data");
+  };
+
   return (
     <div className="min-h-screen py-8">
       <div className="flex flex-col items-center justify-center gap-2">
@@ -98,6 +129,11 @@ const Form = ({ type, data }: FormProps) => {
         <p className="text-lg">Sudanese Paediatric Doctors Data Collection</p>
       </div>
       <div className="max-w-4xl mx-auto px-4">
+        <div className="flex justify-end mb-4">
+          <Button type="button" variant="outline" size="sm" onClick={handleFillTest}>
+            Fill with test data
+          </Button>
+        </div>
         <Card className="border-none shadow-none">
         
           

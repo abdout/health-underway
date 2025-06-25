@@ -17,34 +17,34 @@ export default async function ProfilePage({ params }: any) {
     notFound();
   }
 
-  const paed = user.paediatricDoctor;
+  const paed: any = user.paediatricDoctor;
 
   return (
     <div className="container py-8 space-y-6">
       <ProfileAbout
         user={{
-          bio: paed.majorCareerAchievement,
+          bio: paed.majorCareerAchievement ?? null,
           currentCountry: paed.countryOfMajorityPaediatricsTraining || null,
           currentLocality: paed.originalHomeTownOrVillage || null,
           currentNeighborhood: null,
-          email: user.email,
-          whatsapp: undefined,
+          email: user.email ?? null,
+          whatsapp: null,
           fullname: user.name,
         }}
       />
 
       <ProfileActivities
         user={{
-          partyMember: paed.partyMember || false,
+          partyMember: paed.partyMember ?? false,
           partyName: paed.partyName || null,
           unionMember: paed.unionMember || false,
           unionName: paed.unionName || null,
-          ngoMember: paed.ngoMember || false,
+          ngoMember: paed.ngoMember ?? false,
           ngoName: paed.ngoName || null,
           ngoActivity: paed.ngoActivity || null,
           clubMember: paed.clubMember || false,
-          clubName: paed.clubName || null,
-          clubType: paed.clubType || null,
+          clubName: paed.clubName ?? null,
+          clubType: paed.clubType ?? null,
         }}
       />
     </div>
