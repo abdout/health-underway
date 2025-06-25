@@ -43,7 +43,7 @@ Legend: ✅ Done • 🟡 Partially done • ⛔ Not started
 ### 2. Server Actions / APIs
 - [x] `submitPaediatricDoctorProfile` sets `applicationStatus = 'SUBMITTED'` and calls `notifyOnboardingSubmission()`.
 - [ ] In `approveApplication` / `rejectApplication` update status on `PaediatricDoctor` table too (already handled) **and mirror on `User` if we decide to add field**.
-- [ ] Send Telegram/WhatsApp messages on approval/rejection (in-app done).
+- [x] Telegram/WhatsApp messages on approval/rejection (env-driven) implemented.
 
 ### 3. Doctor-side UX
 - [x] Redirect to `/paediatric/review` implemented after submission (thank-you polish pending).
@@ -52,7 +52,7 @@ Legend: ✅ Done • 🟡 Partially done • ⛔ Not started
 
 ### 4. Admin Dashboard
 - [x] Application status columns already present; added dedicated approved view.
-- [ ] Filter buttons remain.
+- [x] Filter buttons implemented as status tabs.
 - [x] ReviewActions now trigger in-app notifications (Telegram TODO).
 
 ### 5. Profiles
@@ -61,8 +61,8 @@ Legend: ✅ Done • 🟡 Partially done • ⛔ Not started
 - [x] `/dashboard/profile/me` redirect route implemented.
 
 ### 6. Notifications
-- [ ] Badge component in navbar showing unread count (use `getUnreadNotificationsCount`).
-- [ ] Real-time updates via Pusher, Ably, or Next.js `server-actions` + `cache` revalidation (phase-2).
+- [x] Badge component (`NotificationIcon`) integrated in sidebar/navigation.
+- [ ] Real-time updates remains (phase-2).
 
 ### 7. Testing
 - [ ] Add Cypress/E2E flow: create → submit → admin approves → doctor profile appears approved.

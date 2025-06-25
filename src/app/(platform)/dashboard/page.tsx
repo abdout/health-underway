@@ -1,51 +1,19 @@
-'use client';
-import React, { useState, useEffect } from 'react';
 import { Icon } from "@iconify/react";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-// } from "@/components/ui/dialog";
-// import ForYou from '@/components/platform/x/for-you';
-// // import Tranding from '@/components/platform/x/for-you/tranding';
-// // import FollowFriend from '@/components/platform/x/for-you/friend';
-// // import FollowActivity from '@/components/platform/x/for-you/activity';
-// import AddPost from '@/components/platform/x/post/add-post';
-// import ClientFeed from '@/components/platform/x/feed/client-feed';
-// import { useRouter } from 'next/navigation';
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
 import SiteHeading from '@/components/atom/site-heading';
-import { Suspense } from "react";
 import ApplicationStatusBanner from '@/components/paediatric/ApplicationStatusBanner';
 
-export default function Page() {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
-  const { data: session } = useSession();
+export default async function Page() {
+  const session = await auth();
   const userId = session?.user?.id;
-  
-  useEffect(() => {
-    console.log("Platform page - current user session:", session?.user?.id);
-  }, [session]);
-
-  // const router = useRouter();
-  // useEffect(() => {
-  //   if (window.location.hash === '#_=_') {
-  //       router.replace('/platform'); 
-  //   }
 
   return (
     <div className="mr-2 mt-10 md:mt-0 md:mr-10 flex flex-col h-full">
-      <Suspense>
-        {/* Banner for doctors */}
-        <ApplicationStatusBanner />
-      </Suspense>
+      {/* Banner for doctors */}
+      <ApplicationStatusBanner />
       <SiteHeading title="مرحبا بيك" description='في منصة الحركة الوطنية للبناء والتنمية' align='start' size='md'/>
-      
       <div className='relative -mt-2 '>
-       
-
         <p className='w-full md:w-4/5 pt-4'>لن يصيب المجد كف واحد - إيماناً بسحر العمل الجماعي، نسعى من خلال هذه المنصة إلى أتمتة أعمال الحركة  وامتلاك ادوات تنسيق وتعاون افضل. ساهم في خلق تجربة جديدة من الكفاءة والتنظيم.</p>
-
         <div className='flex flex-col md:flex-row justify-between items-center mt-8'>
           <div>
             <p className='-mt-2 mb-4 text-muted-foreground w-[80%] md:w-full'>استكشف الروابط أدناه للدليل المستخدم ومركز المساعدة👇</p>

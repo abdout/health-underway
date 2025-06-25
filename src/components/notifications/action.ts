@@ -179,7 +179,28 @@ export async function notifyApplicationApproved(applicantId: string, applicantNa
       type: NotificationType.APPLICATION_APPROVED,
     });
 
-    // TODO: WhatsApp / Telegram if desired
+    // WhatsApp notification to applicant (if enabled & phone provided)
+    if (process.env.WHATSAPP_NOTIFICATIONS_ENABLED === 'true') {
+      // Assuming applicant phone stored in user table
+      const applicant = await db.user.findUnique({
+        where: { id: applicantId },
+        select: { phone: true },
+      });
+      if (applicant?.phone) {
+        await sendWhatsAppNotification({
+          to: applicant.phone,
+          message: `🎉 تهانينا ${applicantName}! تم قبول طلب عضويتك.`,
+        });
+      }
+    }
+
+    // Telegram notification to applicant channel or DM
+    if (process.env.TELEGRAM_NOTIFICATIONS_ENABLED === 'true' && process.env.APPLICANT_TELEGRAM_CHAT_ID) {
+      await sendTelegramNotification({
+        chatId: process.env.APPLICANT_TELEGRAM_CHAT_ID.replace('{id}', applicantId),
+        message: `🎉 تم قبول طلب عضويتك في الحركة الوطنية للبناء والتنمية. مرحبًا بك ${applicantName}!`,
+      });
+    }
 
     return { success: true };
   } catch (error) {
@@ -200,7 +221,25 @@ export async function notifyApplicationRejected(applicantId: string, applicantNa
       type: NotificationType.APPLICATION_REJECTED,
     });
 
-    // TODO: WhatsApp / Telegram if desired
+    if (process.env.WHATSAPP_NOTIFICATIONS_ENABLED === 'true') {
+      const applicant = await db.user.findUnique({
+        where: { id: applicantId },
+        select: { phone: true },
+      });
+      if (applicant?.phone) {
+        await sendWhatsAppNotification({
+          to: applicant.phone,
+          message: `نأسف ${applicantName}، لم يتم قبول طلب عضويتك في هذه المرحلة.`,
+        });
+      }
+    }
+
+    if (process.env.TELEGRAM_NOTIFICATIONS_ENABLED === 'true' && process.env.APPLICANT_TELEGRAM_CHAT_ID) {
+      await sendTelegramNotification({
+        chatId: process.env.APPLICANT_TELEGRAM_CHAT_ID.replace('{id}', applicantId),
+        message: `نأسف ${applicantName}، لم يتم قبول طلب عضويتك.`,
+      });
+    }
 
     return { success: true };
   } catch (error) {

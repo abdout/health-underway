@@ -5,6 +5,7 @@ import { columns } from "./column";
 import { UserTable } from "./user-table";
 import { ModalProvider } from "@/components/atom/modal/context";
 import Modal from "@/components/atom/modal/modal";
+import { Button } from "@/components/ui/button";
 
 export default function AllUsers({ users: initialUsers, currentUserId }: { users: any[]; currentUserId: string }) {
   const [users, setUsers] = useState(initialUsers);
@@ -53,11 +54,21 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
   const [status, setStatus] = useState<string>("ALL");
   const [role, setRole] = useState<string>("ALL");
 
+  const statusTabOptions = [
+    { value: "ALL", label: "الكل" },
+    { value: "PENDING", label: "قيد المراجعة" },
+    { value: "APPROVED", label: "مقبول" },
+    { value: "REJECTED", label: "مرفوض" },
+  ];
+
   // Filter users based on selected status and role
   const filteredUsers = users.filter((user) => {
     // Status filter
     let statusMatch = true;
     switch (status) {
+      case "PENDING":
+        statusMatch = !user.applicationStatus || user.applicationStatus === "PENDING" || user.applicationStatus === "SUBMITTED";
+        break;
       case "COMPLETED":
         statusMatch = user.onboardingStatus === "COMPLETED";
         break;
@@ -91,6 +102,19 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
   return (
     <ModalProvider>
       <div className="scroll-x">
+        {/* Status Tabs */}
+        <div className="flex gap-2 flex-wrap mb-4">
+          {statusTabOptions.map((opt) => (
+            <Button
+              key={opt.value}
+              variant={status === opt.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => setStatus(opt.value)}
+            >
+              {opt.label}
+            </Button>
+          ))}
+        </div>
         {filteredUsers.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] rounded-lg border border-dashed mt-8 p-8 text-center">
             <h2 className="text-2xl font-semibold">لا يوجد مستخدمون</h2>
