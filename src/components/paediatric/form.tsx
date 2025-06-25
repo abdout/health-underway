@@ -58,10 +58,23 @@ const Form = ({ type, data }: FormProps) => {
   }, [data, reset]);
 
   const onSubmit: SubmitHandler<PaediatricSchema> = (formData) => {
+    // Full debug logs for form submission
+    if (process.env.NODE_ENV !== "production") {
+      console.groupCollapsed("[Paediatric Form] Submit");
+      console.log("Type:", type);
+      console.log("Payload:", JSON.parse(JSON.stringify(formData)));
+      console.groupEnd();
+    }
     startTransition(async () => {
       try {
         const action = type === "create" ? createPaediatricDoctor : updatePaediatricDoctor;
         const result = await action({ success: false, error: false }, formData);
+        
+        if (process.env.NODE_ENV !== "production") {
+          console.groupCollapsed("[Paediatric Form] Response");
+          console.log(result);
+          console.groupEnd();
+        }
         
         if (result.success) {
           toast.success(`تم حفظ معلومات الطبيب بنجاح.`);
@@ -70,6 +83,9 @@ const Form = ({ type, data }: FormProps) => {
           toast.error(result.error || "An error occurred");
         }
       } catch (error) {
+        if (process.env.NODE_ENV !== "production") {
+          console.error("[Paediatric Form] Unexpected error", error);
+        }
         toast.error("An unexpected error occurred");
       }
     });
