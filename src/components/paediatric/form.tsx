@@ -69,7 +69,7 @@ const Form = ({ type, data }: FormProps) => {
     startTransition(async () => {
       try {
         const action = type === "create" ? createPaediatricDoctor : updatePaediatricDoctor;
-        const result = await action({ success: false, error: false }, formData);
+        const result = await action({} as any, formData);
         
         if (process.env.NODE_ENV !== "production") {
           console.groupCollapsed("[Paediatric Form] Response");
