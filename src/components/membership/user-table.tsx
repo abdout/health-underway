@@ -89,10 +89,10 @@ export function UserTable<TData, TValue>({
 
   // Response filter options
   const responseOptions = [
-    { value: "ALL", label: "الكل" },
-    { value: "APPROVED", label: "مقبول" },
-    { value: "REJECTED", label: "مرفوض" },
-    { value: "NO_RESPONSE", label: "بدون رد" },
+    { value: "ALL", label: "All" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "REJECTED", label: "Rejected" },
+    { value: "NO_RESPONSE", label: "Pending" },
   ]
 
   // Handler for response filter
@@ -146,7 +146,7 @@ export function UserTable<TData, TValue>({
       <div className='flex items-center gap-4 flex-wrap'>
         <div className='flex items-center py-4'>
           <Input
-            placeholder='بحث بالاسم ...'
+            placeholder='Search by name...'
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={event =>
               table.getColumn('name')?.setFilterValue(event.target.value)
@@ -175,13 +175,13 @@ export function UserTable<TData, TValue>({
               <PopoverTrigger asChild>
                 <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                    الطلب
+                  Application
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-0 w-[103px]" align="start">
                 <Command>
                   <CommandList>
-                    <CommandEmpty>لا توجد نتائج.</CommandEmpty>
+                    <CommandEmpty>No results.</CommandEmpty>
                     {statusOptions.filter(opt => opt.value === "ALL" || opt.value === "COMPLETED" || opt.value === "INCOMPLETE").map((option, index) => (
                       <>
                         <CommandItem
@@ -206,13 +206,13 @@ export function UserTable<TData, TValue>({
               <PopoverTrigger asChild>
                 <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                  الرد
+                  Status
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-0 w-[103px]" align="start">
                 <Command>
                   <CommandList>
-                    <CommandEmpty>لا توجد نتائج.</CommandEmpty>
+                    <CommandEmpty>No results.</CommandEmpty>
                     {responseOptions.map((option, index) => (
                       <>
                         <CommandItem
@@ -237,13 +237,13 @@ export function UserTable<TData, TValue>({
               <PopoverTrigger asChild>
                 <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                  الدور
+                  Role
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-0 w-[93px]" align="start">
                 <Command>
                   <CommandList>
-                    <CommandEmpty>لا توجد نتائج.</CommandEmpty>
+                    <CommandEmpty>No results.</CommandEmpty>
                     {roleOptions.map((option, index) => (
                       <>
                         <CommandItem
@@ -270,12 +270,12 @@ export function UserTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label="اختر الاعمدة"
+              aria-label="Choose columns"
               variant="outline"
               className="ml-auto gap-2 lg:flex reveal"
             >
               <MixerHorizontalIcon className="mr-2 size-4" />
-              اعمدة
+              Columns
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>

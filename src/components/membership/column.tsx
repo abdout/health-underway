@@ -170,7 +170,7 @@ export const columns = (
             variant='ghost'
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            الاسم
+            Name
             <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
         </div>
@@ -205,55 +205,55 @@ export const columns = (
   },
   {
     accessorKey: 'onboardingStatus',
-    header: () => <div className="text-right">الطلب</div>,
+    header: () => <div className="text-right">Application</div>,
     cell: ({ row }) => {
       const status = row.original.onboardingStatus;
       
       return status ? (
         status === "COMPLETED"
-          ? "مكتمل"
-          : "ناقص"
+          ? "Completed"
+          : "Incomplete"
       ) : null;
     }
   },
   {
     accessorKey: 'applicationStatus',
-    header: () => <div className="text-right">الرد</div>,
+    header: () => <div className="text-right">Status</div>,
     cell: ({ row }) => {
       const status = row.original.applicationStatus;
       
       return status ? (
         status === "APPROVED"
-          ? "مقبول"
+          ? "Approved"
           : status === "REJECTED"
-          ? "مرفوض"
+          ? "Rejected"
           : status === "PENDING"
-          ? "بدون رد"
+          ? "Pending"
           : status
       ) : null;
     }
   },
   {
     accessorKey: 'role',
-    header: () => <div className="text-right">الدور</div>,
+    header: () => <div className="text-right">Role</div>,
     cell: ({ row }) => {
       const role = row.original.role;
       
       return role ? (
         role === "ADMIN"
-          ? "مسؤل"
+          ? "Admin"
           : role === "DEVELOPER"
-          ? "مطور"
+          ? "Developer"
           : role === "USER"
-          ? "مستخدم"
+          ? "User"
           : role === "MEMBER"
-          ? "عضو"
+          ? "Member"
           : role === "MEMBERSHIP"
-          ? "امين العضوية"
+          ? "Membership"
           : role === "FINANCE"
-          ? "امين المال"
+          ? "Finance"
           : role === "CONTENT"
-          ? "امين المحتوى"
+          ? "Content"
           : role
       ) : null;
     }

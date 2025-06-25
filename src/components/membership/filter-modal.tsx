@@ -75,21 +75,21 @@ export default function FilterModal({
             onClick={closeModal}
             className="text-gray-500 hover:text-gray-700"
           >
-            إغلاق
+            Close
           </Button>
         )}
       </div>
 
       <div className="flex flex-col space-y-6 overflow-auto w-full max-w-md px-20 ">
-        {/* Status Filter (الطلب) */}
+        {/* Status Filter */}
         <div className="space-y-2 w-full">
-          <label className="font-medium">الطلب</label>
+          <label className="font-medium">Application</label>
           <Select 
             onValueChange={handleStatusChange}
             defaultValue={currentStatus}
           >
-            <SelectTrigger className="w-full" dir="rtl">
-              <SelectValue placeholder="اختر الطلب" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select application" />
             </SelectTrigger>
             <SelectContent>
               {statusOptions
@@ -104,9 +104,9 @@ export default function FilterModal({
           </Select>
         </div>
 
-        {/* Response Filter (الرد) */}
+        {/* Response Filter */}
         <div className="space-y-2 w-full">
-          <label className="font-medium">الرد</label>
+          <label className="font-medium">Status</label>
           <Select 
             onValueChange={handleResponseChange}
             defaultValue={
@@ -115,8 +115,8 @@ export default function FilterModal({
               currentStatus === "NO_RESPONSE" ? "NO_RESPONSE" : "ALL"
             }
           >
-            <SelectTrigger className="w-full" dir="rtl">
-              <SelectValue placeholder="اختر الرد" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select status" />
             </SelectTrigger>
             <SelectContent>
               {responseOptions.map(option => (
@@ -128,15 +128,15 @@ export default function FilterModal({
           </Select>
         </div>
 
-        {/* Role Filter (الدور) */}
+        {/* Role Filter */}
         <div className="space-y-2 w-full">
-          <label className="font-medium">الدور</label>
+          <label className="font-medium">Role</label>
           <Select 
             onValueChange={handleRoleChange}
             defaultValue={currentRole}
           >
-            <SelectTrigger className="w-full" dir="rtl">
-              <SelectValue placeholder="اختر الدور" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select role" />
             </SelectTrigger>
             <SelectContent>
               {roleOptions.map(option => (

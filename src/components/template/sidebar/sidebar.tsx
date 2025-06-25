@@ -115,32 +115,32 @@ export function DashboardSidebar() {
     {
       href: '/dashboard',
       icon: <HomeIcon className="h-5 w-5" />,
-      label: 'الرئيسية'
+      label: 'Home'
     },
     {
       href: '/dashboard/messages',
       icon: <MessageIcon className="h-5 w-5" />,
-      label: 'الرسائل'
+      label: 'Messages'
     },
     {
       href: '/dashboard/notifications',
       icon: <NotificationIcon className="h-[18px] w-[18px]" />,
-      label: 'الاشعارات'
+      label: 'Notifications'
     },
     {
       href: '/dashboard/profile',
       icon: <UserIcon className="h-5 w-5" />,
-      label: 'الملف'
+      label: 'Profile'
     },
     ...(userRole === "ADMIN" ? [{
       href: '/dashboard/membership',
       icon: <MembershipIcon className="h-5 w-5" />,
-      label: 'العضوية'
+      label: 'Membership'
     }] : []),
     {
       href: '/dashboard/settings',
       icon: <SettingsIcon className="h-[18px] w-[18px]" />,
-      label: 'الضبط'
+      label: 'Settings'
     }
   ];
 

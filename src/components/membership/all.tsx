@@ -28,37 +28,37 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
     );
   };
 
-  // Combined status options in Arabic
+  // Combined status options in English
   const statusOptions = [
-    { value: "ALL", label: "الكل" },
-    { value: "COMPLETED", label: "مكتمل" },
-    { value: "INCOMPLETE", label: "ناقص" },
-    { value: "APPROVED", label: "مقبول" },
-    { value: "REJECTED", label: "مرفوض" },
-    { value: "NO_RESPONSE", label: "بدون رد" },
+    { value: "ALL", label: "All" },
+    { value: "COMPLETED", label: "Completed" },
+    { value: "INCOMPLETE", label: "Incomplete" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "REJECTED", label: "Rejected" },
+    { value: "NO_RESPONSE", label: "Pending" },
   ];
 
-  // Role options in Arabic
+  // Role options in English
   const roleLabel = (role: string) => {
-    if (role === "ADMIN") return "مشرف";
-    if (role === "USER") return "عضو";
+    if (role === "ADMIN") return "Admin";
+    if (role === "USER") return "User";
     return role;
   };
   const allRoles = useMemo(() => {
     const uniqueRoles = Array.from(new Set(users.map(u => u.role).filter(Boolean)));
     return ["ALL", ...uniqueRoles];
   }, [users]);
-  const roleOptions = allRoles.map(role => ({ value: role, label: role === "ALL" ? "الكل" : roleLabel(role) }));
+  const roleOptions = allRoles.map(role => ({ value: role, label: role === "ALL" ? "All" : roleLabel(role) }));
 
   // State for filters
   const [status, setStatus] = useState<string>("ALL");
   const [role, setRole] = useState<string>("ALL");
 
   const statusTabOptions = [
-    { value: "ALL", label: "الكل" },
-    { value: "PENDING", label: "قيد المراجعة" },
-    { value: "APPROVED", label: "مقبول" },
-    { value: "REJECTED", label: "مرفوض" },
+    { value: "ALL", label: "All" },
+    { value: "PENDING", label: "Pending" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "REJECTED", label: "Rejected" },
   ];
 
   // Filter users based on selected status and role
@@ -117,9 +117,9 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
         </div>
         {filteredUsers.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] rounded-lg border border-dashed mt-8 p-8 text-center">
-            <h2 className="text-2xl font-semibold">لا يوجد مستخدمون</h2>
+            <h2 className="text-2xl font-semibold">No users found</h2>
             <p className="text-muted-foreground max-w-[500px] mt-2">
-              لا يوجد مستخدمون مسجلون بعد.
+              No registered users yet.
             </p>
           </div>
         ) : (
