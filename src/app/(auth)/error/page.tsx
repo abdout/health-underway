@@ -9,3 +9,5 @@ const AuthErrorPage = () => {
 };
  
 export default AuthErrorPage;
+
+export const dynamic = 'force-dynamic';
