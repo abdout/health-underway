@@ -72,7 +72,7 @@ export async function approveApplication(userId: string) {
 
     // Send notification to applicant
     if (user) {
-      await notifyApplicationApproved(user.id, user.name || "");
+      await notifyApplicationApproved(user.name || "", user.id);
     }
 
     revalidatePath('/dashboard/membership');
@@ -99,7 +99,7 @@ export async function rejectApplication(userId: string) {
   // Send rejection notification
   const applicant = await db.user.findUnique({ where: { id: userId } });
   if (applicant) {
-    await notifyApplicationRejected(applicant.id, applicant.name || "");
+    await notifyApplicationRejected(applicant.name || "", applicant.id);
   }
   revalidatePath('/dashboard/membership');
   return { success: true };
