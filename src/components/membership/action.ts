@@ -11,29 +11,76 @@ export async function approveApplication(userId: string) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
 
-  await db.paediatricDoctor.update({
-    where: { userId },
-    data: {
-      applicationStatus: "APPROVED",
-      reviewedBy: session.user.id,
-      reviewedAt: new Date(),
-    },
-  });
+  try {
+    // First check if the paediatric doctor record exists
+    const doctorRecord = await db.paediatricDoctor.findUnique({
+      where: { userId }
+    });
 
-  // Promote user role to MEMBER if not already
-  await db.user.update({
-    where: { id: userId },
-    data: { role: UserRole.MEMBER },
-  });
+    // Get user data to create basic record if needed
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true }
+    });
 
-  // Send notification to applicant
-  const applicant = await db.user.findUnique({ where: { id: userId } });
-  if (applicant) {
-    await notifyApplicationApproved(applicant.id, applicant.name || "");
+    if (!user) {
+      return { error: "User not found" };
+    }
+
+    if (!doctorRecord) {
+      // Create a basic paediatric doctor record
+      await db.paediatricDoctor.create({
+        data: {
+          userId,
+          fullNameEnglish: user.name || "Unknown",
+          fullNameArabic: user.name || "Unknown",
+          namePrefix: "Dr.",
+          stageOfCareer: "Other",
+          personalEmail: user.email || "",
+          agreeToEmailPublication: false,
+          universityOfPrimaryGraduation: "Unknown",
+          countryOfUniversityOfPrimaryGraduation: "Unknown",
+          yearOfGraduationFromMedicine: new Date().getFullYear().toString(),
+          qualifications: [],
+          paediatricsSubspecialty: [],
+          subspecialtyCertified: "No",
+          currentPosition: "Unknown",
+          currentInstitution: "Unknown",
+          countryOfWork: "Unknown",
+          applicationStatus: "APPROVED",
+          reviewedBy: session.user.id,
+          reviewedAt: new Date(),
+        }
+      });
+    } else {
+      // Update existing record
+      await db.paediatricDoctor.update({
+        where: { userId },
+        data: {
+          applicationStatus: "APPROVED",
+          reviewedBy: session.user.id,
+          reviewedAt: new Date(),
+        },
+      });
+    }
+
+    // Promote user role to MEMBER if not already
+    await db.user.update({
+      where: { id: userId },
+      data: { role: UserRole.MEMBER },
+    });
+
+    // Send notification to applicant
+    if (user) {
+      await notifyApplicationApproved(user.id, user.name || "");
+    }
+
+    revalidatePath('/dashboard/membership');
+    return { success: true };
+  } catch (error) {
+    console.error("Error in approveApplication:", error);
+    return { error: "Failed to approve application" };
   }
-
-  revalidatePath('/dashboard/membership');
-  return { success: true };
 }
 
 // Reject application: sets applicationStatus to "REJECTED"

@@ -7,6 +7,7 @@ import { ReviewContainer } from "@/components/membership/review-container";
 import Loading from "@/components/atom/loading";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function LabUserReviewPage() {
   const params = useParams();
@@ -14,11 +15,7 @@ export default function LabUserReviewPage() {
   const userId = params?.id as string;
   const [userData, setUserData] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isApproving] = useState(false);
-  const [isRejecting] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -40,6 +37,25 @@ export default function LabUserReviewPage() {
   }, [userId]);
 
   if (isLoading) return <Loading />;
+
+  if (error) {
+    return (
+      <div className="relative py-24">
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute top-6 right-9 z-10 rounded-full"
+          onClick={() => router.back()}
+          aria-label="رجوع"
+        >
+          <ArrowRight className="w-6 h-6" />
+        </Button>
+        <Alert variant="destructive" className="max-w-xl mx-auto">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <div className="relative py-24">

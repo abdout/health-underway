@@ -3,16 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ExpandButton from '@/components/atom/expand-button';
 import { LogoCloud } from './logo-cloud';
-import { SessionStatus } from '@/components/auth/session-status';
 
 export function Hero() {
     return (
         <header className="tt-hero py-20 gradient-top-right min-h-screen relative overflow-hidden">
-            {/* Session status & logout */}
-            <div className="absolute top-6 right-6 z-20">
-                <SessionStatus />
-            </div>
-            
             {/* Gradient Container with Background Image */}
             <div className="tt-gradient-container absolute top-40 md:top-0 -right-6 md:right-0 z-0">
                 <div className="tt-gradient-panel">
