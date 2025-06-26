@@ -2,8 +2,14 @@
 
 import React from 'react';
 import { NotificationList } from '@/components/notifications/NotificationList';
-
-export default function NotificationsPage() {
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+  
+export default async function NotificationsPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login?callbackUrl=/dashboard/notifications");
+  }
   return (
     <div className="container py-6">
       <div className="mb-6">

@@ -2,11 +2,14 @@ import { Icon } from "@iconify/react";
 import { auth } from "@/auth";
 import SiteHeading from '@/components/atom/site-heading';
 import ApplicationStatusBanner from '@/components/paediatric/ApplicationStatusBanner';
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const session = await auth();
   const userId = session?.user?.id;
-
+  if (!session) {
+    redirect("/login?callbackUrl=/dashboard");
+  }
   return (
     <div className="mr-2 mt-10 md:mt-0 md:mr-10 flex flex-col h-full">
       {/* Banner for doctors */}

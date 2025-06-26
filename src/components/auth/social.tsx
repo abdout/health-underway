@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../routes";
 
 import { Button } from "@/components/ui/button";
-import { Facebook, Google } from "@/components/atom/icon";
+import { ColoredGoogle, ColoredFacebook } from "@/components/atom/icon";
 
 export const Social = () => {
   const searchParams = useSearchParams();
@@ -25,7 +25,7 @@ export const Social = () => {
         variant="outline"
         onClick={() => onClick("google")}
       >
-        <Google className="h-5 w-5" />
+        <ColoredGoogle className="h-5 w-5 mr-2" />
         Google
       </Button>
       <Button
@@ -34,7 +34,7 @@ export const Social = () => {
         variant="outline"
         onClick={() => onClick("facebook")}
       >
-        <Facebook className="h-5 w-5" />
+        <ColoredFacebook className="h-5 w-5 mr-2" />
         Facebook
       </Button>
     </div>

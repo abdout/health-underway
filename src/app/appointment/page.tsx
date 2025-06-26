@@ -12,7 +12,7 @@ const AppointmentPage = async () => {
   
   if (!session) {
     // This should not happen due to middleware, but added as safety
-    redirect("/auth/login?callbackUrl=/appointment");
+    redirect("/login?callbackUrl=/appointment");
   }
 
   return (
