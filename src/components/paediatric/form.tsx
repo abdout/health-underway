@@ -17,8 +17,6 @@ import { AttachmentSection } from "./attachment";
 import { useRouter } from "next/navigation";
 import { QUALIFICATIONS, PAEDIATRIC_SUBSPECIALTIES } from "./constant";
 import { PersonalSection } from "./Personal";
-import { samplePaediatricData } from "./sample-data";
-import FormDebug from "../atom/form-debug";
 
 interface FormProps {
   type: "create" | "update";
@@ -52,12 +50,6 @@ const Form = ({ type, data }: FormProps) => {
     formState: { errors },
     reset
   } = form;
-
-  // Quickly populate the form with sample data while developing
-  const handleAutoFill = () => {
-    reset(samplePaediatricData);
-    toast.success("Sample data loaded ✨");
-  };
 
   // Initialize form with data if provided
   useEffect(() => {
@@ -120,20 +112,6 @@ const Form = ({ type, data }: FormProps) => {
             <CardContent className="p-8">
               <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 
-                {/* Debug helper – visible only in development */}
-                {process.env.NODE_ENV !== "production" && (
-                  <div className="flex justify-end">
-                    <Button
-                      variant="outline"
-                      type="button"
-                      onClick={handleAutoFill}
-                      size="sm"
-                    >
-                      Auto-fill sample data
-                    </Button>
-                  </div>
-                )}
-
                 {/* Attachment Section */}
                 <AttachmentSection
                   control={control}
@@ -179,16 +157,6 @@ const Form = ({ type, data }: FormProps) => {
                   data={data}
                 />
 
-                {/* Debug JSON viewer */}
-                {process.env.NODE_ENV !== "production" && (
-                  <details className="border border-gray-200 rounded-md p-4 bg-gray-50">
-                    <summary className="cursor-pointer select-none text-sm font-medium">Debug: live form values</summary>
-                    <pre className="mt-4 max-h-96 overflow-auto text-xs whitespace-pre-wrap">
-                      {JSON.stringify(watch(), null, 2)}
-                    </pre>
-                  </details>
-                )}
-
                 {/* Submit Button */}
                 <div className="flex justify-center md:justify-start pt-6">
                   <Button 
@@ -206,12 +174,6 @@ const Form = ({ type, data }: FormProps) => {
             </CardContent>
           </Card>
         </div>
-        {/* Debug panel below form */}
-        {process.env.NODE_ENV !== "production" && (
-          <div className="max-w-4xl mx-auto px-4">
-            <FormDebug />
-          </div>
-        )}
       </div>
     </FormProvider>
   );
