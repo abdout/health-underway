@@ -25,37 +25,35 @@ export function NotificationList() {
   
   useEffect(() => {
     const fetchNotifications = async () => {
-      setLoading(true);
-      const data = await getUserNotifications(20, 0);
-      
-      // Transform the database notifications to match the Notification interface
-      const transformedNotifications: Notification[] = data.map((notification: DatabaseNotification) => ({
-        id: notification.id,
-        title: notification.title,
-        content: notification.content,
-        type: notification.type as any, // Convert string to NotificationType enum
-        isRead: notification.isRead,
-        createdAt: notification.createdAt,
-        updatedAt: notification.updatedAt,
-        metadata: notification.metadata
-      }));
-      
-      setNotifications(transformedNotifications);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const data = await getUserNotifications(20, 0);
+        setNotifications(data);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      } finally {
+        setLoading(false);
+      }
     };
     
     fetchNotifications();
   }, []);
   
   const handleMarkAsRead = async (id: string) => {
-    await markNotificationAsRead(id);
-    setNotifications(prevNotifications => 
-      prevNotifications.map(notification => 
-        notification.id === id 
-          ? { ...notification, isRead: true } 
-          : notification
-      )
-    );
+    try {
+      const result = await markNotificationAsRead(id);
+      if (result.success) {
+        setNotifications(prevNotifications => 
+          prevNotifications.map(notification => 
+            notification.id === id 
+              ? { ...notification, isRead: true } 
+              : notification
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
   
   if (loading) {

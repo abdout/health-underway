@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { NotificationList } from '@/components/notifications/NotificationList';
 import { auth } from "@/auth";

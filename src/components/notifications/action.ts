@@ -1,24 +1,32 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { NotificationType, NotificationPayload } from './type';
+import { NotificationType, NotificationPayload, Notification } from './type';
 import { currentUser } from '@/lib/auth';
 import { sendWhatsAppNotification } from './whatsapp';
 import { sendTelegramNotification, sendChannelNotification } from './telegram';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Create a new in-app notification
  */
-export async function createNotification(data: NotificationPayload) {
-  return db.notification.create({
-    data: {
-      title: data.title,
-      content: data.content,
-      userId: data.recipientId,
-      type: data.type,
-      metadata: data.metadata || {},
-    },
-  });
+export async function createNotification(data: NotificationPayload): Promise<{ success: boolean; error?: any }> {
+  try {
+    await db.notification.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        userId: data.recipientId,
+        type: data.type,
+        metadata: data.metadata || {},
+      },
+    });
+    revalidatePath('/dashboard/notifications');
+    return { success: true };
+  } catch (error) {
+    console.error('Error creating notification:', error);
+    return { success: false, error };
+  }
 }
 
 /**
@@ -120,12 +128,12 @@ export async function getUnreadNotificationsCount() {
 /**
  * Get notifications for the current user
  */
-export async function getUserNotifications(limit = 10, offset = 0) {
+export async function getUserNotifications(limit = 10, offset = 0): Promise<Notification[]> {
   try {
     const user = await currentUser();
     if (!user?.id) return [];
     
-    return db.notification.findMany({
+    const notifications = await db.notification.findMany({
       where: {
         userId: user.id,
       },
@@ -135,6 +143,18 @@ export async function getUserNotifications(limit = 10, offset = 0) {
       take: limit,
       skip: offset,
     });
+
+    return notifications.map(notification => ({
+      id: notification.id,
+      title: notification.title,
+      content: notification.content,
+      type: notification.type as NotificationType,
+      isRead: notification.isRead,
+      createdAt: notification.createdAt,
+      updatedAt: notification.updatedAt,
+      metadata: notification.metadata as Record<string, any> | undefined,
+      recipientId: notification.userId || undefined
+    }));
   } catch (error) {
     console.error('Error fetching user notifications:', error);
     return [];
