@@ -146,9 +146,9 @@ export function InformationSection({
         />
         <span className="text-sm">Agree to email publication *</span>
       </div> */}
-      {errors.agreeToEmailPublication && (
+      {/* {errors.agreeToEmailPublication && (
         <p className="text-red-500 text-sm mt-1">{errors.agreeToEmailPublication.message}</p>
-      )}
+      )} */}
     </div>
   );
 } 

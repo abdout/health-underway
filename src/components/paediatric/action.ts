@@ -37,6 +37,20 @@ export async function createPaediatricDoctor(
       return { success: false, error: 'User not found or not authenticated' };
     }
 
+    // In development, make sure a User record exists for the current session id to avoid FK violations
+    if (process.env.NODE_ENV !== 'production') {
+      await db.user.upsert({
+        where: { id: user.id },
+        create: {
+          id: user.id,
+          email: user.email ?? `${user.id}@local.dev`,
+          name: user.name ?? 'Developer',
+          role: 'USER',
+        },
+        update: {},
+      });
+    }
+
     // Handle either FormData or direct object
     let processedData: PaediatricSchema;
     
@@ -115,14 +129,18 @@ export async function createPaediatricDoctor(
         recognitionOfServices: data.recognitionOfServices,
         secondNationality: data.secondNationality,
         agreeToPhotoPublication: data.agreeToPhotoPublication,
-        hobbiesOrInterests: Array.isArray(data.hobbiesOrInterests) ? data.hobbiesOrInterests.join(', ') : (data.hobbiesOrInterests as any),
+        hobbiesOrInterests: data.hobbiesOrInterests ?? [],
         nameOfSpouse: data.nameOfSpouse,
         workOfSpouse: data.workOfSpouse,
         childrenNamesAndStatus: data.childrenNamesAndStatus,
         specialOccasionOrRole: data.specialOccasionOrRole,
         extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
-        scientificPapersFiles: data.scientificPapersFiles,
-        personalPhotos: data.personalPhotos,
+        scientificPapersFiles: Array.isArray(data.scientificPapersFiles)
+          ? data.scientificPapersFiles.filter((v) => typeof v === 'string')
+          : [],
+        personalPhotos: Array.isArray(data.personalPhotos)
+          ? data.personalPhotos.filter((v) => typeof v === 'string')
+          : [],
         updatedCV: data.updatedCV,
       },
       update: {
@@ -158,14 +176,18 @@ export async function createPaediatricDoctor(
         recognitionOfServices: data.recognitionOfServices,
         secondNationality: data.secondNationality,
         agreeToPhotoPublication: data.agreeToPhotoPublication,
-        hobbiesOrInterests: Array.isArray(data.hobbiesOrInterests) ? data.hobbiesOrInterests.join(', ') : (data.hobbiesOrInterests as any),
+        hobbiesOrInterests: data.hobbiesOrInterests ?? [],
         nameOfSpouse: data.nameOfSpouse,
         workOfSpouse: data.workOfSpouse,
         childrenNamesAndStatus: data.childrenNamesAndStatus,
         specialOccasionOrRole: data.specialOccasionOrRole,
         extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
-        scientificPapersFiles: data.scientificPapersFiles,
-        personalPhotos: data.personalPhotos,
+        scientificPapersFiles: Array.isArray(data.scientificPapersFiles)
+          ? data.scientificPapersFiles.filter((v) => typeof v === 'string')
+          : [],
+        personalPhotos: Array.isArray(data.personalPhotos)
+          ? data.personalPhotos.filter((v) => typeof v === 'string')
+          : [],
         updatedCV: data.updatedCV,
       },
     });
@@ -216,6 +238,20 @@ export async function updatePaediatricDoctor(
     if (!user?.id) {
       console.error('User not found or not authenticated');
       return { success: false, error: 'User not found or not authenticated' };
+    }
+
+    // In development, make sure a User record exists for the current session id to avoid FK violations
+    if (process.env.NODE_ENV !== 'production') {
+      await db.user.upsert({
+        where: { id: user.id },
+        create: {
+          id: user.id,
+          email: user.email ?? `${user.id}@local.dev`,
+          name: user.name ?? 'Developer',
+          role: 'USER',
+        },
+        update: {},
+      });
     }
 
     // Handle either FormData or direct object
@@ -295,14 +331,18 @@ export async function updatePaediatricDoctor(
         recognitionOfServices: data.recognitionOfServices,
         secondNationality: data.secondNationality,
         agreeToPhotoPublication: data.agreeToPhotoPublication,
-        hobbiesOrInterests: Array.isArray(data.hobbiesOrInterests) ? data.hobbiesOrInterests.join(', ') : (data.hobbiesOrInterests as any),
+        hobbiesOrInterests: data.hobbiesOrInterests ?? [],
         nameOfSpouse: data.nameOfSpouse,
         workOfSpouse: data.workOfSpouse,
         childrenNamesAndStatus: data.childrenNamesAndStatus,
         specialOccasionOrRole: data.specialOccasionOrRole,
         extendedRequestFamilyPhoto: data.extendedRequestFamilyPhoto,
-        scientificPapersFiles: data.scientificPapersFiles,
-        personalPhotos: data.personalPhotos,
+        scientificPapersFiles: Array.isArray(data.scientificPapersFiles)
+          ? data.scientificPapersFiles.filter((v) => typeof v === 'string')
+          : [],
+        personalPhotos: Array.isArray(data.personalPhotos)
+          ? data.personalPhotos.filter((v) => typeof v === 'string')
+          : [],
         updatedCV: data.updatedCV,
       }
     });
