@@ -5,10 +5,11 @@ import React from 'react';
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <Card>
-      <CardHeader className="border-b">
+    <Card className="bg-white shadow-none border-none">
+      <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
+      <hr className="border-b border-muted" />
       <CardContent className="pt-6 space-y-4 text-sm">{children}</CardContent>
     </Card>
   );
@@ -25,7 +26,7 @@ function KeyValue({ label, value }: { label: string; value?: React.ReactNode }) 
 
 export function ReviewContainer({ data, isSubmitting, handleSubmit, hideActions = false }: ReviewContainerProps & { hideActions?: boolean; }) {
   return (
-    <div className="min-h-screen -mt-10">
+    <div className="min-h-screen my-10">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
           {/* Main Column */}

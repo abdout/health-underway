@@ -49,8 +49,7 @@ export const paediatricSchema = z.object({
   otherSubspecialty: z.string().optional(),
   
   // Certification
-  subspecialtyCertified: z.string()
-    .min(1, { message: "Please specify if you are subspecialty certified" }),
+  subspecialtyCertified: z.string().optional(),
   subspecialtyDegreeName: z.string().optional(),
   
   // Career Information
