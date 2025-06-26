@@ -20,7 +20,11 @@ export async function approveApplication(userId: string) {
     // Get user data to create basic record if needed
     const user = await db.user.findUnique({
       where: { id: userId },
-      select: { name: true, email: true }
+      select: { 
+        id: true,
+        name: true, 
+        email: true 
+      }
     });
 
     if (!user) {
@@ -97,7 +101,13 @@ export async function rejectApplication(userId: string) {
   });
 
   // Send rejection notification
-  const applicant = await db.user.findUnique({ where: { id: userId } });
+  const applicant = await db.user.findUnique({ 
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true
+    }
+  });
   if (applicant) {
     await notifyApplicationRejected(applicant.name || "", applicant.id);
   }
