@@ -122,95 +122,99 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
         <hr className="my-4" />
       </div>
 
-      <div className="flex w-full items-start flex-wrap gap-12">
-        {/* Profile Picture Upload */}
-        <div className="flex flex-col items-center space-y-2">
-          <Label htmlFor="personalPhotos" className="cursor-pointer">
-            <div className="w-40 h-40 rounded-full border border-dashed border-gray-500 flex items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors overflow-hidden">
-              {photoPreview ? (
-                <Image src={photoPreview} alt="Profile Preview" width={160} height={160} className="w-full h-full object-cover" />
-              ) : (
-                <div className="text-center p-4">
-                  <Photo className="mx-auto h-10 w-10 text-gray-400" />
-                  <p className="text-sm mt-1">Photo</p>
-                </div>
-              )}
-            </div>
-          </Label>
-          <Input id="personalPhotos" type="file" accept="image/*" className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              try {
-                const url = await uploadToCloudinary(file, 'image');
-                const updated = Array.isArray(personalPhotos) ? [...personalPhotos] : [];
-                updated[0] = url;
-                setValue('personalPhotos', updated, { shouldValidate: true });
-                setPhotoPreview(url);
-              } catch (_) {}
-            }}
-          />
-          {errors.personalPhotos && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.personalPhotos.message as string}</p>}
-        </div>
-
-        {/* CV Upload */}
-        <div className="flex flex-col items-center space-y-2">
-          <Label htmlFor="updatedCV" className="cursor-pointer">
-            <div className="w-40 h-40 rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors">
-              {updatedCvValue ? (
-                isPdfUrl(updatedCvValue) ? (
-                  <div className="relative w-full h-full overflow-hidden bg-white">
-                    <div className="absolute" style={{ width: '120%', height: '120%', left: '-5%', top: '-1%' }}>
-                      <iframe
-                        src={updatedCvValue}
-                        width="100%"
-                        height="100%"
-                        className="pointer-events-none w-full h-full"
-                        title="CV Preview"
-                        frameBorder="0"
-                        scrolling="no"
-                      />
-                    </div>
-                    <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-xs text-center py-1 z-10">
-                      Resume
-                    </div>
-                  </div>
+      {/* Main container with responsive layout */}
+      <div className="flex flex-col w-full space-y-8 md:space-y-0 md:flex-row md:items-start md:flex-wrap md:gap-12">
+        {/* Photo and Resume container for mobile */}
+        <div className="flex flex-row justify-center gap-8  md:gap-12">
+          {/* Profile Picture Upload */}
+          <div className="flex flex-col items-center space-y-2">
+            <Label htmlFor="personalPhotos" className="cursor-pointer">
+              <div className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-dashed border-gray-500 flex items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors overflow-hidden">
+                {photoPreview ? (
+                  <Image src={photoPreview} alt="Profile Preview" width={160} height={160} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="text-center text-gray-600">
-                    <Pdf className="mx-auto h-10 w-10" />
-                    <p className="mt-1 text-sm break-words w-full px-1">
-                      {(() => {
-                        const name = updatedCvValue.split('/').pop() || 'Resume';
-                        return name.length > 20 ? `${name.substring(0, 20)}...` : name;
-                      })()}
-                    </p>
+                  <div className="text-center p-4">
+                    <Photo className="mx-auto h-7 w-7 md:h-10 md:w-10 text-gray-400" />
+                    <p className="text-xs md:text-sm mt-1">Photo</p>
                   </div>
-                )
-              ) : (
-                <div className="text-center">
-                  <Pdf className="mx-auto h-10 w-10 text-gray-400" />
-                  <p className="text-sm mt-1">Resume</p>
-                </div>
-              )}
-            </div>
-          </Label>
-          <Input id="updatedCV" type="file" accept=".pdf,.doc,.docx" className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              try {
-                const url = await uploadToCloudinary(file, 'raw');
-                setValue('updatedCV' as const, url, { shouldValidate: true });
-              } catch (_) {}
-            }}
-          />
-          {errors.updatedCV && <p className="text-red-500 text-sm mt-1 w-40 text-center">{errors.updatedCV.message as string}</p>}
+                )}
+              </div>
+            </Label>
+            <Input id="personalPhotos" type="file" accept="image/*" className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const url = await uploadToCloudinary(file, 'image');
+                  const updated = Array.isArray(personalPhotos) ? [...personalPhotos] : [];
+                  updated[0] = url;
+                  setValue('personalPhotos', updated, { shouldValidate: true });
+                  setPhotoPreview(url);
+                } catch (_) {}
+              }}
+            />
+            {errors.personalPhotos && <p className="text-red-500 text-xs md:text-sm mt-1 w-28 md:w-40 text-center">{errors.personalPhotos.message as string}</p>}
+          </div>
+
+          {/* CV Upload */}
+          <div className="flex flex-col items-center space-y-2">
+            <Label htmlFor="updatedCV" className="cursor-pointer">
+              <div className="w-28 h-28 md:w-40 md:h-40 rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors">
+                {updatedCvValue ? (
+                  isPdfUrl(updatedCvValue) ? (
+                    <div className="relative w-full h-full overflow-hidden bg-white">
+                      <div className="absolute" style={{ width: '120%', height: '120%', left: '-5%', top: '-1%' }}>
+                        <iframe
+                          src={updatedCvValue}
+                          width="100%"
+                          height="100%"
+                          className="pointer-events-none w-full h-full"
+                          title="CV Preview"
+                          frameBorder="0"
+                          scrolling="no"
+                        />
+                      </div>
+                      <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-xs text-center py-1 z-10">
+                        Resume
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      <Pdf className="mx-auto h-7 w-7 md:h-10 md:w-10" />
+                      <p className="mt-1 text-xs md:text-sm break-words w-full px-1">
+                        {(() => {
+                          const name = updatedCvValue.split('/').pop() || 'Resume';
+                          return name.length > 20 ? `${name.substring(0, 20)}...` : name;
+                        })()}
+                      </p>
+                    </div>
+                  )
+                ) : (
+                  <div className="text-center">
+                    <Pdf className="mx-auto h-7 w-7 md:h-10 md:w-10 text-gray-400" />
+                    <p className="text-xs md:text-sm mt-1">Resume</p>
+                  </div>
+                )}
+              </div>
+            </Label>
+            <Input id="updatedCV" type="file" accept=".pdf,.doc,.docx" className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const url = await uploadToCloudinary(file, 'raw');
+                  setValue('updatedCV' as const, url, { shouldValidate: true });
+                } catch (_) {}
+              }}
+            />
+            {errors.updatedCV && <p className="text-red-500 text-xs md:text-sm mt-1 w-28 md:w-40 text-center">{errors.updatedCV.message as string}</p>}
+          </div>
         </div>
 
         {/* Scientific Papers Section */}
-        <div className="flex flex-col items-center space-y-2" style={{ width: '380px' }}>
+        <div className="flex flex-col items-center space-y-2 w-full md:w-[380px]">
           <div 
-            className="grid grid-cols-2 gap-x-12 gap-y-2 w-full" // vertical gap is 2 (8px) to match V_GAP_PX
+            className="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-2 w-full pl-4 md:pl-0"
             style={{ 
               gridTemplateRows: `repeat(${paperRows}, ${paperBoxHeight}px)`,
               height: `${PAPER_CONTAINER_HEIGHT}px`
@@ -221,8 +225,7 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
               <div key={field.id} className="relative">
                 <div
                   onClick={() => handlePaperUpload(index)}
-                  className="cursor-pointer w-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors"
-                  style={{ height: `${paperBoxHeight}px` }}
+                  className="cursor-pointer w-28 md:w-full h-28 md:h-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors"
                 >
                   {scientificPapersValues && scientificPapersValues[index] ? (
                     isPdfUrl(scientificPapersValues[index]) ? (
@@ -241,7 +244,7 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
                       </div>
                     ) : (
                       <div className="text-center text-gray-600">
-                        <Paper className="mx-auto h-6 w-6" />
+                        <Paper className="mx-auto h-7 w-7 md:h-6 md:w-6" />
                         <p className="mt-1 text-xs break-words w-full px-1 leading-tight">
                           {(() => {
                             const name = scientificPapersValues[index].split('/').pop() || `Paper ${index + 1}`;
@@ -252,7 +255,7 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
                     )
                   ) : (
                     <div className="text-center">
-                      <Paper className="mx-auto h-6 w-6" />
+                      <Paper className="mx-auto h-7 w-7 md:h-6 md:w-6" />
                       <p className="text-xs mt-1">
                         {index === 0 ? 'First Paper' : 
                          index === 1 ? 'Second Paper' : 
@@ -292,10 +295,9 @@ export const AttachmentSection = ({ control, errors, register, setValue, watch, 
             {/* Add More Paper Button - Always visible */}
             <div
               onClick={handleAddMorePaper}
-              className="cursor-pointer w-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors"
-              style={{ height: `${paperBoxHeight}px` }}
+              className="cursor-pointer w-28 md:w-full h-28 md:h-full rounded-md border border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:border-gray-600 transition-colors"
             >
-              <Plus className="mx-auto h-6 w-6" />
+              <Plus className="mx-auto h-7 w-7 md:h-6 md:w-6" />
               <p className="text-xs mt-1">More Paper</p>
             </div>
           </div>

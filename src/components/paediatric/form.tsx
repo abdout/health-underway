@@ -84,7 +84,7 @@ const Form = ({ type, data }: FormProps) => {
         }
         
         if (result.success) {
-          toast.success(`تم حفظ معلومات الطبيب بنجاح.`);
+          toast.success(`Data has been saved successfully`);
           router.push("/paediatric/review");
         } else {
           toast.error(result.error || "An error occurred");
@@ -102,10 +102,10 @@ const Form = ({ type, data }: FormProps) => {
     <FormProvider {...form}>
       <div className="min-h-screen py-8 relative">
         <div className="flex flex-col items-center justify-center gap-2">
-          <h1 className="font-heading">Paediatric Doctor</h1>
-          <p className="text-lg">Sudanese Paediatric Doctors Data Collection</p>
+          <h1 className="font-heading text-2xl md:text-4xl">Paediatric Doctor</h1>
+          <p className="text-lg text-center justify-center">Sudanese Paediatric Doctors Data Collection</p>
         </div>
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-0 md:px-4">
           <Card className="border-none shadow-none">
             
             

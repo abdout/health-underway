@@ -19,14 +19,14 @@ export function InformationSection({
   data 
 }: InformationSectionProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-gray-900">Information</h2>
         <hr className="my-4" />
       </div>
       
       {/* Names */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         <div>
           <Input
             id="fullNameEnglish"
@@ -54,7 +54,7 @@ export function InformationSection({
       </div>
 
       {/* Prefix, Career, and Birth Information */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8">
         <div>
           <Select onValueChange={(value) => setValue('namePrefix', value)} defaultValue={data?.namePrefix} >
             <SelectTrigger className="bg-white  w-full md:w-44">

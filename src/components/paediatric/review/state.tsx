@@ -1,3 +1,5 @@
+'use client';
+
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -41,7 +43,7 @@ export function SuccessDialog({ showDialog, setShowDialog, onClose }: ReviewDial
 
   return (
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
-      <DialogContent className="sm:max-w-md h-60">
+      <DialogContent className="sm:max-w-md h-60" showCloseButton={false}>
         <div className="flex flex-col items-center justify-center">
           <div
             className={`relative mb-4 flex items-center justify-center transition-all duration-500 ease-in-out ${animate ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}

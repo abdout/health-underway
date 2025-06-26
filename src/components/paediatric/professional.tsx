@@ -56,7 +56,7 @@ export function ProfessionalSection({
   data 
 }: ProfessionalSectionProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-gray-900">Professional</h2>
         <hr className="my-4" />
@@ -202,7 +202,7 @@ export function ProfessionalSection({
         </div> */}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
 
       {/* Qualifications */}
       <div className="space-y-4">

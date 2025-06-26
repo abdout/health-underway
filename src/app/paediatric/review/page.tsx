@@ -48,7 +48,7 @@ export default function PaediatricReviewPage() {
 
   const handleCloseDialog = () => {
     setShowDialog(false);
-    router.push('/dashboard');
+    router.push('/');
   };
 
   if (isLoading) return <LoadingState />;

@@ -35,7 +35,7 @@ export function PersonalSection({
         {/* <h3 className="text-sm font-medium text-gray-800">Personal & Family Information</h3> */}
 
         {/* Row: Second Nationality & Photo Publication */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div>
             <Input
               id="secondNationality"
@@ -66,7 +66,7 @@ export function PersonalSection({
         </div>
 
         {/* Children & Special Occasion */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div>
             <Textarea
               id="childrenNamesAndStatus"

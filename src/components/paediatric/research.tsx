@@ -18,7 +18,7 @@ export function ResearchSection({
   data 
 }: ResearchAndFamilySectionProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
         <h2 className="text-xl font-semibold">Research</h2>
         <hr className="my-4" />
@@ -40,7 +40,7 @@ export function ResearchSection({
         </div> */}
 
         {/* Two-column grid for other research fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div>
             <Textarea
               id="booksEdited"
