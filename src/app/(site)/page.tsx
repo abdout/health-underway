@@ -6,6 +6,7 @@ import { SuperchargeSection } from '@/components/site/super';
 import { MeshScaleSection } from '@/components/site/mesh';
 import ImageCSS from '@/components/site/image-css';
 import { PaediatricOnbording } from '@/components/site/onbording';
+import FeaturedArticles from '@/components/template/article/featured-articles';
 
 export default function Home() {
     return (
@@ -13,6 +14,7 @@ export default function Home() {
             <Hero />
             <PaediatricOnbording />
             <FeatureCards />
+            <FeaturedArticles />
             
             <App />
 {/*             

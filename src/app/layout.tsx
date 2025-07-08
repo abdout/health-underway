@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "sonner";
+import { ModalProvider } from "@/components/atom/modal/context";
 
 export const metadata: Metadata = {
   title: "Databayt",
@@ -34,10 +35,12 @@ export default function RootLayout({
       >
         <SessionProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
+            <ModalProvider>
             <div className="layout-container">
               <Toaster position="bottom-right" />
               {children}
             </div>
+            </ModalProvider>
           </ThemeProvider>
         </SessionProvider>
       </body>

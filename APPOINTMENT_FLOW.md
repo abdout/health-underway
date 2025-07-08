@@ -1,357 +1,215 @@
-# 🏥 Shifa Healthcare - Appointment Management Flow
+# Appointment Feature – End-to-End Flow
 
-This document traces the complete appointment flow in the Shifa Healthcare application, showing how patients book appointments and how admins manage them.
+> _This document traces how an appointment request travels through the application—all the pages, components, server actions, and database models involved.  It replaces the older draft that was removed from the repo._
 
-## 📊 System Architecture Overview
+---
 
-```mermaid
-graph TD
-    A[Home Page] --> B[Patient Registration]
-    A --> C[Admin Access]
-    B --> D[Patient Profile]
-    D --> E[Book Appointment]
-    E --> F[Appointment Success]
-    F --> G[Admin Dashboard]
-    C --> G
-    G --> H[Manage Appointments]
-    H --> I[Schedule/Cancel]
+## 1. Public Entry → Patient On-Boarding
+
+| Step | File | Key Points |
+|------|------|------------|
+| **/appointment** | `src/app/appointment/page.tsx` | • Server component.<br>• Calls `auth()` (from `src/auth.ts`).<br>• Redirects unauthenticated users to `/login?callbackUrl=/appointment`.<br>• Shows `<PatientForm />`. |
+| Patient form | `src/components/forms/PatientForm.tsx` | • RHF + Zod (`UserFormValidation`).<br>• Calls server action `createUser` (`src/lib/actions/patient.actions.ts`).<br>• On success `router.push(/patients/[uid]/register)`. |
+
+---
+
+## 2. Detailed Patient Registration
+
+| Route | File | Details |
+|-------|------|---------|
+| **/patients/[userId]/register** | `src/app/patients/[userId]/register/page.tsx` | • Loads `User` & checks `Patient` via `getPatient`.<br>• If patient already exists, redirects to new-appointment.<br>• Otherwise renders `<RegisterForm />`. |
+| Register form | `src/components/forms/RegisterForm.tsx` | • Huge form using `PatientFormValidation` (Zod).<br>• Optional file upload via `saveFile()` helper.<br>• Server action `registerPatient` (`src/lib/actions/patient.ts`).<br>• On success ➜ `/patients/[uid]/new-appointment`. |
+
+---
+
+## 3. Patient Requests an Appointment  
+*(initial status `pending`)*
+
+| Route | File | Highlights |
+|-------|------|-----------|
+| **/patients/[userId]/new-appointment** | `src/app/patients/[userId]/new-appointment/page.tsx` | Renders `<AppointmentForm type="create" />`. |
+| Appointment form | `src/components/forms/AppointmentForm.tsx` | • Supports `create`, `schedule`, `cancel` modes.<br>• Validation chosen by `getAppointmentSchema(type)` in `src/lib/validation.ts`.<br>• **create** → `createAppointment()` → DB row (`Status.pending`).<br>• Redirect → `/patients/[uid]/new-appointment/success?appointmentId=...`. |
+| Success page | `src/app/patients/[userId]/new-appointment/success/page.tsx` | • Fetches appointment by ID.<br>• Displays doctor + date.<br>• Offers link to make another appointment. |
+
+---
+
+## 4. Admin Dashboard – Managing Lifecycle
+
+| Route | File | Purpose |
+|-------|------|---------|
+| **/admin** | `src/app/admin/page.tsx` | • Calls `getRecentAppointmentList()` to obtain counts + list.<br>• Renders summary `StatCard` trio and `<DataTable />`. |
+| DataTable columns | `src/components/table/columns.tsx` | • Custom cells: `StatusBadge`, doctor avatar, etc.<br>• **Actions** cell embeds two `<AppointmentModal />` instances—`schedule` & `cancel`. |
+| Appointment modal | `src/components/AppointmentModal.tsx` | • ShadCN `<Dialog>` wrapper around `AppointmentForm` in `schedule` / `cancel` mode. |
+
+### Schedule / Cancel Flow
+*File:* `src/lib/actions/appointment.actions.ts`
+
+```ts
+updateAppointment({ appointmentId, type, ... })
 ```
-
-## 🔄 Complete User Journey
-
-### 1. **Entry Points**
-
-#### **Main Site** (`/`)
-- **File**: `src/app/(site)/page.tsx`
-- **Purpose**: Landing page with hero section and feature cards
-- **Components**: Hero, FeatureCards, ParallaxText, ImageCSS
-- **Next Step**: Users navigate to `/appointment` to start booking
-
-#### **Appointment Portal** (`/appointment`)
-- **File**: `src/app/appointment/page.tsx`
-- **Purpose**: Main appointment booking entry point
-- **Features**:
-  - Patient form for initial information
-  - Admin access link (`/?admin=true`)
-  - PasskeyModal for admin authentication
+1. Updates record (status + schedule or cancellationReason).
+2. Formats date via `formatDateTime`.
+3. Sends mail with `sendEmailNotification()` (`src/lib/appo-mail.ts`).
+4. `revalidatePath("/admin")` → dashboard regenerates.
 
 ---
 
-### 2. **Patient Flow** 👥
+## 5. Server Actions & Helpers
 
-#### **Step 1: Initial Patient Information** (`/appointment`)
-```typescript
-// What happens:
-1. Patient fills out PatientForm with basic info
-2. System creates User record
-3. Redirects to patient registration
-```
-
-#### **Step 2: Patient Registration** (`/patients/[userId]/register`)
-- **File**: `src/app/patients/[userId]/register/page.tsx`
-- **Purpose**: Complete patient profile with medical information
-- **Process**:
-  ```typescript
-  const user = await getUser(userId);
-  const patient = await getPatient(userId);
-  
-  if (!user) redirect("/404");
-  if (patient) redirect(`/patients/${userId}/new-appointment`);
-  ```
-- **Form**: `RegisterForm` component with detailed medical info
-- **Next Step**: Redirect to appointment booking
-
-#### **Step 3: Book New Appointment** (`/patients/[userId]/new-appointment`)
-- **File**: `src/app/patients/[userId]/new-appointment/page.tsx`
-- **Purpose**: Book a new appointment with selected doctor
-- **Process**:
-  ```typescript
-  const patient = await getPatient(userId);
-  // Render AppointmentForm with patient data
-  ```
-- **Form**: `AppointmentForm` with doctor selection, date/time, reason
-
-#### **Step 4: Appointment Success** (`/patients/[userId]/new-appointment/success`)
-- **File**: `src/app/patients/[userId]/new-appointment/success/page.tsx`
-- **Purpose**: Confirmation page with appointment details
-- **Features**:
-  - Success animation (GIF)
-  - Appointment details display
-  - Doctor information with photo
-  - "New Appointment" button for additional bookings
+| File | Role |
+|------|------|
+| `src/lib/actions/appointment.actions.ts` | `createAppointment`, `updateAppointment`, `getAppointment`, `getRecentAppointmentList`. |
+| `src/lib/validation.ts` | Zod schemas (Create / Schedule / Cancel) and `getAppointmentSchema()`. |
+| `src/lib/appo-mail.ts` | Resend email helpers (2FA, password reset, **appointment notifications**). |
+| `src/lib/utils.ts` | `formatDateTime`, misc helpers. |
+| `src/lib/actions/patient.*` | Creation & retrieval of `Patient` and basic `User`. |
 
 ---
 
-### 3. **Admin Flow** 👨‍⚕️
+## 6. Database Models (Prisma)
 
-#### **Admin Access** (`/?admin=true`)
-- **Trigger**: Admin link from appointment page
-- **Authentication**: PasskeyModal popup
-- **Default Passkey**: `112233` (configurable via `NEXT_PUBLIC_ADMIN_PASSKEY`)
-
-#### **Admin Dashboard** (`/admin`)
-- **File**: `src/app/admin/page.tsx`
-- **Purpose**: Central management hub for all appointments
-- **Features**:
-  - **Statistics Cards**:
-    - Scheduled appointments count
-    - Pending appointments count
-    - Cancelled appointments count
-  - **Data Table** with appointment list
-  - **Actions**: Schedule/Cancel appointments via modals
-
----
-
-## 📋 Data Models & Relationships
-
-### **Database Schema**
 ```prisma
-User {
-  id          String
-  name        String?
-  email       String?
-  phone       String?
-  patients    Patient[]
-  appointments Appointment[]
-}
-
-Patient {
-  id                     String
-  userId                 String
-  name                   String
-  email                  String
-  phone                  String
-  birthDate              DateTime
-  gender                 Gender
-  address                String
-  occupation             String
-  emergencyContactName   String
-  emergencyContactNumber String
-  primaryPhysician       String
-  insuranceProvider      String
-  insurancePolicyNumber  String
-  allergies              String?
-  currentMedication      String?
-  appointments           Appointment[]
-}
-
-Appointment {
-  id                 String
+model Appointment {
+  id                 String   @id @default(cuid())
   patientId          String
+  patient            Patient  @relation("PatientAppointments")
   userId             String
+  user               User     @relation("UserAppointments")
   schedule           DateTime
-  status             Status (pending/scheduled/cancelled)
+  status             Status   // pending | scheduled | cancelled
   primaryPhysician   String
   reason             String
   note               String
   cancellationReason String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 ```
-
-## 🎯 Key Components
-
-### **Forms**
-- **`PatientForm`**: Initial patient information collection
-- **`RegisterForm`**: Complete patient registration with medical details
-- **`AppointmentForm`**: Appointment booking with doctor/time selection
-
-### **Admin Components**
-- **`DataTable`**: Displays appointments with sorting/pagination
-- **`StatCard`**: Shows appointment statistics
-- **`AppointmentModal`**: Schedule/cancel appointment actions
-- **`PasskeyModal`**: Admin authentication
-
-### **UI Components**
-- **`StatusBadge`**: Visual status indicators (pending/scheduled/cancelled)
-- **Tables, Forms, Buttons**: Shadcn UI components
+> The model links to both **Patient** and **User**, letting the platform know who requested the appointment and which patient profile it concerns.
 
 ---
 
-## 🔐 Security & Authentication
+## 7. Authentication Touch-Points
 
-### **Admin Access**
-- Environment variable: `NEXT_PUBLIC_ADMIN_PASSKEY`
-- Default: `112233`
-- Encrypted storage in localStorage
-- Automatic redirect on invalid access
-
-### **Data Protection**
-- Patient data encrypted
-- Secure database connections
-- Privacy consent tracking
+* `auth()` used in `/appointment` entry page; denies anonymous access.
+* Admin dashboard should be role-protected with `RoleGate` or middleware (not detailed here).
+* Server actions receive `userId` from the authenticated session—no raw cookies.
 
 ---
 
-## 🚀 API Endpoints & Actions
+## 8. Current Directory Map (pre-refactor)
 
-### **Patient Actions** (`src/lib/actions/patient.actions.ts`)
-```typescript
-createUser(userData)        // Create new user
-getUser(userId)            // Fetch user by ID
-getPatient(userId)         // Fetch patient by user ID
-registerPatient(patientData) // Register new patient
-```
-
-### **Appointment Actions** (`src/lib/actions/appointment.actions.ts`)
-```typescript
-createAppointment(appointmentData)     // Book new appointment
-getRecentAppointmentList()             // Get all appointments for admin
-updateAppointment({appointmentId, ...}) // Schedule/cancel appointment
-getAppointment(appointmentId)          // Get specific appointment
+```text
+src/
+  app/
+    appointment/
+      page.tsx
+    patients/
+      [userId]/
+        register/
+          page.tsx
+        new-appointment/
+          page.tsx
+          success/page.tsx
+    admin/page.tsx
+  components/
+    forms/
+      PatientForm.tsx
+      RegisterForm.tsx
+      AppointmentForm.tsx
+    AppointmentModal.tsx
+    StatCard.tsx
+    StatusBadge.tsx
+    SubmitButton.tsx
+    table/columns.tsx
+  lib/
+    actions/
+      appointment.actions.ts
+      patient.actions.ts
+      patient.ts
+      type.ts
+    appo-mail.ts
+    utils.ts
+    validation.ts
+  prisma/schema.prisma
 ```
 
 ---
 
-## 📱 User Experience Flow
+## 9. State Transitions Overview
 
-### **Patient Journey**
-1. **Discovery**: Land on home page → Learn about services
-2. **Entry**: Click "Book Appointment" → `/appointment`
-3. **Registration**: Fill basic info → Create account → `/patients/[userId]/register`
-4. **Profile**: Complete medical information → Submit registration
-5. **Booking**: Select doctor, date, reason → `/patients/[userId]/new-appointment`
-6. **Confirmation**: View success page → `/patients/[userId]/new-appointment/success`
-
-### **Admin Journey**
-1. **Access**: Click "Admin" link → Enter passkey
-2. **Dashboard**: View statistics → `/admin`
-3. **Management**: Review appointment list → Schedule/cancel appointments
-4. **Communication**: System sends email notifications automatically
+```mermaid
+stateDiagram-v2
+  [*] --> pending : createAppointment()
+  pending --> scheduled : updateAppointment("schedule")
+  scheduled --> cancelled : updateAppointment("cancel")
+```
+*Emails* are dispatched on the `scheduled` and `cancelled` transitions.
 
 ---
 
-## 🛠️ Technical Implementation
-
-### **Routing Structure**
+## 10. Big-Picture Flow Recap
 ```
-/                                    # Main landing page
-/appointment                        # Patient entry point
-/patients/[userId]/register         # Patient registration
-/patients/[userId]/new-appointment  # Appointment booking
-/patients/[userId]/new-appointment/success # Confirmation
-/admin                             # Admin dashboard
-```
-
-### **State Management**
-- Server-side data fetching with Next.js App Router
-- Form state managed by React Hook Form
-- Database operations via Prisma ORM
-
-### **Styling**
-- Tailwind CSS for responsive design
-- Shadcn UI component library
-- Custom animations and transitions
-
----
-
-## 🔧 Configuration
-
-### **Environment Variables**
-```bash
-# Admin access
-NEXT_PUBLIC_ADMIN_PASSKEY=112233
-
-# Database
-DATABASE_URL="postgresql://..."
-
-# Authentication
-NEXTAUTH_SECRET="your-secret"
-NEXTAUTH_URL="http://localhost:3000"
-
-# Email notifications
-RESEND_API_KEY="your-api-key"
-```
-
-### **Doctor Configuration**
-Update `src/constants/index.ts` to add/modify available doctors:
-```typescript
-export const Doctors = [
-  {
-    image: "/assets/images/dr-green.png",
-    name: "John Green",
-  },
-  // Add more doctors...
-];
+User ➜ /appointment                       (auth guard)
+      ➜ PatientForm ➜ createUser()
+      ➜ /patients/[uid]/register
+      ➜ RegisterForm ➜ registerPatient()
+      ➜ /patients/[uid]/new-appointment
+      ➜ AppointmentForm(create) ➜ createAppointment(pending)
+      ➜ /success
+Admin ➜ /admin                            (Role: ADMIN)
+      ➜ AppointmentModal(schedule/cancel)
+      ➜ updateAppointment() → status change + email + revalidatePath
 ```
 
 ---
 
-## 📧 Notifications
-
-### **Email System**
-- **Library**: Resend API
-- **Triggers**: 
-  - Appointment scheduled
-  - Appointment cancelled
-- **Templates**: Dynamic with appointment details
-- **Recipients**: Patient email from registration
+✅  That covers the complete appointment journey in the existing code-base. 
 
 ---
 
-## 🐛 Troubleshooting
+## 11. Production-Readiness Checklist
 
-### **Common Issues**
+Below is a pragmatic list of items to address before shipping the appointment flow to production.
 
-1. **"Cannot read properties of undefined (reading 'findMany')"**
-   - **Cause**: Prisma client not generated
-   - **Fix**: Run `pnpm prisma generate`
+### Security & Privacy
+- **HTTPS everywhere** – enforce `https://` and set `NEXTAUTH_URL` to the secure origin.
+- **Environment variables** – store all secrets (DB URL, Resend API key, NextAuth providers) in a secret manager (e.g.
+  Vercel / AWS Secrets Manager) – never commit them.
+- **CSRF & XSS** – NextAuth is configured (`auth.ts`) but confirm the `cookies.sessionToken` settings meet the deployment CDN's requirements (e.g. `sameSite="lax"`, `secure=true`).
+- **RBAC** – ensure only `ADMIN` users can reach `/admin`; wrap with `<RoleGate role="ADMIN"/>` or an auth-only middleware.
+- **Rate-limit** appointment actions & email endpoints (`/api/…`) to mitigate spam.
+- **Data retention / GDPR** – document how patient data and uploaded ID docs are stored, encrypted and deleted.
 
-2. **"searchParams should be awaited"**
-   - **Cause**: Next.js 15 async searchParams
-   - **Fix**: Use `await searchParams` in components
+### Reliability & Observability
+- **Validation hardening** – expand Zod schemas to prevent unrealistic dates (e.g. past schedule, 200-char name, etc.).
+- **Typed Prisma** – run `prisma generate` in CI to keep the client in sync.
+- **Centralised error logging** – pipe `console.error` to Sentry / Logtail; add try/catch around *all* server actions.
+- **Health checks** – add `/api/healthz` and optionally database connectivity probe.
+- **Monitoring** – set up uptime + performance dashboards (Vercel Analytics, Datadog, etc.).
 
-3. **Admin passkey not working**
-   - **Cause**: Environment variable not set
-   - **Fix**: Set `NEXT_PUBLIC_ADMIN_PASSKEY` in environment
+### Performance & UX
+- **Image optimisation** – serve doctor images via `next/image` + remotePatterns or move them to a CDN bucket.
+- **Incremental static regeneration (ISR)** – the admin page currently uses `revalidatePath`; verify this works with your hosting platform's cache.
+- **Pagination / virtualisation** – DataTable could paginate once appointment volume grows.
+- **Optimistic UI** – use `useTransition` or TanStack Query mutations for instant feedback on schedule/cancel.
 
-4. **Infinite redirect loop to login**
-   - **Cause**: Middleware not recognizing dynamic routes as public
-   - **Fix**: Updated middleware to handle wildcard routes (`/patients/*/register`)
+### Email & Notifications
+- **Domain verification** – verify DKIM/SPF for the `no-reply@databayt.org` sender to avoid spam folders.
+- **Retry / bounce handling** – log failed Resend sends and surface in admin UI.
+- **Appointment reminders** – add a cron job (e.g. Vercel Cron) to email patients 24 h before `schedule`.
 
-5. **Edge Runtime errors**
-   - **Cause**: Node.js modules in Edge Runtime
-   - **Fix**: Simplified database configuration, removed Node.js specific imports
+### Testing
+- **Unit tests** – Jest/Vitest for server actions and validators.
+- **Integration tests** – Playwright scripts for patient ➜ register ➜ book ➜ admin schedule/cancel.
+- **Load tests** – hit the booking API with realistic traffic bursts.
 
-6. **Logo not found error**
-   - **Cause**: Incorrect image path
-   - **Fix**: Updated to use correct asset path `/assets/icons/logo-icon.svg`
+### DevOps & CI/CD
+- **CI gates** – lint (`pnpm lint`), type-check (`pnpm tsc`), test (`pnpm test`), build (`pnpm build`).
+- **Database migrations** – use `prisma migrate deploy` in production pipeline; enable backups.
+- **Blue/Green / Canary** – optional for zero-downtime deploys when touching Prisma schema.
 
-7. **"Invalid User ID format" error**
-   - **Cause**: MongoDB-specific validation expecting 24-character ObjectIds, but PostgreSQL uses cuid()
-   - **Fix**: Updated validation in `getUser()` and `getPatient()` functions to accept variable-length IDs
+### Documentation
+- Update `README.md`, `INTEGRATION_GUIDE.md`, and API reference with environment variables, cron jobs, and disaster recovery steps.
 
-8. **"params should be awaited" error**
-   - **Cause**: Next.js 15 requires awaiting dynamic params and searchParams
-   - **Fix**: Updated all dynamic route pages to properly await params
-
-9. **Missing dependencies for file upload**
-   - **Cause**: `react-dropzone`, `cloudinary`, `streamifier` not installed
-   - **Fix**: Installed missing packages with `pnpm add react-dropzone cloudinary streamifier @types/streamifier`
-
----
-
-## 📈 Future Enhancements
-
-- [ ] Real-time appointment notifications
-- [ ] Calendar integration
-- [ ] Multiple appointment types
-- [ ] Doctor availability management
-- [ ] Patient history tracking
-- [ ] SMS notifications
-- [ ] Payment integration
-- [ ] Telemedicine support
-
----
-
-## 🚀 Getting Started
-
-1. **Install dependencies**: `pnpm install`
-2. **Set up database**: Configure `DATABASE_URL`
-3. **Generate Prisma client**: `pnpm prisma generate`
-4. **Push schema**: `pnpm prisma db push`
-5. **Start development**: `pnpm dev`
-6. **Access admin**: Go to `/?admin=true` (passkey: `112233`)
-
----
-
-*This documentation provides a complete overview of the appointment management system. For technical support or feature requests, please refer to the development team.* 
+> Completing the above will harden the appointment flow for real patients and administrators in production. 
