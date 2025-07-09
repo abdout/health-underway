@@ -2,51 +2,42 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
 
-import { PatientForm } from "@/components/forms/PatientForm";
-import { Button } from "@/components/ui/button";
+import AppointmentDashboard from "@/components/appointment/dashbord";
+import AppointmentBookingSection from "@/components/appointment/booking-section";
 
 const AppointmentPage = async () => {
-  // This page is now protected - user must be authenticated to access
   const session = await auth();
-  
+
   if (!session) {
-    // This should not happen due to middleware, but added as safety
     redirect("/login?callbackUrl=/appointment");
   }
 
+  // Check if user is a patient
+  // if (session.user.role !== "PATIENT") {
+  //   redirect("/not-authorized"); // or show an error
+  // }
+
+  // Fetch the patient record for this user (userId is unique in Patient model)
+  const patient = await db.patient.findUnique({
+    where: { userId: session.user.id }
+  });
+
+  // // If no patient record, redirect or show error
+  // if (!patient) {
+  //   redirect("/not-authorized"); // or show an error
+  // }
+
+  // // Check onboarding status
+  // if (!patient.onboarded) {
+  //   redirect("/onboarding"); // or your onboarding route
+  // }
+
   return (
-    <div className="flex flex-col items-center justify-center pt-20">
-      <div className="flex items-center justify-center gap-x-4 pb-4">
-        <Image
-          src="/assets/icons/logo-icon.svg"
-          height={1000}
-          width={1000}
-          alt="logo"
-          className="h-8 w-8"
-        />
-        <h1 className="text-24-bold text-dark-800">
-          Book Appointment
-        </h1>
-      </div>
-
-      {/* Welcome message for authenticated user */}
-      <div className="mb-6 text-center">
-        <p className="text-16-regular text-dark-600">
-          Welcome back, {session.user?.name || session.user?.email}
-        </p>
-        <p className="text-14-regular text-dark-500">
-          Let's book your appointment
-        </p>
-      </div>
-
-      <PatientForm />
-
-      <div className="text-14-regular flex justify-between pt-8">
-        <Link href="/dashboard" className="text-green-500 hover:underline">
-          Go to Dashboard
-        </Link>
-      </div>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <AppointmentDashboard />
+      {/* <AppointmentBookingSection session={session} /> */}
     </div>
   );
 };
