@@ -31,15 +31,13 @@ const Register = async ({ params }: SearchParamProps) => {
 
   return (
     <div className="flex h-screen max-h-screen">
-      <section className="remove-scrollbar container">
-        <div className="max-w-[860px] mx-auto flex flex-col items-center justify-center py-10">
-        
+      <section className="flex items-center justify-center w-full px-20">
+       
 
           {/* Since we've ensured user is not null, we can safely pass it */}
           <RegisterForm user={user} />
 
-          
-        </div>
+        
       </section>
 
       
