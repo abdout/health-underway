@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import RegisterForm from "@/components/forms/RegisterForm";
+import RegisterForm from "@/components/patient/form";
 import { getUser } from "@/lib/actions/patient.actions";
-import { getPatient } from "@/lib/actions/patient";
+import { getPatient } from "@/components/patient/action";
 
 type SearchParamProps = {
   params: Promise<{
@@ -32,7 +32,7 @@ const Register = async ({ params }: SearchParamProps) => {
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container">
-        <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
+        <div className="max-w-[860px] mx-auto flex flex-col items-center justify-center py-10">
         
 
           {/* Since we've ensured user is not null, we can safely pass it */}

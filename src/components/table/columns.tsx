@@ -10,7 +10,7 @@ import { formatDateTime } from "@/lib/utils";
 
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
-import { AppointmentWithPatient } from "@/lib/actions/patient-type";
+import { AppointmentWithPatient } from "@/components/patient/type";
 
 
 export const columns: ColumnDef<AppointmentWithPatient>[] = [

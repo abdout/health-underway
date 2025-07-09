@@ -3,9 +3,9 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { RegisterUserParams } from "./patient-type";
-import { saveFile } from "../file";
-import { parseStringify } from "../utils";
+import { RegisterUserParams } from "./type";
+import { saveFile } from "../../lib/file";
+import { parseStringify } from "../../lib/utils";
 
 // REGISTER PATIENT
 export const registerPatient = async ({

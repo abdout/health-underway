@@ -4,7 +4,7 @@
 
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
-import { CreateUserParams } from "./patient-type";
+import { CreateUserParams } from "../../components/patient/type";
 import { parseStringify } from "../utils";
 import { User } from "@prisma/client";
 

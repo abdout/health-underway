@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { AppointmentForm } from "@/components/forms/AppointmentForm";
-import { getPatient } from "@/lib/actions/patient";
+import { getPatient } from "@/components/patient/action";
 
 type AppointmentProps = {
   params: Promise<{

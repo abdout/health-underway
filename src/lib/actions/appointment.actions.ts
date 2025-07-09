@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { Appointment, Status, Prisma } from "@prisma/client";
 import { formatDateTime } from "../utils";
-import { AppointmentWithPatient } from "./patient-type";
+import { AppointmentWithPatient } from "../../components/patient/type";
 import { sendEmailNotification } from "@/lib/appo-mail";
 
 type AppointmentCounts = {

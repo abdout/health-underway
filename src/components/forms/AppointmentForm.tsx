@@ -14,7 +14,7 @@ import {
   createAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import { getAppointmentSchema } from "@/lib/validation";
+import { getAppointmentSchema } from "@/components/patient/validation";
 import { Appointment, Status } from "@prisma/client";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
