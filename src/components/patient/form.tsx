@@ -340,61 +340,79 @@ const RegisterForm = ({ user }: { user: User }) => {
       <div className="max-w-4xl mx-auto px-4">
         <form
           onSubmit={(e) => {
-            console.log("📋 [RegisterForm] Form submit event triggered");
-            console.log("📋 [RegisterForm] Event:", e);
-            console.log("📋 [RegisterForm] Current form values:", form.getValues());
-            console.log("📋 [RegisterForm] Form validation state:", {
+            console.log("[DEBUG] form onSubmit event triggered", e);
+            console.log("[DEBUG] Current form values:", form.getValues());
+            console.log("[DEBUG] Form validation state:", {
               isValid: form.formState.isValid,
               errors: form.formState.errors,
               isSubmitting: form.formState.isSubmitting
             });
             
             return form.handleSubmit(
-              (data) => onSubmit(data),
-              (errors) => {}
+              (data) => {
+                console.log("[DEBUG] form.handleSubmit success", data);
+                onSubmit(data);
+              },
+              (errors) => {
+                console.log("[DEBUG] form.handleSubmit errors", errors);
+              }
             )(e);
           }}
           className="flex-1 space-y-12 pb-32"
         >
           {formSections[step].content}
-        </form>
-        {/* Sticky button bar at bottom */}
-        <div className="fixed bottom-0 left-0 w-full z-50 bg-background  border-border py-4 flex flex-col items-center shadow-md">
-          <div className="max-w-4xl w-full mx-auto px-4">
-            {/* Progress bars for each section, as top border */}
-            <div className="w-full flex flex-row gap-2 items-center justify-center mb-4">
-              <Progress value={step === 0 ? 100 : 0} className="flex-1" />
-              <Progress value={step === 1 ? 100 : 0} className="flex-1" />
-            </div>
-            <div className="w-full flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                {/* Favicon */}
-                <Image src="/favicon.svg" alt="favicon" width={28} height={28} className="opacity-80" />
-                {/* Help Icon */}
-                <HelpCircle className="w-6 h-6 text-muted-foreground hover:text-primary cursor-pointer transition-colors" aria-label="Help" />
-                {/* Bookmark Icon (label/marker style) */}
-                <Bookmark className="w-6 h-6 text-muted-foreground hover:text-primary cursor-pointer transition-colors" aria-label="Label" />
+          {/* Sticky button bar at bottom - moved inside form for submit to work */}
+          <div className="fixed bottom-0 left-0 w-full z-50 bg-background  border-border py-4 flex flex-col items-center shadow-md">
+            <div className="max-w-4xl w-full mx-auto px-4">
+              {/* Progress bars for each section, as top border */}
+              <div className="w-full flex flex-row gap-2 items-center justify-center mb-4">
+                <Progress value={step === 0 ? 100 : 0} className="flex-1" />
+                <Progress value={step === 1 ? 100 : 0} className="flex-1" />
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep((s) => Math.max(0, s - 1))}
-                  disabled={step === 0}
-                >
-                  Back
-                </Button>
-                {step < formSections.length - 1 ? (
-                  <Button type="button" onClick={() => setStep((s) => Math.min(formSections.length - 1, s + 1))}>
-                    Next
+              <div className="w-full flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                  {/* Favicon */}
+                  <Image src="/favicon.svg" alt="favicon" width={28} height={28} className="opacity-80" />
+                  {/* Help Icon */}
+                  <HelpCircle className="w-6 h-6 text-muted-foreground hover:text-primary cursor-pointer transition-colors" aria-label="Help" />
+                  {/* Bookmark Icon (label/marker style) */}
+                  <Bookmark className="w-6 h-6 text-muted-foreground hover:text-primary cursor-pointer transition-colors" aria-label="Label" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setStep((s) => Math.max(0, s - 1))}
+                    disabled={step === 0}
+                    className="w-20"
+                  >
+                    Back
                   </Button>
-                ) : (
-                  <SubmitButton isLoading={isLoading}>Submit</SubmitButton>
-                )}
+                  {step < formSections.length - 1 ? (
+                    <SubmitButton
+                      isLoading={false}
+                      type="button"
+                      className="w-20"
+                      onClick={() => {
+                        console.log("[DEBUG] Next button clicked");
+                        setStep((s) => Math.min(formSections.length - 1, s + 1));
+                      }}
+                    >
+                      Next
+                    </SubmitButton>
+                  ) : (
+                    <SubmitButton
+                      isLoading={isLoading}
+                      className="w-20"
+                    >
+                      Submit
+                    </SubmitButton>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </Form>
   );
