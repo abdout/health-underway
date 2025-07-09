@@ -65,7 +65,8 @@ export async function createArticle(
       image: article.image
     });
 
-    // Revalidate the articles page
+    // Revalidate both /article and /blog paths
+    revalidatePath("/blog");
     revalidatePath("/article");
 
     return {
@@ -155,7 +156,8 @@ export async function updateArticle(
       data: validatedData,
     });
 
-    // Revalidate the articles page and the specific article page
+    // Revalidate both paths
+    revalidatePath("/blog");
     revalidatePath("/article");
     revalidatePath(`/article/${data.slug}`);
 
@@ -195,7 +197,8 @@ export async function deleteArticle(id: string): Promise<ActionState> {
       where: { id },
     });
 
-    // Revalidate the articles page and the specific article page
+    // Revalidate both paths
+    revalidatePath("/blog");
     revalidatePath("/article");
     revalidatePath(`/article/${article.slug}`);
 
