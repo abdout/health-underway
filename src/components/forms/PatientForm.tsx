@@ -32,9 +32,9 @@ export const PatientForm = () => {
 
     try {
       const user = {
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
+        name: values.name ?? "",
+        email: values.email ?? "",
+        phone: values.phone ?? "",
       };
 
       const newUser = await createUser(user);
