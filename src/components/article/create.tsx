@@ -16,7 +16,13 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
+  description: z.string()
+    .min(20, {
+      message: "Description must be at least 20 characters"
+    })
+    .max(500, {
+      message: "Description cannot exceed 500 characters"
+    }),
   image: z.string().min(1, "Image is required"),
   body: z.string().min(1, "Content is required"),
   author: z.string().min(1, "Author is required"),
@@ -154,62 +160,57 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
     return `${baseSlug}-${timestamp}`;
   };
 
-  // Handle image upload completion
-  const handleImageUpload = (imageData: { url: string }) => {
-    setImageError(null);
-    setUploadedImage(imageData.url);
-    form.setValue("image", imageData.url);
-    setIsImageUploading(false);
+  const uploadToCloudinary = async (file: File, fieldType: 'image' | 'raw'): Promise<string> => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${fieldType === 'raw' ? 'raw' : 'image'}/upload`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'social'); // make sure this preset exists in Cloudinary
+    try {
+      const res = await fetch(url, { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      return data.secure_url as string;
+    } catch (err) {
+      console.error('Cloudinary upload error:', err);
+      toast.error('Failed to upload file. Please try again.');
+      throw err;
+    }
   };
 
-  // Handle image upload error
-  const handleImageError = (errorMessage: string) => {
-    setImageError(errorMessage);
-    setIsImageUploading(false);
-    // Keep the temporary preview but mark it as failed
-  };
-
-  // Function to handle file selection and auto-upload
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Replace the handleFileSelect function with this updated version
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImageError(null);
+      const file = e.target.files[0];
+      
       // Create a temporary preview URL for immediate display
-      const tempPreviewUrl = URL.createObjectURL(e.target.files[0]);
+      const tempPreviewUrl = URL.createObjectURL(file);
       setUploadedImage(tempPreviewUrl);
       setIsImageUploading(true);
-      
-      // Get the file input from ImageUploader
-      const fileInput = document.querySelector('.custom-uploader input[type="file"]') as HTMLInputElement;
-      if (fileInput) {
-        // Pass the file to the ImageUploader input
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(e.target.files[0]);
-        fileInput.files = dataTransfer.files;
+
+      try {
+        // Upload directly to Cloudinary
+        const url = await uploadToCloudinary(file, 'image');
         
-        // Trigger change event on the actual input
-        const changeEvent = new Event('change', { bubbles: true });
-        fileInput.dispatchEvent(changeEvent);
-        
-        // Find and click the upload button after a short delay
-        setTimeout(() => {
-          const uploadButton = document.querySelector('.custom-uploader button:last-child') as HTMLButtonElement;
-          if (uploadButton) {
-            uploadButton.click();
-          } else {
-            // If button isn't found, handle the error
-            setImageError("Image upload failed - please try again");
-            setIsImageUploading(false);
-          }
-        }, 100);
-      } else {
-        setImageError("Failed to find upload area - please refresh the page");
+        // Update form and state
+        setUploadedImage(url);
+        form.setValue("image", url);
         setIsImageUploading(false);
+        
+        // Clean up the temporary preview URL
+        URL.revokeObjectURL(tempPreviewUrl);
+      } catch (error) {
+        setImageError("Upload failed - please try again");
+        setIsImageUploading(false);
+        URL.revokeObjectURL(tempPreviewUrl);
       }
       
-      // Clear this input's value so the same file can be selected again
+      // Clear input value
       e.target.value = '';
     }
   };
+
+  // Remove or comment out the handleImageUpload and handleImageError functions since we won't need them anymore
 
   const handleSubmit = async (data: ArticleFormValues) => {
     setIsSubmitting(true);
@@ -252,7 +253,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
     }
   };
 
-  // Handle submitting the form with validation
+  // Update the handleFormSubmit function to better handle validation errors
   const handleFormSubmit = async (data: ArticleFormValues) => {
     // Check for image uploading
     if (isImageUploading) {
@@ -264,26 +265,15 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
     }
     
     // Check for validation errors before submitting
-    if (!isFormValid) {
-      // Collect all error messages
-      const errorMessages = [];
-      if (errors.author) errorMessages.push("Author");
-      if (errors.title) errorMessages.push("Title");
-      if (errors.description) errorMessages.push("Description");
-      if (errors.image) errorMessages.push("Image");
-      if (errors.body) errorMessages.push("Content");
-      
-      // Create a combined message
-      let message = "";
-      if (errorMessages.length > 0) {
-        message = `${errorMessages.join(" and ")} are required`;
-        
-        // Display toast with the error message
-        toast.error(message, {
+    const result = formSchema.safeParse(data);
+    if (!result.success) {
+      const errors = result.error.errors;
+      errors.forEach(error => {
+        toast.error(error.message, {
           position: "bottom-right",
           duration: 3000
         });
-      }
+      });
       return;
     }
     
@@ -355,13 +345,28 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Textarea 
-                            className="h-16 md:h-20 w-full" 
-                            placeholder="Description" 
-                            {...field} 
-                          />
+                          <div className="relative">
+                            <Textarea 
+                              className="h-16 md:h-20 w-full" 
+                              placeholder="Description (minimum 20 characters)" 
+                              {...field}
+                              onKeyUp={(e) => {
+                                const target = e.target as HTMLTextAreaElement;
+                                if (target.value.length < 20) {
+                                  toast.error("Description must be at least 20 characters", {
+                                    position: "bottom-right",
+                                    duration: 2000,
+                                    id: "description-length" // Prevent duplicate toasts
+                                  });
+                                }
+                              }}
+                            />
+                            <div className="absolute bottom-2 right-2 text-xs text-gray-500">
+                              {field.value.length}/500
+                            </div>
+                          </div>
                         </FormControl>
-                        <FormMessage className="hidden" />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -371,11 +376,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
                 <div className="flex flex-col gap-6 w-full md:w-2/5 mt-6 md:mt-0">
                   <div className="w-full h-full">
                     <div className="border border-input rounded-md overflow-hidden bg-background relative h-full min-h-[150px]">
-                      <ImageUploader 
-                        onUploadComplete={handleImageUpload}
-                        onError={handleImageError}
-                        className="custom-uploader"
-                      />
                       <input
                         type="file"
                         id="article-image-upload"
@@ -384,7 +384,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
                         onChange={handleFileSelect}
                       />
                       
-                      {/* Custom overlay with Arabic text - only show when no image is selected */}
+                      {/* Custom overlay with text - only show when no image is selected */}
                       {!uploadedImage && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
                           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" className="text-gray-400 mb-2">
@@ -430,49 +430,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({
                         </div>
                       )}
                     </div>
-                    
-                    <style jsx global>{`
-                      .custom-uploader > div {
-                        border: none !important;
-                        border-radius: 0 !important;
-                        padding: 0.5rem !important;
-                        height: 100% !important;
-                      }
-                      .custom-uploader label {
-                        display: none !important;
-                      }
-                      .custom-uploader > div {
-                        cursor: pointer;
-                      }
-                      /* Hide the original text and elements when no preview */
-                      .custom-uploader p, 
-                      .custom-uploader svg {
-                        display: none !important;
-                      }
-                      /* Make the uploader div transparent when no preview */
-                      .custom-uploader > div > div:empty {
-                        min-height: 100% !important;
-                        opacity: 0;
-                      }
-                      /* Hide the preview image from the uploader component - we will show our own preview */
-                      .custom-uploader img {
-                        display: none !important;
-                      }
-                      /* Hide the buttons from view but keep them in the DOM for functionality */
-                      .custom-uploader button {
-                        opacity: 0 !important;
-                        position: absolute !important;
-                        pointer-events: auto !important;
-                      }
-                      /* Auto-upload styling */
-                      .custom-uploader > div > div:last-child {
-                        height: 0 !important;
-                        overflow: hidden !important;
-                        pointer-events: auto !important;
-                        position: absolute !important;
-                        opacity: 0 !important;
-                      }
-                    `}</style>
                     
                     <FormField
                       control={form.control}

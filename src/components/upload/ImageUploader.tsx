@@ -13,7 +13,7 @@ export type ImageUploaderProps = {
   allowedTypes?: string[];
 };
 
-export default function ImageUploader({ 
+export default function sImageUploader({ 
   onUploadComplete, 
   onError,
   className = '',
