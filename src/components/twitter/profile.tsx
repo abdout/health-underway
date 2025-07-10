@@ -83,9 +83,10 @@ export default async function TwitterProfile({ doctor }: { doctor?: any } = {}) 
       currentOccupation: paediatricData.currentPosition,
       currentLocality: paediatricData.originalHomeTownOrVillage,
       institution: paediatricData.universityOfPrimaryGraduation,
-      qualifications: paediatricData.qualifications,
-      paediatricsSubspecialty: paediatricData.paediatricsSubspecialty,
-      ...paediatricData,
+      qualifications: Array.isArray(paediatricData.qualifications) ? paediatricData.qualifications.join(', ') : '',
+      paediatricsSubspecialty: Array.isArray(paediatricData.paediatricsSubspecialty) ? paediatricData.paediatricsSubspecialty.join(', ') : '',
+      email: paediatricData.personalEmail,
+      // Add more AboutUserData fields as needed
     } : null;
     const imgResult = await getUserImageAndCover();
     image = imgResult.image || (Array.isArray(paediatricData?.personalPhotos) && paediatricData.personalPhotos.length ? paediatricData.personalPhotos[0] : '/baby.jpg');
