@@ -128,11 +128,11 @@ export default async function TwitterProfile({ doctor }: { doctor?: any } = {}) 
               />
             </div>
           </div>
-          <Link href="/dashboard/profile/edit">
+          {/* <Link href="/dashboard/profile/edit">
             <Button variant="outline" size='sm' className="md:mt-4 mt-3 rounded-full border border-primary">
               Edit Profile
             </Button>
-          </Link>
+          </Link> */}
         </div>
 
         {/* Profile Info */}
