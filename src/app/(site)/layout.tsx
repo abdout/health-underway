@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { SiteFooter } from "@/components/template/footer/site-footer";
   import { SiteHeader } from "@/components/template/header/site-header";
+import ApplicationStatusBanner from "@/components/paediatric/ApplicationStatusBanner";
 // import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
       className="relative flex min-h-screen flex-col bg-background text-foreground antialiased"
       data-slot="site-layout"
     >
+      <ApplicationStatusBanner />
       {/* Sticky navigation container with horizontal centering */}
       <div className="sticky top-4 z-50 max-w-7xl mx-auto mt-4 bg-white rounded-2xl shadow-sm border">
         <div className="flex justify-center items-center w-full px-4 py-2">

@@ -12,7 +12,7 @@ export default function ContactInfo() {
             {/* Left Column - Main Heading */}
             <div>
               <h2 className="text-[#000000] text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
-                We are always happy to assist you
+                We are always happy to assist
               </h2>
             </div>
   

@@ -33,6 +33,18 @@ export interface User {
   onboardingStatus?: string | null
   applicationStatus?: string | null
   role?: string | null
+  university?: string | null
+  universityCountry?: string | null
+  institution?: string | null
+  position?: string | null
+  workCountry?: string | null
+  locality?: string | null
+  country?: string | null
+  currentPosition?: string | null
+  countryOfWork?: string | null
+  qualifications?: string[] | null
+  stageOfCareer?: string | null
+  universityOfPrimaryGraduation?: string | null
 }
 
 interface ActionsProps {
@@ -204,59 +216,34 @@ export const columns = (
     }
   },
   {
-    accessorKey: 'onboardingStatus',
-    header: () => <div className="text-left">Application</div>,
-    cell: ({ row }) => {
-      const status = row.original.onboardingStatus;
-      
-      return status ? (
-        status === "COMPLETED"
-          ? "Completed"
-          : "Incomplete"
-      ) : null;
-    }
+    accessorKey: 'universityCountry',
+    header: () => <div className="text-left">University Country</div>,
+    cell: ({ row }) => row.original.universityCountry || "-"
   },
   {
-    accessorKey: 'applicationStatus',
-    header: () => <div className="text-left">Status</div>,
-    cell: ({ row }) => {
-      const status = row.original.applicationStatus;
-      
-      return status ? (
-        status === "APPROVED"
-          ? "Approved"
-          : status === "REJECTED"
-          ? "Rejected"
-          : status === "PENDING"
-          ? "Pending"
-          : status
-      ) : null;
-    }
+    accessorKey: 'workCountry',
+    header: () => <div className="text-left">Work Country</div>,
+    cell: ({ row }) => row.original.workCountry || "-"
   },
   {
-    accessorKey: 'role',
-    header: () => <div className="text-left">Role</div>,
-    cell: ({ row }) => {
-      const role = row.original.role;
-      
-      return role ? (
-        role === "ADMIN"
-          ? "Admin"
-          : role === "DEVELOPER"
-          ? "Developer"
-          : role === "USER"
-          ? "User"
-          : role === "MEMBER"
-          ? "Member"
-          : role === "MEMBERSHIP"
-          ? "Membership"
-          : role === "FINANCE"
-          ? "Finance"
-          : role === "CONTENT"
-          ? "Content"
-          : role
-      ) : null;
-    }
+    accessorKey: 'countryOfWork',
+    header: () => <div className="text-left">Country</div>,
+    cell: ({ row }) => row.original.countryOfWork || "-"
+  },
+  {
+    accessorKey: 'qualifications',
+    header: () => <div className="text-left">Qualifications</div>,
+    cell: ({ row }) => Array.isArray(row.original.qualifications) ? row.original.qualifications.join(', ') : (row.original.qualifications || "-")
+  },
+  {
+    accessorKey: 'stageOfCareer',
+    header: () => <div className="text-left">Position</div>,
+    cell: ({ row }) => row.original.stageOfCareer || "-"
+  },
+  {
+    accessorKey: 'universityOfPrimaryGraduation',
+    header: () => <div className="text-left">University</div>,
+    cell: ({ row }) => row.original.universityOfPrimaryGraduation || "-"
   },
   {
     id: 'actions',

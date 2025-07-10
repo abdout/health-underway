@@ -10,7 +10,7 @@ export default async function LabPage() {
   if (!session) {
     redirect("/login?callbackUrl=/dashboard/membership");
   }
-  // Fetch all users from the database, including doctor profile data
+  // Fetch all users from the database, including paediatric doctor profile data
   const usersRaw = await db.user.findMany({
     select: {
       id: true,
@@ -23,6 +23,13 @@ export default async function LabPage() {
           onboardingStatus: true,
           applicationStatus: true,
           fullNameEnglish: true,
+          universityOfPrimaryGraduation: true,
+          countryOfUniversityOfPrimaryGraduation: true,
+          currentInstitution: true,
+          currentPosition: true,
+          countryOfWork: true,
+          currentLocality: true,
+          currentCountry: true,
         },
       },
     },
@@ -34,6 +41,13 @@ export default async function LabPage() {
     name: u.name ?? u.paediatricDoctor?.fullNameEnglish ?? null,
     onboardingStatus: u.paediatricDoctor?.onboardingStatus,
     applicationStatus: u.paediatricDoctor?.applicationStatus,
+    university: u.paediatricDoctor?.universityOfPrimaryGraduation ?? null,
+    universityCountry: u.paediatricDoctor?.countryOfUniversityOfPrimaryGraduation ?? null,
+    institution: u.paediatricDoctor?.currentInstitution ?? null,
+    position: u.paediatricDoctor?.currentPosition ?? null,
+    workCountry: u.paediatricDoctor?.countryOfWork ?? null,
+    locality: u.paediatricDoctor?.currentLocality ?? null,
+    country: u.paediatricDoctor?.currentCountry ?? null,
   }));
 
   return (
