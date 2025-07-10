@@ -146,12 +146,12 @@ export function SiteHeader() {
                       <div className="flex items-center">
                         {user ? (
                           <LogoutButton>
-                            <span className="dark bg-background/80 hover:bg-background/70 p-2 text-foreground text-sm font-medium rounded-md hover:rounded-full ml-2 transition-colors">Logout</span>
+                            <span className=" p-2 text-foreground text-sm font-medium rounded-md hover:rounded-full ml-2 transition-colors">Logout</span>
                           </LogoutButton>
                         ) : (
                           <NavigationMenuLink asChild className={navigationMenuTriggerStyle() + ' ml-2'}>
                             <Link href="/login">
-                              <span className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-md transition-colors">Login</span>
+                              <span className=" text-gray-foreground px-3 py-1 rounded-md transition-colors">Login</span>
                             </Link>
                           </NavigationMenuLink>
                         )}

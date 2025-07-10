@@ -23,7 +23,7 @@ export default function Newsletter() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-white/10 text-white placeholder:text-white/70 h-12 px-4 rounded-lg sm:rounded-l-lg sm:rounded-r-none border border-white/20 sm:border-r-0 flex-1 min-w-0 focus:ring-0 focus:ring-offset-0"
+                className="bg-white/10 text-white placeholder:text-white/70 h-full md:h-12 px-4 rounded-lg sm:rounded-l-lg sm:rounded-r-none border border-white/20 sm:border-r-0 flex-1 min-w-0 focus:ring-0 focus:ring-offset-0"
               />
               <Button type="submit" className="bg-[#ffffff] text-[#e8563f] hover:bg-[#ececec] font-semibold h-12 px-4 rounded-lg sm:rounded-r-lg sm:rounded-l-none whitespace-nowrap w-full sm:w-auto mt-2 sm:mt-0">
                 Subscribe

@@ -31,7 +31,7 @@ export function Hero() {
                             Sudanese  <br />
                             Pediatricians
                         </h1>
-                        <p className="max-w-sm md:max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+                        <p className="px-4 md:px-0 max-w-sm md:max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8">
                         Join the community of Sudanese paediatric care—connect, share, and inspire healing. from all over the world.
                             
                         </p>
