@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function ProfilePage({ params }: any) {
   const session = await auth();
   if (!session) {
     redirect("/login?callbackUrl=/dashboard/profile");

@@ -4,8 +4,7 @@ import { ProfileAbout, ProfileActivities } from "@/components/platform/profile";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
-// Use explicit type for params
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+export default async function ProfilePage({ params }: any) {
   const session = await auth();
   const { id } = params;
   if (!session) {
@@ -55,4 +54,4 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       />
     </div>
   );
-}
+} 
