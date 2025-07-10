@@ -22,9 +22,9 @@ export default function Home() {
             <App />
             
             <Newsletter />
-            <div className='mr-10 -ml-10'>
+           
             <Faqs />
-            </div>
+            
             <div className='py-20 md:scale-150 flex items-center justify-center max-w-2xl mx-auto'>
                 <SocialIcons />
             </div>
