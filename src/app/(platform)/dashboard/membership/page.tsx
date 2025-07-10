@@ -46,7 +46,6 @@ export default async function LabPage() {
     position: u.paediatricDoctor?.currentPosition ?? null,
     workCountry: u.paediatricDoctor?.countryOfWork ?? null,
     locality: u.paediatricDoctor?.originalHomeTownOrVillage ?? null,
-    country: u.paediatricDoctor?.currentCountry ?? null,
   }));
 
   return (
