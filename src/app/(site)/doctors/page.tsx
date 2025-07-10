@@ -24,7 +24,11 @@ export default async function ApprovedMembersPage() {
         select: {
           applicationStatus: true,
           onboardingStatus: true,
+          currentPosition: true,
           countryOfWork: true,
+          qualifications: true,
+          stageOfCareer: true,
+          universityOfPrimaryGraduation: true,
         },
       },
     },
@@ -35,10 +39,15 @@ export default async function ApprovedMembersPage() {
     ...u,
     applicationStatus: u.paediatricDoctor?.applicationStatus,
     onboardingStatus: u.paediatricDoctor?.onboardingStatus,
+    currentPosition: u.paediatricDoctor?.currentPosition,
+    countryOfWork: u.paediatricDoctor?.countryOfWork,
+    qualifications: u.paediatricDoctor?.qualifications,
+    stageOfCareer: u.paediatricDoctor?.stageOfCareer,
+    universityOfPrimaryGraduation: u.paediatricDoctor?.universityOfPrimaryGraduation,
   }));
 
   return (
-    <div className="container">
+    <div className="container items-center justify-center py-10 mx-auto">
       <h2>Doctors</h2>
       <AllUsers users={flattened} currentUserId={currentUserId ?? ""} />
     </div>

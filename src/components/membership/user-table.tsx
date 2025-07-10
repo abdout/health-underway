@@ -386,7 +386,7 @@ export function UserTable<TData, TValue>({
                     
                     const user = row.original as any;
                     if (user?.id) {
-                      router.push(`/dashboard/profile/${user.id}`);
+                      router.push(`/doctors/${user.id}`);
                     }
                   }}
                 >

@@ -24,11 +24,11 @@ export function SiteFooter() {
         <div className=" mx-auto px-4 py-16 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
             <h1 className="font-heading font-black text-3xl md:text-4xl lg:text-5xl tracking-tight text-white">
-              Start your healing
+              Join the community
             </h1>
-            <p className="text-background text-2xl">with Shifa</p>
+            <p className="text-background text-2xl">and get access to the latest news and updates</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ExpandButton variant="white" className="group flex items-center">
+              <ExpandButton variant="white" className="group flex items-center" href="/paediatric">
                 <span className="order-1 transition-all duration-300 group-hover:order-2">
                   Get started
                 </span>

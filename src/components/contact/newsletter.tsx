@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 
 export default function Newsletter() {
   return (
-    <div className="rounded-2xl bg-[#e8563f] px-8 py-10 lg:px-16 ">
+    <div className="rounded-2xl bg-[#e8563f] px-8 py-10 lg:px-16 mr-10">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
           {/* Left side - Text content */}

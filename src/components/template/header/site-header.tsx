@@ -146,7 +146,7 @@ export function SiteHeader() {
                       <div className="flex items-center">
                         {user ? (
                           <LogoutButton>
-                            <span className="dark bg-background hover:bg-background/90 p-2 text-foreground text-sm font-medium rounded-md hover:rounded-full ml-2 transition-colors">Logout</span>
+                            <span className="dark bg-background/80 hover:bg-background/70 p-2 text-foreground text-sm font-medium rounded-md hover:rounded-full ml-2 transition-colors">Logout</span>
                           </LogoutButton>
                         ) : (
                           <NavigationMenuLink asChild className={navigationMenuTriggerStyle() + ' ml-2'}>

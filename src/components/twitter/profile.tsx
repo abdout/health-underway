@@ -22,7 +22,14 @@ function extractDomainName(url: string): string {
   }
 }
 
-async function getUserImageAndCover() {
+async function getUserImageAndCover(userId?: string, doctor?: any) {
+  if (doctor) {
+    // If doctor prop is provided, use its image fields if available
+    return {
+      image: doctor.image || null,
+      cover: null // You can extend this if you add cover to doctor
+    };
+  }
   const user = await currentUser();
   if (!user?.id) return { image: null, cover: null };
 
@@ -49,20 +56,40 @@ async function getUserImageAndCover() {
   };
 }
 
-export default async function TwitterProfile() {
-  const { data: paediatricData } = await fetchPaediatricDoctorForReview();
-  const userData = paediatricData ? {
-    name: paediatricData.fullNameEnglish || paediatricData.fullNameArabic,
-    currentOccupation: paediatricData.currentPosition,
-    currentLocality: paediatricData.originalHomeTownOrVillage,
-    link: '',
-    ...paediatricData,
-  } : null;
+export default async function TwitterProfile({ doctor }: { doctor?: any } = {}) {
+  let userData: AboutUserData | null = null;
+  let image: string | null = null;
+  let cover: string | null = null;
+
+  if (doctor) {
+    // Build userData from doctor prop
+    userData = {
+      name: doctor.name,
+      email: doctor.email,
+      currentOccupation: doctor.currentPosition,
+      currentLocality: doctor.countryOfWork,
+      institution: doctor.universityOfPrimaryGraduation,
+      // Add more mappings as needed
+    };
+    const imgResult = await getUserImageAndCover(doctor.id, doctor);
+    image = imgResult.image;
+    cover = imgResult.cover;
+  } else {
+    const { data: paediatricData } = await fetchPaediatricDoctorForReview();
+    userData = paediatricData ? {
+      name: paediatricData.fullNameEnglish || paediatricData.fullNameArabic,
+      currentOccupation: paediatricData.currentPosition,
+      currentLocality: paediatricData.originalHomeTownOrVillage,
+      link: '',
+      ...paediatricData,
+    } : null;
+    const imgResult = await getUserImageAndCover();
+    image = imgResult.image || (Array.isArray(paediatricData?.personalPhotos) && paediatricData.personalPhotos.length ? paediatricData.personalPhotos[0] : "/placeholder.svg?height=128&width=128");
+    cover = imgResult.cover;
+  }
+
   const name = userData?.name || "Unknown";
   const occupation = userData?.currentOccupation || "Unknown";
-
-  const { image: userImage, cover } = await getUserImageAndCover();
-  const image = userImage || (Array.isArray(paediatricData?.personalPhotos) && paediatricData.personalPhotos.length ? paediatricData.personalPhotos[0] : "/placeholder.svg?height=128&width=128");
 
   return (
     <div className="md:max-w-2xl md:mx-20 overflow-hidden">
@@ -87,7 +114,7 @@ export default async function TwitterProfile() {
           <div className="relative -mt-12 md:-mt-16 md:h-32 md:w-32 h-24 w-24 overflow-hidden">
             <div className="relative h-full w-full md:border-4 border-[3px] border-background rounded-full overflow-hidden">
               <Image
-                src={image}
+                src={image || "/placeholder.svg?height=128&width=128"}
                 alt="Profile picture"
                 fill
                 sizes="128px"
@@ -132,17 +159,6 @@ export default async function TwitterProfile() {
               )}
             </div>
           </div>
-
-          {/* <div className="flex gap-5 py-3">
-            <div className="flex gap-1">
-              <span className="font-bold text-[#0f1419]">569</span>
-              <span className="text-[#5b7083]">Following</span>
-            </div>
-            <div className="flex gap-1">
-              <span className="font-bold text-[#0f1419]">72</span>
-              <span className="text-[#5b7083]">Followers</span>
-            </div>
-          </div> */}
         </div>
       </div>
 
