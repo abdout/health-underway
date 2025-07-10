@@ -50,7 +50,11 @@ async function main() {
           slug: "understanding-pediatric-care",
           description: "A comprehensive guide to modern pediatric care practices and their importance in child development. Learn about the latest approaches and methodologies.",
           image: "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b",
-          body: "Pediatric care is a specialized branch of medicine that focuses on the health and medical care of infants, children, and adolescents. The field has evolved significantly over the years, incorporating new technologies and methodologies to provide better care for young patients...",
+          body: `Pediatric care is a specialized branch of medicine that focuses on the health and medical care of infants, children, and adolescents. Over the decades, pediatricians have played a crucial role in reducing child mortality, improving vaccination rates, and promoting healthy development.
+
+Modern pediatric care involves a multidisciplinary approach, including preventive care, early diagnosis, and family education. Pediatricians work closely with parents and caregivers to ensure children receive the best possible start in life. The field has evolved significantly, incorporating new technologies, evidence-based practices, and a holistic view of child health.
+
+From routine checkups to managing complex medical conditions, pediatricians are dedicated to supporting the physical, emotional, and social well-being of children. Their work is vital in shaping healthier generations and building stronger communities.`,
           author: "Dr. Sarah Smith",
         },
       }),
@@ -60,7 +64,11 @@ async function main() {
           slug: "childhood-vaccination-guide",
           description: "Essential information about childhood vaccinations, their importance, and recommended schedules. Help protect your child's health with proper immunization.",
           image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289",
-          body: "Vaccinations are one of the most effective preventive health measures in modern medicine. They protect children from serious diseases and help prevent the spread of infections in communities...",
+          body: `Vaccinations are one of the most effective preventive health measures in modern medicine. They protect children from serious diseases such as measles, polio, and whooping cough, and help prevent the spread of infections in communities.
+
+The recommended vaccination schedule is designed to provide immunity at the right age, ensuring maximum protection. Pediatricians and public health experts continually review and update these schedules based on the latest scientific evidence.
+
+Parents play a vital role in keeping vaccination records up to date and ensuring their children receive all recommended immunizations. By doing so, they contribute to the health of their families and the broader community.`,
           author: "Dr. John Doe",
         },
       }),
@@ -70,8 +78,111 @@ async function main() {
           slug: "nutrition-for-growing-children",
           description: "Learn about proper nutrition for children at different stages of growth. Get expert advice on balanced diets and healthy eating habits.",
           image: "https://images.unsplash.com/photo-1490818387583-1baba5e638af",
-          body: "Proper nutrition is crucial for children's growth and development. A balanced diet provides the necessary nutrients for physical growth, cognitive development, and overall health...",
+          body: `Proper nutrition is crucial for children's growth and development. A balanced diet provides the necessary nutrients for physical growth, cognitive development, and overall health. Pediatricians recommend a variety of foods, including fruits, vegetables, whole grains, lean proteins, and healthy fats.
+
+Nutritional needs change as children grow. Infants require breast milk or formula, while toddlers and older children benefit from a diverse diet that supports their active lifestyles. It's important to limit sugary snacks and beverages, and to encourage regular meal times.
+
+Healthy eating habits established in childhood often last a lifetime. Parents and caregivers can foster these habits by modeling good choices and involving children in meal planning and preparation.`,
           author: "Dr. Emily Brown",
+        },
+      }),
+      // --- New Sudanese Paediatric Doctors Articles ---
+      prisma.article.create({
+        data: {
+          title: "Sudanese Paediatric Doctors: Who Are We?",
+          slug: "sudanese-paediatric-doctors-who-are-we",
+          description: "An introduction to the Sudanese Paediatric Doctors group, their mission, and vision.",
+          image: "https://images.unsplash.com/photo-1503437313881-503a91226419", // new Unsplash image
+          body: `The Sudanese Paediatric Doctors group is a collective of dedicated professionals committed to advancing child health in Sudan and beyond. Our mission is to provide the highest standard of care, promote research and education, and support the next generation of pediatricians.
+
+We believe in collaboration, compassion, and continuous learning. Our members are involved in clinical practice, academic research, and community outreach. Together, we strive to address the unique health challenges facing Sudanese children and to advocate for policies that improve pediatric care nationwide.
+
+Whether you are a parent, a healthcare provider, or a fellow pediatrician, we invite you to connect with us and join our efforts to make a lasting impact.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "Contact Details for Sudanese Paediatricians",
+          slug: "contact-details-sudanese-paediatricians",
+          description: "How to reach Sudanese Paediatric Doctors and access their database.",
+          image: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb",
+          body: `For inquiries, collaborations, or support, you can reach the Sudanese Paediatric Doctors group through our official channels. We maintain an up-to-date database of pediatricians, making it easy for families and professionals to find the right expertise.
+
+Our contact details are available on our website, and we encourage you to connect with us for information about services, events, and opportunities. The Pediatrician’s Database is a valuable resource for networking and professional development.
+
+We are committed to transparency and accessibility, ensuring that every child in Sudan has access to quality pediatric care.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "Pediatricians’ Database: Sudanese Paediatricians",
+          slug: "pediatricians-database-sudanese-paediatricians",
+          description: "Access the alphabetical list of all Sudanese Paediatricians, with links to photos and CVs.",
+          image: "https://images.unsplash.com/photo-1464983953574-0892a716854b",
+          body: `The Pediatricians’ Database is an extensive, regularly updated list of Sudanese paediatricians. Each entry includes the doctor’s name, qualifications, and contact information, with links to professional photos and CVs where available.
+
+This resource is designed to foster collaboration, mentorship, and knowledge sharing within the pediatric community. It also helps families and institutions find specialists for consultations, referrals, and second opinions.
+
+We invite all Sudanese paediatricians to contribute to the database and keep their profiles current, ensuring the highest level of service and connectivity.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "History of Paediatrics in Sudan",
+          slug: "history-of-paediatrics-in-sudan",
+          description: "Explore the history of paediatrics in Sudan, from its origins to the present day.",
+          image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+          body: `The history of paediatrics in Sudan is rich and inspiring. From the early days of medical practice to the establishment of specialized pediatric departments, Sudanese doctors have made significant contributions to child health.
+
+Key milestones include the founding of the first pediatric clinics, the introduction of vaccination programs, and the training of local specialists. Over the years, Sudan has produced renowned pediatricians who have shaped the field both nationally and internationally.
+
+This article highlights the achievements, challenges, and ongoing efforts to improve pediatric care in Sudan, celebrating the legacy of those who paved the way.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "The First Pioneers before Sudan Independence",
+          slug: "first-pioneers-before-sudan-independence",
+          description: "Meet the first pioneers of paediatrics in Sudan before independence, with links to photos and biographies.",
+          image: "https://images.unsplash.com/photo-1465101178521-c1a9136a1408", // new Unsplash image
+          body: `Before Sudan gained independence, a group of visionary doctors laid the foundation for pediatric medicine in the country. These pioneers were dedicated to serving children and families, often working in challenging conditions with limited resources.
+
+Their commitment to education, research, and patient care set the standard for future generations. Many of their stories are documented in biographies and archives, with photos and personal accounts that inspire today’s practitioners.
+
+We honor their legacy and encourage readers to explore the lives and achievements of these remarkable individuals.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "Sudanese Doctors in the World",
+          slug: "sudanese-doctors-in-the-world",
+          description: "Discover Sudanese paediatric doctors making an impact around the globe, with links to their stories and achievements.",
+          image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca",
+          body: `Sudanese paediatric doctors have made a significant impact around the world, contributing to healthcare systems in Africa, the Middle East, Europe, North America, and beyond. Many have taken on leadership roles, conducted groundbreaking research, and provided care to diverse populations.
+
+This global network of Sudanese doctors is a source of pride and inspiration. Their achievements demonstrate the strength of Sudan’s medical education and the resilience of its people.
+
+Through international collaborations and knowledge exchange, Sudanese paediatricians continue to advance the field and support their colleagues at home and abroad.`,
+          author: "Sudanese Paediatric Doctors Team",
+        },
+      }),
+      prisma.article.create({
+        data: {
+          title: "Sudan Association of Paediatrics (SAP)",
+          slug: "sudan-association-of-paediatrics-sap",
+          description: "Learn about the Sudan Association of Paediatrics, its mission, and activities.",
+          image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+          body: `The Sudan Association of Paediatrics (SAP) is the leading professional organization for pediatricians in Sudan. SAP is dedicated to promoting excellence in pediatric care, supporting research and education, and advocating for the health and well-being of children.
+
+SAP organizes conferences, workshops, and training programs, bringing together experts from across the country and around the world. The association also works closely with government agencies and international partners to improve healthcare policies and access.
+
+Membership in SAP is open to all pediatricians and those interested in child health. Together, we are building a brighter future for Sudan’s children.`,
+          author: "Sudanese Paediatric Doctors Team",
         },
       }),
     ]);

@@ -127,8 +127,8 @@ export default function AllArticlesPage() {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto px-4 py-4">
+      <div className="flex flex-col mb-4">
         <SiteHeading 
           title="Articles" 
           description="Latest articles and updates from our medical team" 

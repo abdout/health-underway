@@ -85,17 +85,17 @@ export default function ArticlePage() {
     <div className="container mx-auto md:py-10 py-4 md:px-4 px-0">
       <div className="max-w-3xl mx-auto">
         <Link 
-          href="/article"
+          href="/blog"
           className={cn(
             buttonVariants({ variant: "ghost", size: "sm" }),
-            "mb-6"
+            "mb-6 text-foreground"
           )}
         >
-          → الرجوع
+          ← Back
         </Link>
         
         <article>
-          <div className="relative md:h-80 h-48 w-full md:mb-8 mb-4 rounded-xl overflow-hidden">
+          <div className="relative md:h-80 h-32 w-full md:mb-8 mb-4 rounded-xl overflow-hidden">
             <Image
               src={article.image}
               alt={article.title}
@@ -107,8 +107,8 @@ export default function ArticlePage() {
             />
           </div>
           
-          <header className="mb-8 text-right">
-            <h1>{article.title}</h1>
+          <header className="mb-8 text-left">
+            <h3>{article.title}</h3>
             <div className="flex items-center text-sm text-gray-600 gap-2">
               <span>{article.author}</span>
               <span className="text-lg font-bold mx-1">•</span>
@@ -116,12 +116,12 @@ export default function ArticlePage() {
             </div>
           </header>
           
-          <div className="bg-gray-100 dark:bg-neutral-900 md:p-6 p-4 rounded-lg md:mb-6 mb-4 rtl">
-            <p className="text-right">{article.description}</p>
+          <div className="bg-white dark:bg-neutral-900 md:p-6 p-4 rounded-lg md:mb-6 mb-4">
+            <p className="text-left">{article.description}</p>
           </div>
           
-          <div className="prose max-w-none rtl">
-            <p className="text-right">
+          <div className="prose max-w-none">
+            <p className="text-left">
               {article.body}
             </p>
           </div>

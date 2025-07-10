@@ -19,15 +19,14 @@ const SubmitButton = ({ isLoading, className, children, type = "submit", onClick
       onClick={onClick}
     >
       {isLoading ? (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center">
           <Image
             src="/assets/icons/loader.svg"
             alt="loader"
-            width={24}
-            height={24}
+            width={16}
+            height={16}
             className="animate-spin"
           />
-          Loading...
         </div>
       ) : (
         children

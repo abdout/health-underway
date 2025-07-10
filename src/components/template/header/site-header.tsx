@@ -72,7 +72,7 @@ export function SiteHeader() {
             <div className="hidden md:block">
               <NavigationMenu viewport={false}>
                 <NavigationMenuList>
-                  <NavigationMenuItem>
+                  {/* <NavigationMenuItem>
                     <NavigationMenuTrigger>Patient</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -118,16 +118,25 @@ export function SiteHeader() {
                         ))}
                       </ul>
                     </NavigationMenuContent>
-                  </NavigationMenuItem>
+                  </NavigationMenuItem> */}
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link href="/departments">Department</Link>
+                      <Link href="/about">About</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link href="/doctors">Doctor</Link>
+                      <Link href="/contact">Contact</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link href="/dashboard">Platform</Link>
+                      <Link href="/doctors">Doctors</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/papers">Papers</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/blog">Blog</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/platform">Platform</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
