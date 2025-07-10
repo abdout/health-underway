@@ -47,7 +47,9 @@ const page = async ({ params }: { params: { id: string } }) => {
     universityOfPrimaryGraduation: user.paediatricDoctor?.universityOfPrimaryGraduation,
   };
   return (
-    <TwitterProfile doctor={doctorData} />
+    <div className='w-full flex py-10 items-center justify-center'> 
+      <TwitterProfile doctor={doctorData} />
+    </div>
   )
 }
 

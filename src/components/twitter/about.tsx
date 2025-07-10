@@ -45,6 +45,8 @@ export interface AboutUserData {
   bachelorInstitution?: string | null;
   bachelorMajor?: string | null;
   bachelorCompletionYear?: string | null;
+  qualifications?: string | null;
+  paediatricsSubspecialty?: string | null;
 }
 
 export default function About({ userData }: { userData: AboutUserData | null }) {
