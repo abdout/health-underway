@@ -4,11 +4,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-interface PageProps {
-  params: { id: string }
-}
-
-const Page = async ({ params }: PageProps) => {
+export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
   if (!session) {
     redirect("/login?callbackUrl=/dashboard/profile");
@@ -54,7 +50,5 @@ const Page = async ({ params }: PageProps) => {
     <TwitterProfile doctor={doctorData} />
   )
 }
-
-export default Page;
 
 export const dynamic = 'force-dynamic';
