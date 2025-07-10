@@ -97,7 +97,7 @@ export default async function TwitterProfile({ doctor }: { doctor?: any } = {}) 
   const occupation = userData?.currentOccupation || "Unknown";
 
   return (
-    <div className="w-full max-w-2xl overflow-hidden">
+    <div className="w-full max-w-2xl overflow-hidden items-center justify-center mx-auto py-10">
       {/* Banner */}
       <div className="relative md:h-48 h-32 w-full bg-yellow-400">
         {cover && (
