@@ -28,7 +28,6 @@ export default async function LabPage() {
           currentInstitution: true,
           currentPosition: true,
           countryOfWork: true,
-          currentCountry: true,
           originalHomeTownOrVillage: true,
         },
       },
