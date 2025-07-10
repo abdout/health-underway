@@ -18,7 +18,7 @@ function TelegramIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function SocialIcons() {
   return (
-    <div className="flex flex-row gap-6 items-center justify-center">
+    <div className="flex flex-wrap gap-4 sm:gap-6 items-center justify-center py-4 w-full max-w-xs sm:max-w-none mx-auto">
       {/* Facebook */}
       <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256" className="hover:scale-110 transition-transform">
