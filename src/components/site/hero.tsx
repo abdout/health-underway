@@ -27,7 +27,7 @@ export function Hero() {
             <div className="relative z-10 flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-12 mt-20 md:mt-0">
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="flex flex-col items-center gap-4 text-center">
-                        <h1 className="font-heading font-black text-5xl sm:text-5xl md:text-6xl lg:text-[80px]">
+                        <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-[80px]">
                             Sudanese  <br />
                             Pediatricians
                         </h1>
