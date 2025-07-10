@@ -4,7 +4,11 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-const page = async ({ params }: { params: { id: string } }) => {
+interface PageProps {
+  params: { id: string }
+}
+
+const Page = async ({ params }: PageProps) => {
   const session = await auth();
   if (!session) {
     redirect("/login?callbackUrl=/dashboard/profile");
@@ -47,12 +51,10 @@ const page = async ({ params }: { params: { id: string } }) => {
     universityOfPrimaryGraduation: user.paediatricDoctor?.universityOfPrimaryGraduation,
   };
   return (
-    <div className='w-full flex py-10 items-center justify-center'> 
-      <TwitterProfile doctor={doctorData} />
-    </div>
+    <TwitterProfile doctor={doctorData} />
   )
 }
 
-export default page
+export default Page;
 
 export const dynamic = 'force-dynamic';
