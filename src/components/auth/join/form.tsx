@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -61,7 +62,9 @@ export const RegisterForm = ({
       <Card className="border-none shadow-none">
         <CardHeader className="text-center" />
         <CardContent>
-          <Social />
+          <Suspense fallback={<div className="h-10" />}> 
+            <Social />
+          </Suspense>
         </CardContent>
         <CardContent>
           <Form {...form}>

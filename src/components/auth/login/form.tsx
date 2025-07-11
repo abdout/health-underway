@@ -29,6 +29,7 @@ import { login } from "./action";
 import { FormError } from "../error/form-error";
 import { FormSuccess } from "../form-success";
 import { Social } from "../social";
+import { Suspense } from "react";
 
 export const LoginForm = ({
   className,
@@ -86,7 +87,9 @@ export const LoginForm = ({
           </CardDescription> */}
         </CardHeader>
         <CardContent>
-          <Social />
+          <Suspense fallback={<div className="h-10" />}> 
+            <Social />
+          </Suspense>
         </CardContent>
         <CardContent>
           <Form {...form}>

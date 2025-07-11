@@ -1,8 +1,11 @@
+import { Suspense } from "react";
 import { NewVerificationForm } from "@/components/auth/verification/form";
 
 const NewVerificationPage = () => {
   return ( 
-    <NewVerificationForm />
+    <Suspense fallback={<div className="h-10" />}> 
+      <NewVerificationForm />
+    </Suspense>
    );
 }
  
