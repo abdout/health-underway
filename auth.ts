@@ -63,9 +63,9 @@ export const {
         isNewUser
       });
     },
-    async error(error) {
-      console.error("Auth error event:", error);
-    }
+    // async error(error) {
+    //   console.error("Auth error event:", error);
+    // }  
   },
   callbacks: {
     async signIn({ user, account }) {
