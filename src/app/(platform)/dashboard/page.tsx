@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { auth } from "@/auth";
+import { auth } from "../../../../auth";
 import SiteHeading from '@/components/atom/site-heading';
 import ApplicationStatusBanner from '@/components/paediatric/ApplicationStatusBanner';
 import { redirect } from "next/navigation";

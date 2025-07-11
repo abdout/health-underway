@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "../../../../../auth";
 import { db } from "@/lib/db";
 import SiteHeading from "@/components/atom/site-heading";
 import AllUsers from "@/components/membership/all";
