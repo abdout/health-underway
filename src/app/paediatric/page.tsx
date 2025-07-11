@@ -3,7 +3,7 @@ import PaediatricForm from "@/components/paediatric/form";
 import { getPaediatricDoctor } from "@/components/paediatric/action";
 import type { PaediatricSchema } from "@/components/paediatric/validation";
 import Loading from "@/components/atom/loading";
-import { auth } from "@/auth";
+import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
 
 export default async function PaediatricPage() {

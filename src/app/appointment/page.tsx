@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { auth } from "@/auth";
+import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 
