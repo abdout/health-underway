@@ -1,6 +1,7 @@
 "use client";
 
-import { User, Exit } from "@/components/atom/icon";
+import { FaUser } from "react-icons/fa";
+import { ExitIcon } from "@radix-ui/react-icons"
 
 import {
   DropdownMenu,
@@ -26,14 +27,14 @@ export const UserButton = () => {
         <Avatar>
           <AvatarImage src={user?.image || ""} />
           <AvatarFallback className="bg-black">
-            <User className="text-[#fcfcfc] p-[2px]" />
+            <FaUser className="text-[#fcfcfc] p-[2px]" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
         <LogoutButton>
           <DropdownMenuItem>
-            <Exit className="h-4 w-4 mr-2" />
+            <ExitIcon className="h-4 w-4 mr-2" />
             Logout
           </DropdownMenuItem>
         </LogoutButton>

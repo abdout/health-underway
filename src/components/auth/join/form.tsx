@@ -39,7 +39,7 @@ export const RegisterForm = ({
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      name: "",
     },
   });
 
@@ -75,7 +75,7 @@ export const RegisterForm = ({
               <div className="grid gap-4">
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="name"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
                       <FormControl>
@@ -136,8 +136,8 @@ export const RegisterForm = ({
                 </Button>
               </div>
 
-              <div className="text-center text-sm text-foreground">
-                <Link href="/login" className="text-foreground hover:underline underline-offset-4">
+              <div className="text-center text-sm">
+                <Link href="/auth/login" className="hover:underline underline-offset-4">
                   Already have an account?
                 </Link>
               </div>

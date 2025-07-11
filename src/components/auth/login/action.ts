@@ -9,7 +9,7 @@ import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
 import { getTwoFactorConfirmationByUserId } from "@/components/auth/verification/2f-confirmation";
 import { db } from "@/lib/db";
-import { signIn } from "@/auth";
+import { signIn } from "../../../../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../../routes";
 
 export const login = async (

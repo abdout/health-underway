@@ -2,7 +2,7 @@ import * as z from "zod";
 import { UserRole } from "@prisma/client";
 
 export const SettingsSchema = z.object({
-  username: z.optional(z.string()),
+  name: z.optional(z.string()),
   isTwoFactorEnabled: z.optional(z.boolean()),
   role: z.enum([UserRole.ADMIN, UserRole.USER]),
   email: z.optional(z.string().email()),
@@ -59,7 +59,7 @@ export const RegisterSchema = z.object({
   password: z.string().min(6, {
     message: "Minimum 6 characters required",
   }),
-  username: z.string().min(1, {
-    message: "Username is required",
+  name: z.string().min(1, {
+    message: "Name is required",
   }),
 });
