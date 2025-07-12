@@ -19,7 +19,7 @@ export default function Home() {
             {/* <FeatureCards /> */}
             <FeaturedArticles />
             
-            <App />
+            {/* <App /> */}
             
             <Newsletter />
            
