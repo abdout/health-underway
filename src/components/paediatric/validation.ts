@@ -2,20 +2,10 @@ import { z } from "zod";
 
 export const paediatricSchema = z.object({
   // Basic Information
-  fullNameEnglish: z.string()
-    .min(2, { message: "Full name in English is required" })
-    .regex(/^[a-zA-Z\s._-]+$/, { 
-      message: "Full name can contain English letters, spaces, dots, underscores and hyphens" 
-    }),
-  fullNameArabic: z.string()
-    .min(2, { message: "Full name in Arabic is required" })
-    .regex(/^[\u0600-\u06FF\s._-]+$/, { 
-      message: "Full name can contain Arabic letters, spaces, dots, underscores and hyphens" 
-    }),
-  namePrefix: z.string()
-    .min(1, { message: "Name prefix is required" }),
-  stageOfCareer: z.string()
-    .min(1, { message: "Stage of career is required" }),
+  fullNameEnglish: z.string().optional(),
+  fullNameArabic: z.string().optional(),
+  namePrefix: z.string().optional(),
+  stageOfCareer: z.string().optional(),
   
   // Personal Details
   placeOfBirth: z.string().optional(),
@@ -25,12 +15,9 @@ export const paediatricSchema = z.object({
   agreeToEmailPublication: z.boolean().optional(),
   
   // Primary Education
-  universityOfPrimaryGraduation: z.string()
-    .min(1, { message: "University of primary graduation is required" }),
-  countryOfUniversityOfPrimaryGraduation: z.string()
-    .min(1, { message: "Country of university is required" }),
-  yearOfGraduationFromMedicine: z.string()
-    .min(1, { message: "Year of graduation is required" }),
+  universityOfPrimaryGraduation: z.string().optional(),
+  countryOfUniversityOfPrimaryGraduation: z.string().optional(),
+  yearOfGraduationFromMedicine: z.string().optional(),
   awardsDuringPrimaryMedicalDegree: z.string().optional(),
   
   // Post Graduate Education
@@ -41,11 +28,11 @@ export const paediatricSchema = z.object({
   otherQualifications: z.string().optional(),
   
   // Qualifications - Multiple checkboxes
-  qualifications: z.array(z.string()).min(1, { message: "Please select at least one qualification" }),
+  qualifications: z.array(z.string()).optional(),
   otherQualification: z.string().optional(),
   
   // Subspecialty - Multiple checkboxes
-  paediatricsSubspecialty: z.array(z.string()).min(1, { message: "Please select at least one subspecialty" }),
+  paediatricsSubspecialty: z.array(z.string()).optional(),
   otherSubspecialty: z.string().optional(),
   
   // Certification
@@ -53,9 +40,9 @@ export const paediatricSchema = z.object({
   subspecialtyDegreeName: z.string().optional(),
   
   // Career Information
-  currentPosition: z.string().min(1, { message: "Position is required" }),
-  currentInstitution: z.string().min(1, { message: "Institution is required" }),
-  countryOfWork: z.string().min(1, { message: "Country is required" }),
+  currentPosition: z.string().optional(),
+  currentInstitution: z.string().optional(),
+  countryOfWork: z.string().optional(),
   yearsInPosition: z.string().optional(),
   academicPositionCurrentOrPast: z.string().optional(),
   pastCareerPositions: z.string().optional(),
@@ -83,4 +70,4 @@ export const paediatricSchema = z.object({
   updatedCV: z.any().optional(),
 });
 
-export type PaediatricSchema = z.infer<typeof paediatricSchema>; 
+export type PaediatricSchema = z.infer<typeof paediatricSchema>;
