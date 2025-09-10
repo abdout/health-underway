@@ -11,7 +11,7 @@ import { Form } from "@/components/ui/form";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
-import { UserFormValidation } from "@/components/patient/validation";
+import { UserFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
@@ -32,9 +32,9 @@ export const PatientForm = () => {
 
     try {
       const user = {
-        name: values.name ?? "",
-        email: values.email ?? "",
-        phone: values.phone ?? "",
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
       };
 
       const newUser = await createUser(user);

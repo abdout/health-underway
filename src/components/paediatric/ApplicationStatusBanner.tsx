@@ -25,27 +25,27 @@ export default async function ApplicationStatusBanner() {
   switch (status) {
     case "PENDING":
       color = "bg-blue-100 text-blue-700";
-      title = "Application Under Review";
-      description = "Your membership application has been received and is being reviewed by our team.";
+      title = "قيد المراجعة";
+      description = "تم استلام طلب العضوية وسيقوم فريق العضوية بمراجعته قريبًا.";
       break;
     case "APPROVED":
       color = "bg-green-100 text-green-700";
-      title = "Congratulations! Approved";
-      description = "Your application has been approved. You now have full access to all member benefits.";
+      title = "مبروك! تم القبول";
+      description = "تمت الموافقة على طلبك. بإمكانك الآن الاستفادة من مزايا العضوية.";
       break;
     case "REJECTED":
       color = "bg-red-100 text-red-700";
-      title = "Sorry, Application Rejected";
-      description = "Unfortunately, your membership application was not accepted at this time.";
+      title = "عذراً، تم الرفض";
+      description = "لم يتم قبول طلب العضوية الخاص بك في هذه المرحلة.";
       break;
   }
 
   return (
-    <Alert className={`${color} border-0 fixed top-0 left-0 w-full h-10 z-50 flex items-center px-6 shadow-md`}>
-      <AlertTitle className="flex items-center gap-2 text-base">
+    <Alert className={`${color} border-0 my-4`}>
+      <AlertTitle className="flex items-center gap-2">
         <Badge variant="outline">{status}</Badge> {title}
       </AlertTitle>
-      <AlertDescription className="ml-4 text-sm">{description}</AlertDescription>
+      <AlertDescription>{description}</AlertDescription>
     </Alert>
   );
 } 

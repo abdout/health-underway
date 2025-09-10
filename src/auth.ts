@@ -7,10 +7,6 @@ import { getUserById } from "@/components/auth/user"
 import { getTwoFactorConfirmationByUserId } from "@/components/auth/verification/2f-confirmation"
 import { getAccountByUserId } from "@/components/auth/account"
 import authConfig from "./auth.config"
-import { validateEnv } from "@/lib/env-check"
-
-// Validate environment variables
-validateEnv();
 
 // Extend the built-in session types
 declare module "next-auth" {
@@ -62,10 +58,7 @@ export const {
         provider: account?.provider,
         isNewUser
       });
-    },
-    // async error(error) {
-    //   console.error("Auth error event:", error);
-    // }  
+    }
   },
   callbacks: {
     async signIn({ user, account }) {

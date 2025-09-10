@@ -29,7 +29,6 @@ import { login } from "./action";
 import { FormError } from "../error/form-error";
 import { FormSuccess } from "../form-success";
 import { Social } from "../social";
-import { Suspense } from "react";
 
 export const LoginForm = ({
   className,
@@ -87,9 +86,7 @@ export const LoginForm = ({
           </CardDescription> */}
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<div className="h-10" />}> 
-            <Social />
-          </Suspense>
+          <Social />
         </CardContent>
         <CardContent>
           <Form {...form}>
@@ -153,8 +150,8 @@ export const LoginForm = ({
                             />
                           </FormControl>
                           <Link
-                            href="/auth/reset"
-                            className="text-sm text-start hover:underline underline-offset-4"
+                            href="/reset"
+                            className="text-sm text-start text-foreground hover:underline underline-offset-4"
                           >
                             Forgot password?
                           </Link>
@@ -173,8 +170,8 @@ export const LoginForm = ({
                 </Button>
               </div>
               
-              <div className="text-center text-sm">
-                <Link href="/auth/join" className="hover:underline underline-offset-4">
+              <div className="text-center text-sm text-foreground">
+                <Link href="/join" className="text-foreground hover:underline underline-offset-4">
                   Don&apos;t have an account?
                 </Link>
               </div>

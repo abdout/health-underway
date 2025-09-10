@@ -1,6 +1,6 @@
 import React from 'react';
 import { NotificationList } from '@/components/notifications/NotificationList';
-import { auth } from "../../../../../auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
   
 export default async function NotificationsPage() {

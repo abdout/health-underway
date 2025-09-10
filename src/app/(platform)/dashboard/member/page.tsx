@@ -1,4 +1,4 @@
-import { auth } from "../../../../../auth";
+import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import SiteHeading from "@/components/atom/site-heading";
 import AllUsers from "@/components/membership/all";
@@ -24,11 +24,7 @@ export default async function ApprovedMembersPage() {
         select: {
           applicationStatus: true,
           onboardingStatus: true,
-          currentPosition: true,
           countryOfWork: true,
-          qualifications: true,
-          stageOfCareer: true,
-          universityOfPrimaryGraduation: true,
         },
       },
     },
@@ -39,16 +35,11 @@ export default async function ApprovedMembersPage() {
     ...u,
     applicationStatus: u.paediatricDoctor?.applicationStatus,
     onboardingStatus: u.paediatricDoctor?.onboardingStatus,
-    currentPosition: u.paediatricDoctor?.currentPosition,
-    countryOfWork: u.paediatricDoctor?.countryOfWork,
-    qualifications: u.paediatricDoctor?.qualifications,
-    stageOfCareer: u.paediatricDoctor?.stageOfCareer,
-    universityOfPrimaryGraduation: u.paediatricDoctor?.universityOfPrimaryGraduation,
   }));
 
   return (
     <div className="container">
-      <h2>Doctors</h2>
+      <SiteHeading title="الأطباء المعتمدون" description="قائمة الأعضاء المقبولين" align="start" size="sm" />
       <AllUsers users={flattened} currentUserId={currentUserId ?? ""} />
     </div>
   );

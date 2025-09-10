@@ -63,11 +63,7 @@ export function UserTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    universityCountry: false,
-    workCountry: false,
-    institution: false,
-  });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [isStatusOpen, setIsStatusOpen] = useState(false)
   const [isResponseOpen, setIsResponseOpen] = useState(false)
   const [isRoleOpen, setIsRoleOpen] = useState(false)
@@ -158,43 +154,13 @@ export function UserTable<TData, TValue>({
             className='max-w-sm h-9'
           />
         </div>
-        {/* Column visibility dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label="Choose columns"
-              variant="outline"
-              className="gap-2 flex items-center bg-white"
-            >
-              <MixerHorizontalIcon className="mr-2 size-4" />
-              Columns
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='start'>
-            {table
-              .getAllColumns()
-              .filter(column => column.getCanHide())
-              .map(column => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className='capitalize'
-                    checked={column.getIsVisible()}
-                    onCheckedChange={value => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
         
         {/* Mobile Filter Button */}
         {isMobile && (
           <Button 
             variant="outline" 
             size="icon"
-            className="md:hidden rounded-full bg-white"
+            className="md:hidden rounded-full"
             onClick={() => openModal('filter')}
           >
             <Filter className=" " />
@@ -204,109 +170,93 @@ export function UserTable<TData, TValue>({
         {/* Desktop Filters */}
         {!isMobile && (
           <>
-            {/* Country Filter */}
+            {/* Status Filter (الطلب) */}
             <Popover open={isStatusOpen} onOpenChange={setIsStatusOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2 bg-white">
+                <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                  Country
+                  Application
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-[180px]" align="start">
+              <PopoverContent className="p-0 w-[103px]" align="start">
                 <Command>
                   <CommandList>
                     <CommandEmpty>No results.</CommandEmpty>
-                    <CommandItem
-                      key="ALL"
-                      onSelect={() => {
-                        table.getColumn('countryOfWork')?.setFilterValue("");
-                        setIsStatusOpen(false);
-                      }}
-                    >
-                      All Countries
-                    </CommandItem>
-                    {[...new Set((data as any[]).map((u: any) => u.countryOfWork).filter(Boolean))].map((option) => (
-                      <CommandItem
-                        key={option as string}
-                        onSelect={() => {
-                          table.getColumn('countryOfWork')?.setFilterValue(option);
-                          setIsStatusOpen(false);
-                        }}
-                      >
-                        {option}
-                      </CommandItem>
+                    {statusOptions.filter(opt => opt.value === "ALL" || opt.value === "COMPLETED" || opt.value === "INCOMPLETE").map((option, index) => (
+                      <>
+                        <CommandItem
+                          key={option.value}
+                          onSelect={() => {
+                            onStatusChange(option.value);
+                            setIsStatusOpen(false);
+                          }}
+                        >
+                          <span>{option.label}</span>
+                        </CommandItem>
+                        {index === 0 && <DropdownMenuSeparator />}
+                      </>
                     ))}
                   </CommandList>
                 </Command>
               </PopoverContent>
             </Popover>
-            {/* Position Filter */}
+            
+            {/* Response Filter (الرد) */}
             <Popover open={isResponseOpen} onOpenChange={setIsResponseOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2 bg-white">
+                <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                  Position
+                  Status
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-[180px]" align="start">
+              <PopoverContent className="p-0 w-[103px]" align="start">
                 <Command>
                   <CommandList>
                     <CommandEmpty>No results.</CommandEmpty>
-                    <CommandItem
-                      key="ALL"
-                      onSelect={() => {
-                        table.getColumn('stageOfCareer')?.setFilterValue("");
-                        setIsResponseOpen(false);
-                      }}
-                    >
-                      All Positions
-                    </CommandItem>
-                    {[...new Set((data as any[]).map((u: any) => u.stageOfCareer).filter(Boolean))].map((option) => (
-                      <CommandItem
-                        key={option as string}
-                        onSelect={() => {
-                          table.getColumn('stageOfCareer')?.setFilterValue(option);
-                          setIsResponseOpen(false);
-                        }}
-                      >
-                        {option}
-                      </CommandItem>
+                    {responseOptions.map((option, index) => (
+                      <>
+                        <CommandItem
+                          key={option.value}
+                          onSelect={() => {
+                            handleResponseChange(option.value);
+                            setIsResponseOpen(false);
+                          }}
+                        >
+                          <span>{option.label}</span>
+                        </CommandItem>
+                        {index === 0 && <DropdownMenuSeparator />}
+                      </>
                     ))}
                   </CommandList>
                 </Command>
               </PopoverContent>
             </Popover>
-            {/* University Filter */}
+            
+            {/* Role Filter */}
             <Popover open={isRoleOpen} onOpenChange={setIsRoleOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2 bg-white">
+                <Button variant="outline" className="gap-2">
                   <PlusCircledIcon className="mr-2 size-4" />
-                  University
+                  Role
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-[180px]" align="start">
+              <PopoverContent className="p-0 w-[93px]" align="start">
                 <Command>
                   <CommandList>
                     <CommandEmpty>No results.</CommandEmpty>
-                    <CommandItem
-                      key="ALL"
-                      onSelect={() => {
-                        table.getColumn('universityOfPrimaryGraduation')?.setFilterValue("");
-                        setIsRoleOpen(false);
-                      }}
-                    >
-                      All Universities
-                    </CommandItem>
-                    {[...new Set((data as any[]).map((u: any) => u.universityOfPrimaryGraduation).filter(Boolean))].map((option) => (
-                      <CommandItem
-                        key={option as string}
-                        onSelect={() => {
-                          table.getColumn('universityOfPrimaryGraduation')?.setFilterValue(option);
-                          setIsRoleOpen(false);
-                        }}
-                      >
-                        {option}
-                      </CommandItem>
+                    {roleOptions.map((option, index) => (
+                      <>
+                        <CommandItem
+                          key={option.value}
+                          onSelect={() => {
+                            onRoleChange(option.value);
+                            setIsRoleOpen(false);
+                          }}
+                        >
+                          <span>{option.label}</span>
+                        </CommandItem>
+                        {index === 0 && <DropdownMenuSeparator />}
+                      </>
                     ))}
                   </CommandList>
                 </Command>
@@ -350,13 +300,13 @@ export function UserTable<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div className='border-b bg-white rounded-t-lg rounded-b-lg overflow-hidden'>
+      <div className='border-b pt-6'>
         <Table>
-          <TableHeader className='rounded-t-xl'>
+          <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id} className="bg-neutral-800 text-white py-2  ">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <TableHead key={header.id} className="bg-neutral-800 text-white py-3">
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -386,7 +336,7 @@ export function UserTable<TData, TValue>({
                     
                     const user = row.original as any;
                     if (user?.id) {
-                      router.push(`/doctors/${user.id}`);
+                      router.push(`/dashboard/profile/${user.id}`);
                     }
                   }}
                 >

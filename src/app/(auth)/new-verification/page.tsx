@@ -1,12 +1,16 @@
-import { Suspense } from "react";
+'use client';
+
 import { NewVerificationForm } from "@/components/auth/verification/form";
+import { Suspense } from "react";
 
 const NewVerificationPage = () => {
-  return ( 
-    <Suspense fallback={<div className="h-10" />}> 
+  return (
+    <Suspense fallback={null}>
       <NewVerificationForm />
     </Suspense>
-   );
+  );
 }
- 
+
 export default NewVerificationPage;
+
+export const dynamic = 'force-dynamic';

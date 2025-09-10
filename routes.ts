@@ -4,12 +4,11 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-  "/",
-  "/new-verification",
-  "/admin",
-  "/client",
-  "/server",
-  "/setting",
+  "/",                    // Landing page only
+  "/doctors",             // Public doctor listing  
+  "/departments",         // Public department info
+  
+  
 ];
 
 /**
@@ -19,10 +18,11 @@ export const publicRoutes = [
  */
 export const authRoutes = [
   "/login",
-  "/register",
+  "/join",
   "/error",
   "/reset",
-  "/new-password"
+  "/new-password",
+  "/new-verification",
 ];
 
 /**

@@ -10,7 +10,7 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { SettingsSchema } from "../validation";
 import { getUserByEmail, getUserById } from "../user";
 import { db } from "@/lib/db";
-import { auth, signIn, signOut } from "../../../../auth";
+import { auth, signIn, signOut } from "@/auth";
 import { revalidatePath } from "next/cache";
 
 export const settings = async (

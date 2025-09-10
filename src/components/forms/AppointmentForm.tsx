@@ -14,24 +14,10 @@ import {
   createAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import { getAppointmentSchema } from "@/components/patient/validation";
+import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment, Status } from "@prisma/client";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-} from "../ui/select";
-import ReactDatePicker from "react-datepicker";
+import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { Form } from "../ui/form";
 import {
@@ -143,42 +129,33 @@ export const AppointmentForm = ({
       buttonLabel = "Schedule Appointment";
       break;
     default:
-      buttonLabel = "Book";
+      buttonLabel = "Submit Appointment";
   }
 
   return (
     <Form {...form}>
-      <div className="max-w-4xl mx-auto">
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-row gap-x-8 py-8">
-            {/* Header Section (left) */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
         {type === "create" && (
-              <div className="flex-1 flex flex-col justify-center">
-                <h1 className="header">Appointment</h1>
-                <p className="text-dark-700 mt-2">
+          <section className="mb-12 space-y-4">
+            <h1 className="header">New Appointment</h1>
+            <p className="text-dark-700">
               Request a new appointment in 10 seconds.
             </p>
-              </div>
+          </section>
         )}
-            {/* Form Fields Section (right) */}
-            <div className="flex-1 space-y-6">
-              {(type === "create" || type === "schedule") && (
+
+        {type !== "cancel" && (
           <>
-                  {/* Doctor Select */}
-                  <FormField
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
               control={form.control}
               name="primaryPhysician"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Doctor - Select a doctor" />
-                            </SelectTrigger>
-                            <SelectContent>
+              label="Doctor"
+              placeholder="Select a doctor"
+            >
               {Doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
-                                  <div className="flex items-center gap-2">
+                  <div className="flex cursor-pointer items-center gap-2">
                     <Image
                       src={doctor.image}
                       width={32}
@@ -190,121 +167,62 @@ export const AppointmentForm = ({
                   </div>
                 </SelectItem>
               ))}
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+            </CustomFormField>
 
-                  {/* Date Picker */}
-                  <FormField
+            <CustomFormField
+              fieldType={FormFieldType.DATE_PICKER}
               control={form.control}
               name="schedule"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex rounded-md border border-dark-500 bg-dark-400 items-center">
-                            <Image
-                              src="/assets/icons/calendar.svg"
-                              height={24}
-                              width={24}
-                              alt="calendar"
-                              className="ml-2"
-                            />
-                            <ReactDatePicker
+              label="Expected appointment date"
               showTimeSelect
-                              selected={field.value}
-                              onChange={(date: Date | null) => field.onChange(date)}
-                              timeInputLabel="Time:"
               dateFormat="MM/dd/yyyy  -  h:mm aa"
-                              wrapperClassName="date-picker"
-                              className="bg-transparent border-0 focus:ring-0 focus:border-0 px-2 py-2 w-full"
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
             />
 
-                  <div className={`flex flex-col gap-6  ${type === "create" ? "xl:flex-row" : ""}`}>
-                    {/* Reason */}
-                    <FormField
+            <div
+              className={`flex flex-col gap-6  ${
+                type === "create" && "xl:flex-row"
+              }`}
+            >
+              <CustomFormField
+                fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="reason"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <Textarea
-                              placeholder="Appointment reason - Annual monthly check-up"
-                              {...field}
+                label="Appointment reason"
+                placeholder="Annual monthly check-up"
                 disabled={type === "schedule"}
-                              className="shad-textArea"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+              />
 
-                    {/* Note */}
-                    <FormField
+              <CustomFormField
+                fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="note"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <Textarea
-                              placeholder="Comments/notes - Prefer afternoon appointments, if possible"
-                              {...field}
+                label="Comments/notes"
+                placeholder="Prefer afternoon appointments, if possible"
                 disabled={type === "schedule"}
-                              className="shad-textArea"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
               />
             </div>
           </>
         )}
 
-              {type === "cancel" ? (
-                <FormField
+        {type === "cancel" && (
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="cancellationReason"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Reason for cancellation - Urgent meeting came up"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : null}
-            </div>
-          </div>
-          {/* Sticky button bar at bottom */}
-          <div className="fixed bottom-0 left-0 w-full z-50 flex justify-center pointer-events-none">
-            <div className="max-w-4xl w-full mx-auto bg-background border-t border-border py-4 flex flex-col items-end pointer-events-auto">
+            label="Reason for cancellation"
+            placeholder="Urgent meeting came up"
+          />
+        )}
+
         <SubmitButton
           isLoading={isLoading}
-                className={`$${
+          className={`${
             type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
-                } w-20`}
+          } w-full`}
         >
           {buttonLabel}
         </SubmitButton>
-            </div>
-          </div>
       </form>
-      </div>
     </Form>
   );
 };

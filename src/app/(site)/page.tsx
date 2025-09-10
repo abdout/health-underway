@@ -7,28 +7,16 @@ import { MeshScaleSection } from '@/components/site/mesh';
 import ImageCSS from '@/components/site/image-css';
 import { PaediatricOnbording } from '@/components/site/onbording';
 import FeaturedArticles from '@/components/template/article/featured-articles';
-import Faqs from '@/components/contact/faqs';
-import Newsletter from '@/components/contact/newsletter';
-import SocialIcons from '@/components/contact/social';
 
 export default function Home() {
     return (
         <>
             <Hero />
-            {/* <PaediatricOnbording /> */}
-            {/* <FeatureCards /> */}
+            <PaediatricOnbording />
+            <FeatureCards />
             <FeaturedArticles />
             
             <App />
-            
-            <Newsletter />
-           
-            <Faqs />
-            
-            <div className='py-20 md:scale-150 flex items-center justify-center max-w-2xl mx-auto'>
-                <SocialIcons />
-            </div>
-            
 {/*             
             <ImageCSS /> */}
             

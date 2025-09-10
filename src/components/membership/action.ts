@@ -1,7 +1,7 @@
 // Server actions for membership application status and onboarding status
 "use server";
 import { db } from "@/lib/db";
-import { auth } from "../../../auth";
+import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { notifyApplicationApproved, notifyApplicationRejected } from "@/components/notifications/action";

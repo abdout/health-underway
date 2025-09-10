@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ProfileAbout, ProfileActivities } from "@/components/platform/profile";
-import { auth } from "../../../../../../auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export default async function ProfilePage({ params }: any) {

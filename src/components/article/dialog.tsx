@@ -81,8 +81,8 @@ export function CreateArticleButton() {
   const { modal, openModal, closeModal } = useModal();
   return (
     <>
-      <Button variant='outline' onClick={() => openModal(null)} className="w-28 bg-white text-black shadow-none">
-        Add Article
+      <Button variant='outline' onClick={() => openModal(null)}>
+        إضافة مقال
       </Button>
       {modal.open && (
         <Modal content={<CreateArticle onClose={closeModal} />} />

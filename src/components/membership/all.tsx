@@ -28,31 +28,69 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
     );
   };
 
-  // University, Locality, Position filter options
-  const universityOptions = useMemo(() => {
-    const set = new Set(users.map(u => u.university).filter(Boolean));
-    return ["ALL", ...Array.from(set)];
+  // Combined status options in English
+  const statusOptions = [
+    { value: "ALL", label: "All" },
+    { value: "COMPLETED", label: "Completed" },
+    { value: "INCOMPLETE", label: "Incomplete" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "REJECTED", label: "Rejected" },
+    { value: "NO_RESPONSE", label: "Pending" },
+  ];
+
+  // Role options in English
+  const roleLabel = (role: string) => {
+    if (role === "ADMIN") return "Admin";
+    if (role === "USER") return "User";
+    return role;
+  };
+  const allRoles = useMemo(() => {
+    const uniqueRoles = Array.from(new Set(users.map(u => u.role).filter(Boolean)));
+    return ["ALL", ...uniqueRoles];
   }, [users]);
-  const localityOptions = useMemo(() => {
-    const set = new Set(users.map(u => u.locality).filter(Boolean));
-    return ["ALL", ...Array.from(set)];
-  }, [users]);
-  const positionOptions = useMemo(() => {
-    const set = new Set(users.map(u => u.position).filter(Boolean));
-    return ["ALL", ...Array.from(set)];
-  }, [users]);
+  const roleOptions = allRoles.map(role => ({ value: role, label: role === "ALL" ? "All" : roleLabel(role) }));
 
   // State for filters
-  const [university, setUniversity] = useState<string>("ALL");
-  const [locality, setLocality] = useState<string>("ALL");
-  const [position, setPosition] = useState<string>("ALL");
+  const [status, setStatus] = useState<string>("ALL");
+  const [role, setRole] = useState<string>("ALL");
 
-  // Filter users based on selected university, locality, and position
+  const statusTabOptions = [
+    { value: "ALL", label: "All" },
+    { value: "PENDING", label: "Pending" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "REJECTED", label: "Rejected" },
+  ];
+
+  // Filter users based on selected status and role
   const filteredUsers = users.filter((user) => {
-    const universityMatch = university === "ALL" || user.university === university;
-    const localityMatch = locality === "ALL" || user.locality === locality;
-    const positionMatch = position === "ALL" || user.position === position;
-    return universityMatch && localityMatch && positionMatch;
+    // Status filter
+    let statusMatch = true;
+    switch (status) {
+      case "PENDING":
+        statusMatch = !user.applicationStatus || user.applicationStatus === "PENDING";
+        break;
+      case "COMPLETED":
+        statusMatch = user.onboardingStatus === "COMPLETED";
+        break;
+      case "INCOMPLETE":
+        statusMatch = user.onboardingStatus === "PENDING" || user.onboardingStatus === "IN_PROGRESS";
+        break;
+      case "APPROVED":
+        statusMatch = user.applicationStatus === "APPROVED";
+        break;
+      case "REJECTED":
+        statusMatch = user.applicationStatus === "REJECTED";
+        break;
+      case "NO_RESPONSE":
+        statusMatch = !user.applicationStatus || user.applicationStatus === "PENDING";
+        break;
+      default:
+        statusMatch = true;
+    }
+    // Role filter
+    const roleMatch = role === "ALL" || user.role === role;
+    
+    return statusMatch && roleMatch;
   });
 
   // Create table columns with the callbacks
@@ -63,13 +101,24 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
 
   return (
     <ModalProvider>
-      <div className="scroll-x mt-4">
-        {/* Filters */}
-       
+      <div className="scroll-x">
+        {/* Status Tabs */}
+        <div className="flex gap-2 flex-wrap mb-4">
+          {statusTabOptions.map((opt) => (
+            <Button
+              key={opt.value}
+              variant={status === opt.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => setStatus(opt.value)}
+            >
+              {opt.label}
+            </Button>
+          ))}
+        </div>
         {filteredUsers.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] rounded-lg border border-dashed mt-8 p-8 text-center">
             <h2 className="text-2xl font-semibold">No users found</h2>
-            <p className="text-muted-foreground max-w-[500px] ">
+            <p className="text-muted-foreground max-w-[500px] mt-2">
               No registered users yet.
             </p>
           </div>
@@ -77,12 +126,12 @@ export default function AllUsers({ users: initialUsers, currentUserId }: { users
           <UserTable 
             columns={userColumns} 
             data={filteredUsers}
-            statusOptions={[]}
-            roleOptions={[]}
-            onStatusChange={() => {}}
-            onRoleChange={() => {}}
-            currentStatus={""}
-            currentRole={""}
+            statusOptions={statusOptions}
+            roleOptions={roleOptions}
+            onStatusChange={setStatus}
+            onRoleChange={setRole}
+            currentStatus={status}
+            currentRole={role}
           />
         )}
       </div>

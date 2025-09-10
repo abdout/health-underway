@@ -98,7 +98,7 @@ export const ArticleHoverEffect = ({
                             <Link href={item?.link}>
                     <ArticleCard>
                         <div className="flex gap-6">
-                            <div className="md:w-1/3 w-[30%] relative md:h-[140px] h-full overflow-hidden rounded-lg">
+                            <div className="md:w-1/3 w-[30%] relative md:h-[140px] h-[80px] overflow-hidden rounded-lg">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -114,9 +114,9 @@ export const ArticleHoverEffect = ({
                                     <ArticleTitle>{item.title}</ArticleTitle>
                                     <ArticleDescription>{item.description}</ArticleDescription>
                                 </div>
-                                <p className="flex  md:items-center items-start md:gap-2 gap-1 md:text-sm text-xs pt-2 md:pt-0 ">
-                                    <span>{item.author || "John Doe"}</span>
-                                    <span className="text-lg font-bold mx-1">·</span>
+                                <p className="flex md:items-center items-start md:gap-2 gap-1 md:text-sm text-xs pt-2 md:pt-0 ">
+                                    <span>{item.author}</span>
+                                                <span className="text-lg font-bold mx-1">·</span>
                                     <span>{item.date}</span>
                                 </p>
                             </div>
@@ -184,7 +184,7 @@ const ArticleTitle = ({
     children: React.ReactNode;
 }) => {
     return (
-        <h4 className={cn("font-bold text-foreground tracking-wide text-lg line-clamp-2 md:line-clamp-1  md:pl-0", className)}>
+        <h4 className={cn("font-bold text-foreground tracking-wide text-lg line-clamp-2 md:line-clamp-1 pl-8 md:pl-0", className)}>
             {children}
         </h4>
     );

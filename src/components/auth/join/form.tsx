@@ -5,7 +5,6 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { Suspense } from "react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -40,7 +39,7 @@ export const RegisterForm = ({
     defaultValues: {
       email: "",
       password: "",
-      name: "",
+      username: "",
     },
   });
 
@@ -62,9 +61,7 @@ export const RegisterForm = ({
       <Card className="border-none shadow-none">
         <CardHeader className="text-center" />
         <CardContent>
-          <Suspense fallback={<div className="h-10" />}> 
-            <Social />
-          </Suspense>
+          <Social />
         </CardContent>
         <CardContent>
           <Form {...form}>
@@ -78,7 +75,7 @@ export const RegisterForm = ({
               <div className="grid gap-4">
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="username"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
                       <FormControl>
@@ -139,8 +136,8 @@ export const RegisterForm = ({
                 </Button>
               </div>
 
-              <div className="text-center text-sm">
-                <Link href="/auth/login" className="hover:underline underline-offset-4">
+              <div className="text-center text-sm text-foreground">
+                <Link href="/login" className="text-foreground hover:underline underline-offset-4">
                   Already have an account?
                 </Link>
               </div>

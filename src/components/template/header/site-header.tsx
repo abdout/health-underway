@@ -14,8 +14,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { siteConfig } from "./constant"
-import { LogoutButton } from "@/components/auth/logout-button"
-import { useCurrentUser } from "@/components/auth/use-current-user"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -56,12 +54,11 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export function SiteHeader() {
-  const user = useCurrentUser();
   return (
     <header className="w-full">
-      <div className="flex h-9 items-center">
+      <div className="flex h-10 items-center">
         <div className="flex w-full items-center justify-between">
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <Link href="/" className="mr-4 flex items-center gap-2 lg:mr-6">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4 text-foreground">
                 <path fill="currentColor" d="M19.649 5.286L14 8.548V2.025h-4v6.523L4.351 5.286l-2 3.465l5.648 3.261l-5.648 3.261l2 3.465L10 15.477V22h4v-6.523l5.649 3.261l2-3.465l-5.648-3.261l5.648-3.261z"/>
@@ -72,10 +69,10 @@ export function SiteHeader() {
             </Link>
           
             {/* Desktop Navigation - Hidden on Mobile */}
-            <div className="hidden md:block ">
+            <div className="hidden md:block">
               <NavigationMenu viewport={false}>
                 <NavigationMenuList>
-                  {/* <NavigationMenuItem>
+                  <NavigationMenuItem>
                     <NavigationMenuTrigger>Patient</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -121,42 +118,17 @@ export function SiteHeader() {
                         ))}
                       </ul>
                     </NavigationMenuContent>
-                  </NavigationMenuItem> */}
+                  </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <div className="flex gap-x-3">
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/about">About</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/contact">Contact</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/doctors">Doctors</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/papers">Papers</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/blog">Blog</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/platform">Platform</Link>
-                      </NavigationMenuLink>
-                      {/* Login/Logout Button */}
-                      <div className="flex items-center">
-                        {user ? (
-                          <LogoutButton>
-                            <span className=" p-2 text-foreground text-sm font-medium rounded-md hover:rounded-full ml-2 transition-colors">Logout</span>
-                          </LogoutButton>
-                        ) : (
-                          <NavigationMenuLink asChild className={navigationMenuTriggerStyle() + ' ml-2'}>
-                            <Link href="/login">
-                              <span className=" text-gray-foreground px-3 py-1 rounded-md transition-colors">Login</span>
-                            </Link>
-                          </NavigationMenuLink>
-                        )}
-                      </div>
-                    </div>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/departments">Department</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/doctors">Doctor</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href="/dashboard">Platform</Link>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>

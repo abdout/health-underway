@@ -1,6 +1,6 @@
 import TwitterProfile from '@/components/twitter/profile'
 import React from 'react'
-import { auth } from "../../../../../auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 const page = async () => {
